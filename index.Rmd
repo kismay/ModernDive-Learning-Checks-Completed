@@ -1,0 +1,328 @@
+---
+title: "ModernDive Learning Checks - Completed"
+author: "Karolyn Ismay <br> PhD Candidate, Pacific University"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_download: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This page documents my completion of the Learning Checks and practice examples in the [ModernDive textbook](https://moderndive.com/index.html). In addition, this document itself shows my learning and skill development with R.
+
+Below is a chunk of code that is needed to show some of the Learning Checks and the practice examples from the textbook on this document. You'll see the package `nycflights13` in red below which contains real flight data from New York City airports from 2013. This is the data I will manipulate in the Learning Checks and practice examples. The other packages are the tools that allow for some of that manipulation. For example, `ggplot2` is a package that allows for plotting of data.
+```{r load-packages, results="hide", message=FALSE}
+
+c(
+  "nycflights13",
+  "dplyr",
+  "knitr",
+  "ggplot2"
+) -> package_vector
+
+sapply(X = package_vector,
+       FUN = library, 
+       character.only = TRUE)
+
+
+```
+
+## Chapter 2: Introduction to R and Rstudio
+
+Much of this chapter is about learning basic syntax in R, such as identifying `computer_code` and understanding the Rstudio interface. 
+
+### Learning Check 2.1
+*Repeat the above installing steps, but for the `dplyr`, `nycflights13`, and `knitr` packages. This will install the earlier mentioned `dplyr` package, the `nycflights13` package containing data on all domestic flights leaving a NYC airport in 2013, and the `knitr` package for writing reports in R.*
+
+**Answer:**
+``` 
+install.packages(c("dplyr", "nycflights13", knitr"))
+```
+Installing a package downloads the package onto your local computer.
+
+### Learning Check 2.2
+*“Load” the dplyr, nycflights13, and knitr packages as well by repeating the above steps.*
+
+**Answer:**
+``` 
+library("dplyr") 
+library("nycflights13")
+library("knitr")
+```
+Loading a package tells Rstudio to switch "on" that particular package.
+
+### Practice 2.4.2
+Explore the `flights` dataframe by calling up the `flights` tibble.
+```{r}
+flights
+```
+
+### Learning Check 2.3
+*Run `View(flights)` in your Console in RStudio...and explore this data frame in the resulting pop-up viewer. What does any ONE row in this flights dataset refer to?*
+<br> * *A. Data on an airline*
+<br> * *B. Data on a flight*
+<br> * *C. Data on an airport*
+<br> * *D. Data on multiple flights*
+
+**Answer:**
+B. Data on a flight
+<br> Rows correspond to individual observations or data on A flight. `airline`, and `airport` are variables and appear in columns not rows and "Data on multiple flights" would not appear on any ONE row.
+
+### Practice 2.4.3.2
+Explore a data frame using the `glimpse` function.
+```{r}
+glimpse(flights)
+```
+
+### Learning Check 2.4
+*What are some examples in this dataset of __categorical__ variables? What makes them different than __quantitative__ variables?*
+
+**Answer:**
+Categorical variables are labels, such as `carrier`, or `dest`. They are often `chr` or text data but can be numerical. However, `1` is not “more” or “less” than any other, it is a just a categorization. 
+
+### Practice 2.4.3.3
+Explore a data frame using the `kable` function. The `kable` function cleans up the data into a more legible format.
+```{r}
+airlines
+kable(airlines)
+```
+
+### Practice 2.4.3.4
+Explore a variable using the `$` operator.
+```{r}
+airlines
+airlines$name
+```
+
+### Learning Check 2.5
+*What properties of the observational unit do each of `lat`, `lon`, `alt`, `tz`, `dst`, and `tzone` describe for the airports data frame? Note that you may want to use `?airports` to get more information.*
+
+**Answer:**
+`?airports` launches the Help tab which shows that the variables are used to describe individual airports. `lat` and `lon` refer to the latitude and longitude. `alt` refers to the elevation. `tz` is the GMT while `dst` is daylight savings time zone and `tzone` is the IANA time zone.
+
+### Learning Check 2.6
+*Provide the names of variables in a data frame with at least three variables in which one of them is an identification variable and the other two are not. In other words, create your own tidy data frame that matches these conditions.*
+
+**Answer:**
+A possible data frame with three variables, one of which is an identification variable and the other two are not would be a data frame about homes. An identification variable could be the color of the house or the architectural style of the house. Two measurement variables could be the number of bathrooms and the square footage.
+
+## Chapter 3: Data Visualization
+This chapter is about using multiple data visualization techniques on the `nycflights13` package.
+
+### Practice 3.3
+Utilizing a scatterplot, visualize the relationship between `dep_delay` on the x-axis and `arr_delay` on the y-axis for Alaska Airlines flights leaving NYC in 2013. 
+
+First, I'll need to filter only the Alaska Airlines flights.
+```{r}
+alaska_flights <- flights %>%
+  filter(carrier == "AS")
+```
+Here I have created a new data frame named `alaska_flights` and asked R to populate the data frame based off of the data frame `flights` filtering for only those flights that are from Alaska Airlines.
+
+### Learning Check 3.1
+*Take a look at both the `flights` and `alaska_flights` data frames by running `View(flights)` and `View(alaska_flights)`. In what respect do these data frames differ? For example, think about the number of rows in each dataset.*
+
+```{r}
+glimpse(flights)
+glimpse(alaska_flights)
+```
+
+**Answer:**
+The `flights` data frame has all the flights departing NYC airports in 2013, over 336,776 rows. The `alaska_flights` data frame has only those flights departing NYC airports in 2013 that were operated by Alaska Airlines, just 714 rows.
+
+### Practice 3.3.1 Scatterplots
+Utilizing the `alaska_flights` data frame I created above, now I will use the `ggplot2` package to create a scatterplot with the `ggplot` function.
+```{r scatterplot}
+ggplot(data = alaska_flights,
+       mapping = aes(x = dep_delay,
+                     y = arr_delay)) + 
+  geom_point()
+```
+Above is a scatterplot of `alaska_flights` where `dep_delay` is on the x-axis and `arr_delay` is on the y-axis and each observation is represented by a point on the plot. Additionally, we see that 5 rows were removed from the 714 because they are missing values.
+
+### Learning Check 3.2
+*What are some practical reasons why `dep_delay` and `arr_delay` have a positive relationship?*
+
+**Answer:**
+One reason could be that leaving an hour later can mean arriving an hour later. On the other hand, sometimes flights make up time or arrive earlier than expected due to tailwind. The opposite can also be true if there are headwinds.
+
+### Learning Check 3.3
+*What variables in the `weather` data frame would you expect to have a negative correlation (i.e. a negative relationship) with `dep_delay`? Why? Remember that we are focusing on numerical variables here. Hint: Explore the weather dataset by using the `View()` function.*
+
+**Answer:**
+Looking at the `View(weather)` we see there are several variables that could impact `dep_delay` such as `wind_gust` and `visib`.
+
+### Learning Check 3.4
+*Why do you believe there is a cluster of points near (0, 0)? What does (0, 0) correspond to in terms of the Alaskan flights?*
+
+**Answer:**
+This is likely because flights which were not delayed upon departure arrived without delays as well. (0, 0) represents flights that departed on time and arrived on time.
+
+### Learning Check 3.5
+*What are some other features of the plot that stand out to you?*
+
+**Answer:**
+The scatterplot shows a fairly perfect correlation where the dots could be represented by a straight line with a slope of 1. Also it shows flights that departed early and arrived early and thus had negative `dep_delay` and `arr_delay`.
+
+### Learning Check 3.6
+*Create a new scatterplot using different variables in the `alaska_flights` data frame by modifying the example above.*
+
+**Answer:**
+```{r}
+ggplot(
+  data = alaska_flights,
+  mapping = aes(
+    x = sched_dep_time,
+    y = dep_delay)) +
+  geom_point()
+```
+This plot shows that more flights scheduled later in the day were delayed compared to much fewer flights delayed that were originally scheduled early in the day. We also see an example of how important it is to understand our data because we see that Alaska Airlines only flew out of NYC in the early morning and the evening as opposed to several times throughout the day. Also, we see that 2 rows were removed for missing values.
+
+### Practice 3.3.2 Dealing with overplotting
+In Practice 3.3.1, we saw a plot that had many points near (0, 0) which made it difficult to tell just how many data points were in the overlapping areas. This is called overplotting and it can be mitigated.
+
+Method 1: Adjusting the transparency of the `geom`etric points:
+```{r scatterplot-transparency, warning=FALSE}
+ggplot(
+  data = alaska_flights,
+  mapping = aes(
+    x = dep_delay,
+    y = arr_delay)) +
+geom_point(alpha = .2)  
+```
+This scatterplot's points are set to 20% opacity with the `geom_point(alpha = .2)`. This allows us to more clearly see the density of the points near (0, 0).
+
+Method 2: *Jittering* the points. This introduces some random movement of the points. This should only be used for visualization and the original data should not be altered.
+
+```{r scatterplot-jitter, warning=FALSE}
+ggplot(data = alaska_flights,
+       mapping = aes(
+         x = dep_delay,
+         y = arr_delay)) +
+  geom_jitter(
+    width = 30,
+    height = 30)
+```
+This plot is similar to the original scatterplot but we can more clearly see how dense the (0, 0) area is.
+
+### Learning Check 3.7
+*Why is setting the `alpha` argument value useful with scatterplots? What further information does it give you that a regular scatterplot cannot?*
+
+**Answer:**
+`alpha` was used to change the opacity of the `geom_point` dots. This let us see that there was a high density of data in the (0, 0) area.
+
+### Learning Check 3.8
+*After viewing the Figure 3.4, give an approximate range of arrival delays and departure delays that occur the most frequently. How has that region changed compared to when you observed the same plot without the alpha = 0.2 set in Figure 3.2?*
+
+**Answer:**
+Figure 3.2 was the scatterplot without changes to the `geom_point` opacity whereas Figure 3.4 had opacity set to 20%. We see that most flights depart early or within a few minutes of on-time and most of those flights arrive early or within a few mintes of on-time.
+
+### Practice 3.4: Linegraphs
+Using the `nycflights13` package, recall the `weather` data frame. Pull a list the variables in the `weather` data frame. 
+
+```{r view-weather-variables}
+names(weather)
+```
+Here I have listed all the variables in the data frame `weather`.
+
+Create a sub data frame to look at the `temp` or temperature of flights with `origin` Newark (`EWR`) during the first half of January.
+```{r temp-EWR-early-January}
+early_january_weather <- weather %>%
+  filter(
+    origin == "EWR" &
+      month == 1 &
+      day <= 15)
+early_january_weather
+```
+Here I've created a data frame that is a subset of the original `weather` dataframe. I did this by creating a new object named `early_january_weather` and used a `filter()` to feed in data from `weather` that matches `origin == "EWR"` or Newark, during the `month == 1` or January, where `day <= 15` or days 1 through 15 on the calendar.
+
+### Learning Check 3.9
+*Take a look at both the `weather` and `early_january_weather` data frames by running `View(weather)` and `View(early_january_weather)`. In what respect do these data frames differ?*
+
+**Answer:**
+`early_january_weather` is a subset of `weather` and thus has fewer observations.
+
+### Learning Check 3.10
+*`View()` the `flights` data frame again. Why does the `time_hour` variable uniquely identify the hour of the measurement whereas the `hour` variable does not?*
+
+**Answer:**
+
+
+### Practice 3.4.1: Linegraphs via geom_line
+Plot a linegraph of hourly temperatures in `early_january_weather` by using `geom_line()` instead of `geom_point()` like we did for scatterplots.
+
+```{r}
+ggplot(data = early_january_weather,
+       mapping = aes(x = time_hour,
+                     y = temp)) +
+  geom_line()
+```
+
+### Learning Check 3.11
+*Why should linegraphs be avoided when there is not a clear ordering of the horizontal axis?*
+
+**Answer:**
+Because linegraphs don't make sense without clear ordering. Each point needs to have meaning relative to the next.
+
+### Learning Check 3.12
+*Why are linegraphs frequently used when time is the explanatory variable on the x-axis?*
+
+**Answer:**
+Because linegraphs are well suited to linear data and we experience time linearly.
+
+### Learning Check 3.13
+*Plot a time series of a variable other than `temp` for Newark Airport in the first 15 days of January 2013.*
+
+**Answer:**
+```{r timeseries-EWR-humid}
+ggplot(data = early_january_weather,
+       mapping = aes(x = time_hour,
+                     y = humid)) +
+  geom_line()
+```
+Here I've created a new linegraph showing the hourly humidity, or `humid`, for Newark Airport in the first 15 days of January 2013.
+
+### Practice 3.5: Histograms
+Histograms are useful for showing distributions. The basic `geom_histogram` is the following:
+
+```{r first-histogram}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram()
+```
+Here we see a suggestion to "Pick better value with `binwidth`" but that R has supplied a `bins = 30` as the default. We also see a warning that one row was removed.
+
+Add a white border to the bins to more clearly see each individual bin and change the fill to color of choice:
+```{r first-histogram-white-borders, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) + 
+  geom_histogram(color = "white", fill = "firebrick1")
+```
+
+Adjust the number of `bins` to 40:
+```{r 1histo-bin45, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram(color = "white", fill = "firebrick1", bins = 40)
+```
+
+Remove the bin number and adjust the `binwidth` to 10°F:
+```{r 1histo-binwidth10F, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram(color = "white", fill = "firebrick1", binwidth = 10)
+```
+
+### Learning Check 3.14
+*What does changing the number of bins from 30 to 40 tell us about the distribution of temperatures?*
+
+**Answer:**
+There isn't much that is different, the distribution is fairly similar. The bins here are from 10.94°F to 100.04°F, so having a similar distribution between 30 and 40 bins tells us that `temp` values are accurate to a high degree. Looking at `View(weather)` we see that `temp` is accurate to the second decimal point.
+
+
+
