@@ -1,7 +1,7 @@
 ---
 title: "ModernDive Learning Checks - Completed"
 author: "Karolyn Ismay <br> PhD Candidate, Pacific University"
-date: "`r Sys.Date()`"
+date: "2019-07-14"
 output: 
   html_document:
     code_download: true
@@ -57,7 +57,7 @@ library("knitr")
 Loading a package tells Rstudio to switch "on" that particular package.
 
 ### Practice 2.4.2
-Explore the `flights` dataframe by calling up the `flights` tibble.
+Explore the `flights` data frame by calling up the `flights` tibble.
 ```{r}
 flights
 ```
@@ -323,6 +323,94 @@ ggplot(data = weather,
 
 **Answer:**
 There isn't much that is different, the distribution is fairly similar. The bins here are from 10.94°F to 100.04°F, so having a similar distribution between 30 and 40 bins tells us that `temp` values are accurate to a high degree. Looking at `View(weather)` we see that `temp` is accurate to the second decimal point.
+```{r 1histo-bin3040, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram(color = "white", fill = "firebrick1", bins = 30)
+```
+```{r 2histo-bin3040, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram(color = "white", fill = "firebrick1", bins = 40)
+```
 
+### Learning Check 3.15
+*Would you classify the distribution of temperatures as symmetric or skewed?*
 
+**Answer:**
+It looks pretty symmetric.
+
+### Learning Check 3.16
+*What would you guess is the "center" value in this distribution? Why did you make that choice?*
+
+**Answer:**
+Visually, we see that the temperatures are symmetrically destributed and the range is from about 10-100°, so the "center" value is likely about 55°. When we run `summary()` on `weather` and look at `temp` we see that the median is 55.40° and the mean is 55.26.
+```{r centeroftemp, warning=FALSE, message=FALSE}
+summary(weather$temp)
+```
+
+### Learning Check 3.17
+*Is the data spread out greatly from the center or is it close? Why?*
+
+**Answer:**
+That depends on what "greatly" means. Compared to other years? Compared to another city? When compared to Kailua, Hawaii, a place with averages from 69-85°, then yes, the weather in NYC was more spread out.
+
+### Practice 3.5: Facets
+Facets can break off variable by another variable for visualizations. `facet_wrap` is a visualization modifier `ggplot2` that will create multiple plots where the x and y axes match but each plot will look different according to the modifying variable. For example, we can look at `weather` by `temp` by `month`.
+```{r facetmonth, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  facet_wrap(~ month)
+```
+Above we see temps by month. We can further modify the output by asking for the plot to have 4 rows.
+
+```{r facetmonthrow4, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = temp)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  facet_wrap(~ month, nrow = 4)
+```
+Now we see a basic histogram of temps in a 4x3 arrangement, useful if you're the type that thinks in quarters.
+
+### Learning Check 3.18
+*What other things do you notice about the faceted plot above? How does a faceted plot help us see relationships between two variables?*
+
+**Answer:**
+The faceted plot shows that while the original histogram was symmetrically distributed, the temperatures vary from month to month. No month sees both near 0° and near 100° weather.
+
+### Learning Check 3.19
+*What do the numbers 1-12 correspond to in the plot above? What about 25, 50, 75, 100?*
+
+**Answer:**
+The numbers 1-12 correspond to months and 25, 50, 75, 100 correspond to temperature.
+
+### Learning Check 3.20
+*For which types of data sets would these types of faceted plots not work well in comparing relationships between variables? Give an example describing the nature of these variables and other important characteristics.*
+
+**Answer:**
+Facets plot a variable broken up by another variable. For temperature, we broke it down by month. `nycflights13` only has temperature data for the year 2013, so if we tried to plot the temperature by year, we'd have only one facet. We would need data from multiple years. Conversely, it would be a little ridiculous `facet_wrap` by day because we would end up with 365 plots.
+
+### Learning Check 3.21
+*Does the `temp` variable in the `weather` data set have a lot of variability? Why do you say that?*
+
+**Answer:**
+That depends on what "a lot" means. For New York City, it seems pretty reasonable. For Kailua, Hawaii, it would be... a lot.
+
+### Practice 3.5: Boxplots
+Boxplots require a categorical variable in the x-axis. They show the range of data in quartiles where the center bolded line is the median, the area above the median and within the box is the third quartile, the area below the median within the box is the second quartile, and the whiskers on either end represent the first and fourth quartiles. Of note, the whiskers do not include data points that are 1.5x greater or less than the interquartile range. Those values are considered outliers.
+
+```{r boxplot1, warning=FALSE, message=FALSE}
+ggplot(data = weather,
+       mapping = aes(x = month, y = temp))+
+  geom_boxplot()
+```
+
+The plot above is not very helpful because the months are numerical instead of categorical. Boxplots require categorical variables in the x-axis.
+
+```{r boxplotcatmonth, warning=FALSE, message=FALSE}
+ggplot(data = weather, 
+       mapping = aes(x = factor(month), y = temp)) +
+  geom_boxplot()
+```
 
