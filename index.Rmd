@@ -355,7 +355,7 @@ summary(weather$temp)
 **Answer:**
 That depends on what "greatly" means. Compared to other years? Compared to another city? When compared to Kailua, Hawaii, a place with averages from 69-85°, then yes, the weather in NYC was more spread out.
 
-### Practice 3.5: Facets
+### Practice 3.6: Facets
 Facets can break off variable by another variable for visualizations. `facet_wrap` is a visualization modifier `ggplot2` that will create multiple plots where the x and y axes match but each plot will look different according to the modifying variable. For example, we can look at `weather` by `temp` by `month`.
 ```{r facetmonth, warning=FALSE, message=FALSE}
 ggplot(data = weather,
@@ -397,7 +397,7 @@ Facets plot a variable broken up by another variable. For temperature, we broke 
 **Answer:**
 That depends on what "a lot" means. For New York City, it seems pretty reasonable. For Kailua, Hawaii, it would be... a lot.
 
-### Practice 3.5: Boxplots
+### Practice 3.7: Boxplots
 Boxplots require a categorical variable in the x-axis. They show the range of data in quartiles where the center bolded line is the median, the area above the median and within the box is the third quartile, the area below the median within the box is the second quartile, and the whiskers on either end represent the first and fourth quartiles. Of note, the whiskers do not include data points that are 1.5x greater or less than the interquartile range. Those values are considered outliers.
 
 ```{r boxplot1, warning=FALSE, message=FALSE}
@@ -405,12 +405,141 @@ ggplot(data = weather,
        mapping = aes(x = month, y = temp))+
   geom_boxplot()
 ```
-
 The plot above is not very helpful because the months are numerical instead of categorical. Boxplots require categorical variables in the x-axis.
 
 ```{r boxplotcatmonth, warning=FALSE, message=FALSE}
 ggplot(data = weather, 
        mapping = aes(x = factor(month), y = temp)) +
   geom_boxplot()
+```
+Here we a have box plot of the temperatures by month with dots identifying values considered outliers. Outliers in these boxplots are those values that are more than 1.5x greater than the interquartile range (IQR).
+
+### Learning Check 3.22
+*What does the dot at the bottom of the plot for May correspond to? Explain what might have occurred in May to produce this point.*
+
+**Answer:**
+The dot is an outlier value in the month of May. It is rather extreme, so let's see if the same temperature was recorded at multiple airports or if perhaps there's an error in the data.
+
+```{r maytempanom, warning=FALSE, message=FALSE}
+weather %>% 
+  filter(month==5 & temp < 25)
+```
+Here we see only one airport on one day at 10pm registered a very low temperature. This looks like a data entry error. Just to double check, lets look at the temperatures leading up to May 8 at 10pm.
+```{r may8tempanom, warning=FALSE, message=FALSE}
+weather %>% 
+  filter(month==5 & day==8 & hour >18) %>% 
+  arrange(hour)
+```
+Here we see that every row, asid  is showing a temperature range of about 50-61°. Row 11 definitely looks like an error.
+
+### Learning Check 3.23
+*Which months have the highest variability in temperature? What reasons can you give for this?*
+
+**Answer:**
+It looks like November had the most variability but december and January are close. Below is a plot of the IQRs:
+```{r iqrtemps, warning=FALSE, message=FALSE}
+weather %>% 
+  group_by(month) %>% 
+  summarize(IQR = IQR(temp, na.rm=TRUE)) %>% 
+  arrange(desc(IQR))
+```
+It looks like November, December, January, and September were the most variable.
+
+### Learning Check 3.24
+*We looked at the distribution of the numerical variable `temp` split by the numerical variable `month` that we converted to a categorical variable using the `factor()` function. Why would a boxplot of `temp` split by the numerical variable `pressure` similarly converted to a categorical variable using the `factor()` not be informative?*
+
+**Answer:**
+Because there are only 12 months whereas there are significantly more values for `pressure`.
+
+### Learning Check 3.25
+*Boxplots provide a simple way to identify outliers. Why may outliers be easier to identify when looking at a boxplot instead of a faceted histogram?*
+
+**Answer:**
+Because histograms have bins to group values together whereas boxplots clearly labeled outliers.
+
+### Practice 3.8: Barplots
+Barplots are useful for categorical variables while histograms and boxplots are for numerical variables. For example, lets create another data frame.
+```{r barplot1, warning=FALSE, message=FALSE}
+dogs <- tibble(
+  dog = c("corgi", "corgi", "lab", "corgi", "lab"))
+dogs_counted <- tibble(
+  dog = c("corgi", "lab"),
+  number = c(3, 2)
+)
+dogs
+dogs_counted
+```
+Above there are two tibbles, one that lists dogs and the other that shows the counted values. Depending on how data are saved, there are two different ways of creating a barplot. 
+
+To create a barplot without a counted variable:
+```{r barplot2, warning=FALSE, message=FALSE}
+ggplot(data = dogs,
+       mapping = aes (x = dog)) +
+  geom_bar()
+```
+
+To create a barplot with a counted variable:
+```{r barplot3, warning=FALSE, message=FALSE}
+ggplot(data = dogs_counted,
+       mapping = aes(x = dog, y = number)) +
+  geom_col()
+```
+
+Both plots look the same but the coding needed to create them is different because of how the data was entered (counted or not).
+
+Now we can try with the `nycflights13` data. Let's create barplot with `carrier`. The data in the `carrier` column is not counted, that is to say there is a categorical entry for each row under `carrier` such as `DL` for Delta Airlines.
+```{r barplot 4, warning=FALSE, message=FALSE}
+ggplot(data = flights,
+       mapping = aes(x = carrier)) +
+  geom_bar()
+```
+Here we can see that `UA` or United Airlines has the highest number of flights out of NYC.
+
+### Learning Check 3.26
+*Why are histograms inappropriate for visualizing categorical variables?*
+
+**Answer:**
+Because histograms are for numerical variables, not categorical variables.
+
+### Learning Check 3.27
+*What is the difference between histograms and barplots?*
+
+**Answer:**
+Barplots are for categorical variables while histograms are for numerical variables
+
+### Learning Check 3.28
+*How many Envoy Air flights departed NYC in 2013*
+
+**Answer:**
+Below we see that there are 26,397 Envoy Air flights departing NYC in 2013.
+```{r envoyaircount, warning=FALSE, message=FALSE}
+envoy_flights <- flights %>% 
+  filter (carrier == "MQ")
+glimpse(envoy_flights)
+```
+
+
+### Learning Check 3.29
+*What was the seventh highest airline in terms of departed flights from NYC in 2013? How could we better present the table to get this answer quickly?*
+
+**Answer:**
+Looking at the barplot above, it appears that US Airways had the seventh most flights. Creating a new tibble to show airlines by count would be helpful.
+
+### Learning Check 3.30
+*Why should pie charts be avoided and replaced by barplots?*
+
+**Answer:**
+Because they are difficult to read, especially when there are more than 2 or three variables
+
+### Learning Check 3.31
+*Why do you think people continue to use pie charts?*
+
+**Answer:**
+Because they've never had to make an important decision based off one.
+
+### Practice 3.8.3: Customized Barplots
+Barplots can have more than one categorical variable. For example, let's create a barplot for the number of flights by `carrier` and `origin`.
+```{r barplotcarori, warning=FALSE, message=FALSE}
+
 ```
 
