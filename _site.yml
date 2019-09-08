@@ -1,0 +1,10 @@
+name: "my-website"
+navbar:
+##  title: "Home"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "ModernDive Learning Checks"
+      href: moderndive_checks.html
+    - text: "CV"
+      href: cv.html

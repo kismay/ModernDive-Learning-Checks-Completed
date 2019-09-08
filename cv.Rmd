@@ -1,12 +1,10 @@
 ---
-title: "Karolyn's Website"
-
+title: "CV"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
-![](ck_main.jpeg)
+[Click here for CV](cv.pdf)
