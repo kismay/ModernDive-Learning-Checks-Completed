@@ -27,7 +27,8 @@ c(
   "xaringan",
   "tidyverse",
   "bookdown",
-  "kableExtra"
+  "kableExtra",
+  "fivethirtyeight"
 ) -> package_vector
 
 sapply(X = package_vector,
@@ -37,11 +38,11 @@ sapply(X = package_vector,
 
 ```
 
-## Chapter 2: Introduction to R and Rstudio
+## Chapter 1: Introduction to R and Rstudio
 
 Much of this chapter is about learning basic syntax in R, such as identifying `computer_code` and understanding the Rstudio interface. 
 
-### Learning Check 2.1
+### Learning Check 1.1
 *Repeat the above installing steps, but for the `dplyr`, `nycflights13`, and `knitr` packages. This will install the earlier mentioned `dplyr` package, the `nycflights13` package containing data on all domestic flights leaving a NYC airport in 2013, and the `knitr` package for writing reports in R.*
 
 **Answer:**
@@ -50,7 +51,7 @@ install.packages(c("dplyr", "nycflights13", knitr"))
 ```
 Installing a package downloads the package onto your local computer.
 
-### Learning Check 2.2
+### Learning Check 1.2
 *“Load” the dplyr, nycflights13, and knitr packages as well by repeating the above steps.*
 
 **Answer:**
@@ -61,13 +62,13 @@ library("knitr")
 ```
 Loading a package tells Rstudio to switch "on" that particular package.
 
-### Practice 2.4.2
+### Practice 1.4.2
 Explore the `flights` data frame by calling up the `flights` tibble.
 ```{r}
 flights
 ```
 
-### Learning Check 2.3
+### Learning Check 1.3
 *Run `View(flights)` in your Console in RStudio...and explore this data frame in the resulting pop-up viewer. What does any ONE row in this flights dataset refer to?*
 <br> * *A. Data on an airline*
 <br> * *B. Data on a flight*
@@ -78,48 +79,48 @@ flights
 B. Data on a flight
 <br> Rows correspond to individual observations or data on A flight. `airline`, and `airport` are variables and appear in columns not rows and "Data on multiple flights" would not appear on any ONE row.
 
-### Practice 2.4.3.2
+### Practice 1.4.3.2
 Explore a data frame using the `glimpse` function.
 ```{r}
 glimpse(flights)
 ```
 
-### Learning Check 2.4
+### Learning Check 1.4
 *What are some examples in this dataset of __categorical__ variables? What makes them different than __quantitative__ variables?*
 
 **Answer:**
 Categorical variables are labels, such as `carrier`, or `dest`. They are often `chr` or text data but can be numerical. However, `1` is not “more” or “less” than any other, it is a just a categorization. 
 
-### Practice 2.4.3.3
+### Practice 1.4.3.3
 Explore a data frame using the `kable` function. The `kable` function cleans up the data into a more legible format.
 ```{r}
 airlines
 kable(airlines)
 ```
 
-### Practice 2.4.3.4
+### Practice 1.4.3.4
 Explore a variable using the `$` operator.
 ```{r}
 airlines
 airlines$name
 ```
 
-### Learning Check 2.5
+### Learning Check 1.5
 *What properties of the observational unit do each of `lat`, `lon`, `alt`, `tz`, `dst`, and `tzone` describe for the airports data frame? Note that you may want to use `?airports` to get more information.*
 
 **Answer:**
 `?airports` launches the Help tab which shows that the variables are used to describe individual airports. `lat` and `lon` refer to the latitude and longitude. `alt` refers to the elevation. `tz` is the GMT while `dst` is daylight savings time zone and `tzone` is the IANA time zone.
 
-### Learning Check 2.6
+### Learning Check 1.6
 *Provide the names of variables in a data frame with at least three variables in which one of them is an identification variable and the other two are not. In other words, create your own tidy data frame that matches these conditions.*
 
 **Answer:**
 A possible data frame with three variables, one of which is an identification variable and the other two are not would be a data frame about homes. An identification variable could be the color of the house or the architectural style of the house. Two measurement variables could be the number of bathrooms and the square footage.
 
-## Chapter 3: Data Visualization
+## Chapter 2: Data Visualization
 This chapter is about using multiple data visualization techniques on the `nycflights13` package.
 
-### Practice 3.3
+### Practice 2.3
 Utilizing a scatterplot, visualize the relationship between `dep_delay` on the x-axis and `arr_delay` on the y-axis for Alaska Airlines flights leaving NYC in 2013. 
 
 First, I'll need to filter only the Alaska Airlines flights.
@@ -129,7 +130,7 @@ alaska_flights <- flights %>%
 ```
 Here I have created a new data frame named `alaska_flights` and asked R to populate the data frame based off of the data frame `flights` filtering for only those flights that are from Alaska Airlines.
 
-### Learning Check 3.1
+### Learning Check 2.1
 *Take a look at both the `flights` and `alaska_flights` data frames by running `View(flights)` and `View(alaska_flights)`. In what respect do these data frames differ? For example, think about the number of rows in each dataset.*
 
 ```{r}
@@ -140,7 +141,7 @@ glimpse(alaska_flights)
 **Answer:**
 The `flights` data frame has all the flights departing NYC airports in 2013, over 336,776 rows. The `alaska_flights` data frame has only those flights departing NYC airports in 2013 that were operated by Alaska Airlines, just 714 rows.
 
-### Practice 3.3.1 Scatterplots
+### Practice 2.3.1 Scatterplots
 Utilizing the `alaska_flights` data frame I created above, now I will use the `ggplot2` package to create a scatterplot with the `ggplot` function.
 ```{r scatterplot}
 ggplot(data = alaska_flights,
@@ -150,31 +151,31 @@ ggplot(data = alaska_flights,
 ```
 Above is a scatterplot of `alaska_flights` where `dep_delay` is on the x-axis and `arr_delay` is on the y-axis and each observation is represented by a point on the plot. Additionally, we see that 5 rows were removed from the 714 because they are missing values.
 
-### Learning Check 3.2
+### Learning Check 2.2
 *What are some practical reasons why `dep_delay` and `arr_delay` have a positive relationship?*
 
 **Answer:**
 One reason could be that leaving an hour later can mean arriving an hour later. On the other hand, sometimes flights make up time or arrive earlier than expected due to tailwind. The opposite can also be true if there are headwinds.
 
-### Learning Check 3.3
+### Learning Check 2.3
 *What variables in the `weather` data frame would you expect to have a negative correlation (i.e. a negative relationship) with `dep_delay`? Why? Remember that we are focusing on numerical variables here. Hint: Explore the weather dataset by using the `View()` function.*
 
 **Answer:**
 Looking at the `View(weather)` we see there are several variables that could impact `dep_delay` such as `wind_gust` and `visib`.
 
-### Learning Check 3.4
+### Learning Check 2.4
 *Why do you believe there is a cluster of points near (0, 0)? What does (0, 0) correspond to in terms of the Alaskan flights?*
 
 **Answer:**
 This is likely because flights which were not delayed upon departure arrived without delays as well. (0, 0) represents flights that departed on time and arrived on time.
 
-### Learning Check 3.5
+### Learning Check 2.5
 *What are some other features of the plot that stand out to you?*
 
 **Answer:**
 The scatterplot shows a fairly perfect correlation where the dots could be represented by a straight line with a slope of 1. Also it shows flights that departed early and arrived early and thus had negative `dep_delay` and `arr_delay`.
 
-### Learning Check 3.6
+### Learning Check 2.6
 *Create a new scatterplot using different variables in the `alaska_flights` data frame by modifying the example above.*
 
 **Answer:**
@@ -188,8 +189,8 @@ ggplot(
 ```
 This plot shows that more flights scheduled later in the day were delayed compared to much fewer flights delayed that were originally scheduled early in the day. We also see an example of how important it is to understand our data because we see that Alaska Airlines only flew out of NYC in the early morning and the evening as opposed to several times throughout the day. Also, we see that 2 rows were removed for missing values.
 
-### Practice 3.3.2 Dealing with overplotting
-In Practice 3.3.1, we saw a plot that had many points near (0, 0) which made it difficult to tell just how many data points were in the overlapping areas. This is called overplotting and it can be mitigated.
+### Practice 2.3.2 Dealing with overplotting
+In Practice 2.3.1, we saw a plot that had many points near (0, 0) which made it difficult to tell just how many data points were in the overlapping areas. This is called overplotting and it can be mitigated.
 
 Method 1: Adjusting the transparency of the `geom`etric points:
 ```{r scatterplot-transparency, warning=FALSE}
@@ -215,19 +216,19 @@ ggplot(data = alaska_flights,
 ```
 This plot is similar to the original scatterplot but we can more clearly see how dense the (0, 0) area is.
 
-### Learning Check 3.7
+### Learning Check 2.7
 *Why is setting the `alpha` argument value useful with scatterplots? What further information does it give you that a regular scatterplot cannot?*
 
 **Answer:**
 `alpha` was used to change the opacity of the `geom_point` dots. This let us see that there was a high density of data in the (0, 0) area.
 
-### Learning Check 3.8
-*After viewing the Figure 3.4, give an approximate range of arrival delays and departure delays that occur the most frequently. How has that region changed compared to when you observed the same plot without the alpha = 0.2 set in Figure 3.2?*
+### Learning Check 2.8
+*After viewing the Figure 2.4, give an approximate range of arrival delays and departure delays that occur the most frequently. How has that region changed compared to when you observed the same plot without the alpha = 0.2 set in Figure 2.2?*
 
 **Answer:**
-Figure 3.2 was the scatterplot without changes to the `geom_point` opacity whereas Figure 3.4 had opacity set to 20%. We see that most flights depart early or within a few minutes of on-time and most of those flights arrive early or within a few mintes of on-time.
+Figure 2.2 was the scatterplot without changes to the `geom_point` opacity whereas Figure 2.4 had opacity set to 20%. We see that most flights depart early or within a few minutes of on-time and most of those flights arrive early or within a few mintes of on-time.
 
-### Practice 3.4: Linegraphs
+### Practice 2.4: Linegraphs
 Using the `nycflights13` package, recall the `weather` data frame. Pull a list the variables in the `weather` data frame. 
 
 ```{r view-weather-variables}
@@ -246,19 +247,19 @@ early_january_weather
 ```
 Here I've created a data frame that is a subset of the original `weather` dataframe. I did this by creating a new object named `early_january_weather` and used a `filter()` to feed in data from `weather` that matches `origin == "EWR"` or Newark, during the `month == 1` or January, where `day <= 15` or days 1 through 15 on the calendar.
 
-### Learning Check 3.9
+### Learning Check 2.9
 *Take a look at both the `weather` and `early_january_weather` data frames by running `View(weather)` and `View(early_january_weather)`. In what respect do these data frames differ?*
 
 **Answer:**
 `early_january_weather` is a subset of `weather` and thus has fewer observations.
 
-### Learning Check 3.10
+### Learning Check 2.10
 *`View()` the `flights` data frame again. Why does the `time_hour` variable uniquely identify the hour of the measurement whereas the `hour` variable does not?*
 
 **Answer:**
 
 
-### Practice 3.4.1: Linegraphs via geom_line
+### Practice 2.4.1: Linegraphs via geom_line
 Plot a linegraph of hourly temperatures in `early_january_weather` by using `geom_line()` instead of `geom_point()` like we did for scatterplots.
 
 ```{r}
@@ -268,19 +269,19 @@ ggplot(data = early_january_weather,
   geom_line()
 ```
 
-### Learning Check 3.11
+### Learning Check 2.11
 *Why should linegraphs be avoided when there is not a clear ordering of the horizontal axis?*
 
 **Answer:**
 Because linegraphs don't make sense without clear ordering. Each point needs to have meaning relative to the next.
 
-### Learning Check 3.12
+### Learning Check 2.12
 *Why are linegraphs frequently used when time is the explanatory variable on the x-axis?*
 
 **Answer:**
 Because linegraphs are well suited to linear data and we experience time linearly.
 
-### Learning Check 3.13
+### Learning Check 2.13
 *Plot a time series of a variable other than `temp` for Newark Airport in the first 15 days of January 2013.*
 
 **Answer:**
@@ -292,7 +293,7 @@ ggplot(data = early_january_weather,
 ```
 Here I've created a new linegraph showing the hourly humidity, or `humid`, for Newark Airport in the first 15 days of January 2013.
 
-### Practice 3.5: Histograms
+### Practice 2.5: Histograms
 Histograms are useful for showing distributions. The basic `geom_histogram` is the following:
 
 ```{r first-histogram}
@@ -323,7 +324,7 @@ ggplot(data = weather,
   geom_histogram(color = "white", fill = "firebrick1", binwidth = 10)
 ```
 
-### Learning Check 3.14
+### Learning Check 2.14
 *What does changing the number of bins from 30 to 40 tell us about the distribution of temperatures?*
 
 **Answer:**
@@ -339,13 +340,13 @@ ggplot(data = weather,
   geom_histogram(color = "white", fill = "firebrick1", bins = 40)
 ```
 
-### Learning Check 3.15
+### Learning Check 2.15
 *Would you classify the distribution of temperatures as symmetric or skewed?*
 
 **Answer:**
 It looks pretty symmetric.
 
-### Learning Check 3.16
+### Learning Check 2.16
 *What would you guess is the "center" value in this distribution? Why did you make that choice?*
 
 **Answer:**
@@ -354,13 +355,13 @@ Visually, we see that the temperatures are symmetrically destributed and the ran
 summary(weather$temp)
 ```
 
-### Learning Check 3.17
+### Learning Check 2.17
 *Is the data spread out greatly from the center or is it close? Why?*
 
 **Answer:**
 That depends on what "greatly" means. Compared to other years? Compared to another city? When compared to Kailua, Hawaii, a place with averages from 69-85°, then yes, the weather in NYC was more spread out.
 
-### Practice 3.6: Facets
+### Practice 2.6: Facets
 Facets can break off variable by another variable for visualizations. `facet_wrap` is a visualization modifier `ggplot2` that will create multiple plots where the x and y axes match but each plot will look different according to the modifying variable. For example, we can look at `weather` by `temp` by `month`.
 ```{r facetmonth, warning=FALSE, message=FALSE}
 ggplot(data = weather,
@@ -378,31 +379,31 @@ ggplot(data = weather,
 ```
 Now we see a basic histogram of temps in a 4x3 arrangement, useful if you're the type that thinks in quarters.
 
-### Learning Check 3.18
+### Learning Check 2.18
 *What other things do you notice about the faceted plot above? How does a faceted plot help us see relationships between two variables?*
 
 **Answer:**
 The faceted plot shows that while the original histogram was symmetrically distributed, the temperatures vary from month to month. No month sees both near 0° and near 100° weather.
 
-### Learning Check 3.19
+### Learning Check 2.19
 *What do the numbers 1-12 correspond to in the plot above? What about 25, 50, 75, 100?*
 
 **Answer:**
 The numbers 1-12 correspond to months and 25, 50, 75, 100 correspond to temperature.
 
-### Learning Check 3.20
+### Learning Check 2.20
 *For which types of data sets would these types of faceted plots not work well in comparing relationships between variables? Give an example describing the nature of these variables and other important characteristics.*
 
 **Answer:**
 Facets plot a variable broken up by another variable. For temperature, we broke it down by month. `nycflights13` only has temperature data for the year 2013, so if we tried to plot the temperature by year, we'd have only one facet. We would need data from multiple years. Conversely, it would be a little ridiculous `facet_wrap` by day because we would end up with 365 plots.
 
-### Learning Check 3.21
+### Learning Check 2.21
 *Does the `temp` variable in the `weather` data set have a lot of variability? Why do you say that?*
 
 **Answer:**
 That depends on what "a lot" means. For New York City, it seems pretty reasonable. For Kailua, Hawaii, it would be... a lot.
 
-### Practice 3.7: Boxplots
+### Practice 2.7: Boxplots
 Boxplots require a categorical variable in the x-axis. They show the range of data in quartiles where the center bolded line is the median, the area above the median and within the box is the third quartile, the area below the median within the box is the second quartile, and the whiskers on either end represent the first and fourth quartiles. Of note, the whiskers do not include data points that are 1.5x greater or less than the interquartile range. Those values are considered outliers.
 
 ```{r boxplot1, warning=FALSE, message=FALSE}
@@ -419,7 +420,7 @@ ggplot(data = weather,
 ```
 Here we a have box plot of the temperatures by month with dots identifying values considered outliers. Outliers in these boxplots are those values that are more than 1.5x greater than the interquartile range (IQR).
 
-### Learning Check 3.22
+### Learning Check 2.22
 *What does the dot at the bottom of the plot for May correspond to? Explain what might have occurred in May to produce this point.*
 
 **Answer:**
@@ -437,7 +438,7 @@ weather %>%
 ```
 Here we see that every row, asid  is showing a temperature range of about 50-61°. Row 11 definitely looks like an error.
 
-### Learning Check 3.23
+### Learning Check 2.23
 *Which months have the highest variability in temperature? What reasons can you give for this?*
 
 **Answer:**
@@ -450,19 +451,19 @@ weather %>%
 ```
 It looks like November, December, January, and September were the most variable.
 
-### Learning Check 3.24
+### Learning Check 2.24
 *We looked at the distribution of the numerical variable `temp` split by the numerical variable `month` that we converted to a categorical variable using the `factor()` function. Why would a boxplot of `temp` split by the numerical variable `pressure` similarly converted to a categorical variable using the `factor()` not be informative?*
 
 **Answer:**
 Because there are only 12 months whereas there are significantly more values for `pressure`.
 
-### Learning Check 3.25
+### Learning Check 2.25
 *Boxplots provide a simple way to identify outliers. Why may outliers be easier to identify when looking at a boxplot instead of a faceted histogram?*
 
 **Answer:**
 Because histograms have bins to group values together whereas boxplots clearly labeled outliers.
 
-### Practice 3.8: Barplots
+### Practice 2.8: Barplots
 Barplots are useful for categorical variables while histograms and boxplots are for numerical variables. For example, let's create another data frame.
 ```{r barplot1, warning=FALSE, message=FALSE}
 dogs <- tibble(
@@ -500,19 +501,19 @@ ggplot(data = flights,
 ```
 Here we can see that `UA` or United Airlines has the highest number of flights out of NYC.
 
-### Learning Check 3.26
+### Learning Check 2.26
 *Why are histograms inappropriate for visualizing categorical variables?*
 
 **Answer:**
 Because histograms are for numerical variables, not categorical variables.
 
-### Learning Check 3.27
+### Learning Check 2.27
 *What is the difference between histograms and barplots?*
 
 **Answer:**
 Barplots are for categorical variables while histograms are for numerical variables
 
-### Learning Check 3.28
+### Learning Check 2.28
 *How many Envoy Air flights departed NYC in 2013*
 
 **Answer:**
@@ -524,25 +525,25 @@ glimpse(envoy_flights)
 ```
 
 
-### Learning Check 3.29
+### Learning Check 2.29
 *What was the seventh highest airline in terms of departed flights from NYC in 2013? How could we better present the table to get this answer quickly?*
 
 **Answer:**
 Looking at the barplot above, it appears that US Airways had the seventh most flights. Creating a new tibble to show airlines by count would be helpful.
 
-### Learning Check 3.30
+### Learning Check 2.30
 *Why should pie charts be avoided and replaced by barplots?*
 
 **Answer:**
 Because they are difficult to read, especially when there are more than 2 or three variables
 
-### Learning Check 3.31
+### Learning Check 2.31
 *Why do you think people continue to use pie charts?*
 
 **Answer:**
 Because they've never had to make an important decision based off one.
 
-### Practice 3.8.3: Stacked Barplots
+### Practice 2.8.3: Stacked Barplots
 Barplots can have more than one categorical variable. For example, let's create a barplot for the number of flights by `carrier` and `origin`.
 ```{r barplotcarori, warning=FALSE, message=FALSE}
 ggplot(data = flights,
@@ -551,19 +552,19 @@ ggplot(data = flights,
 ```
 This plot shows the count of flights by carrier and filled in with three different colors according to the origin of the flight. This is a stacked barplot. This isn't the most ideal plot because it is difficult to compare the stacks based on origin unless there are significant differences. This plot suffers from a similar issue as a pie chart, though this is definitely an improvement.
 
-### Learning Check 3.32
+### Learning Check 2.32
 *What kinds of questions are not easily answered by looking at the above figure?*
 
 **Answer:**
 The stacked barplot isn't useful for telling us exactly how many flights were with which carrier or which origin. If there were only two airports of origin, it might be a little easier to compare using this kind of plot.
 
-### Learning Check 3.33
+### Learning Check 2.33
 *What can you say, if anything, about the relationship between airline and airport in NYC in 2013 in regards to the number of departing flights?*
 
 **Answer:**
 We might be able to guess which airports are a hub for which airlines. For example, it is likely that Newark, `EWR`, is a hub for United Airlines, `UA`.
 
-### Practice 3.8.4: Dodged Barplots
+### Practice 2.8.4: Dodged Barplots
 Stacked barplots can also be broken down so that they are side-by-side, also called dodged barplots. For example:
 
 ```{r dodgedbp, warning=FALSE, message=FALSE}
@@ -573,19 +574,19 @@ ggplot(data = flights,
 ```
 This plot has all the bars starting at 0, making it easier for us to compare the number of flights by carrier and origin. Looking at Delta Airlines, `DL`, it looks like they use both JFK and LaGuardia as hubs.
 
-### Learning Check 3.34
+### Learning Check 2.34
 *Why might the side-by-side (AKA dodged) barplot be preferable to a stacked barplot in this case?*
 
 **Answer:**
 In this case, it is easier to compare differences in carrier and origin counts with a dodged barplot because some of the counts are very similar to one another and there are many carriers.
 
-### Learning Check 3.35
+### Learning Check 2.35
 *What are the disadvantages of using a side-by-side (AKA dodged) barplot, in general?*
 
 **Answer:**
 There's a lot to look at in this type of plot with the data we're using for it. We still can't see the actual counts for each origin by carrier.
 
-### Practice 3.8.5: Faceted Barplots
+### Practice 2.8.5: Faceted Barplots
 Another variation on the barplot is a faceted barplot. Here we can split off the barplot into three different plots by origin.
 ```{r facbarplot, warning=FALSE, message=FALSE}
 ggplot(data = flights,
@@ -595,22 +596,22 @@ ggplot(data = flights,
 ```
 Here I've removed the `mapping` of `origin` and added a `facet_wrap` with `~ origin`. I've also included a `ncol = 1` so that all three origins aren't on one row. It could also be written `nrow = 3` since I know how many origins there are.
 
-### Learning Check 3.35
+### Learning Check 2.35
 *Why is the faceted barplot preferred to the side-by-side and stacked barplots in this case?*
 
 **Answer:**
 Well, it depends on what question(s) you're trying to answer, but here there is a bit more visual space between each carrier.
 
-### Learning Check 3.36
+### Learning Check 2.36
 *What information about the different carriers at different airports is more easily seen in the faceted barplot?*
 
 **Answer:**
 We can see which carriers prefer which airports. Again, Delta is pretty evenly split between JFK and LGA.
 
-## Chapter 4: Data Wrangling
+## Chapter 3: Data Wrangling
 This chapter is about taking existing data and learning to transform it via `filter()`, `summarize()`, `group_by()`, `mutate()`, `arrange()`, and `join()`. The pipe operator `%>%` allows for multiple functions to be used sequentially.
 
-### Practice 4.1: The pipe operator: ` %>% `
+### Practice 3.1: The pipe operator: ` %>% `
 The pipe operator ` %>% ` is a tool in the `dplyr` package. It allows for functions to be nested `c(b(a(x)))`. Though it looks backwards, it would be like taking data frame `x`, using it in function `a()` which would be `a(x)`, taking that output `a(x)` and using it in function `b()` which would be `b(a(x))`, and so on.
 
 The ` %>% ` is used in nested code to make it easier to read. It would look like:
@@ -630,7 +631,7 @@ alaska_flights <- flights %>%
 as_tibble(alaska_flights)
 ```
 
-### Practice 4.2: `filter` rows
+### Practice 3.2: `filter` rows
 The `filter()` function is pretty straightforward, it will select only the rows that fit your parameters. This means it is often best to start with `filter()` before moving on to other functions because it narrows down the number of observations for the functions that follow after it. One thing to note is the double `==` here. Other operations are:
 
 * `>` greater than 
@@ -667,13 +668,13 @@ many_airports <- flights %>%
 as_tibble(many_airports)
 ```
 
-### Learning Check 4.1
+### Learning Check 3.1
 *What’s another way of using the “not” operator `!` to filter only the rows that are not going to Burlington VT nor Seattle WA in the `flights` data frame? Test this out using the code above*
 
 **Answer:**
 The original was `filter(!(dest == "BTV" | dest == "SEA"))` which could be read as "not(BTV or SEA)". An alternative could be `filter(!dest == "BTV" & !dest == "SEA")` which would read as "not BTV and not SEA". `!=` or "not equal to" could also be used, for example `filter(dest != "BTV" & dest != "SEA")`.
 
-### Practice 4.3: `summarize` variables
+### Practice 3.3: `summarize` variables
 The `summarize()` function shows the summary statistics for a variable. It can show several summary statistic values such as:
 
 * `mean()`: mean or average
@@ -699,13 +700,13 @@ summary_temp <- weather %>%
 summary_temp
 ```
 
-### Learning Check 4.2
+### Learning Check 3.2
 *Say a doctor is studying the effect of smoking on lung cancer for a large number of patients who have records measured at five year intervals. She notices that a large number of patients have missing data points because the patient has died, so she chooses to ignore these patients in her analysis. What is wrong with this doctor’s approach?*
 
 **Answer:**
 I would think that dying from lung cancer is a pretty big effect of smoking! This is not an instance of a one-off data entry mistake, this could have a big impact on the analysis.
 
-### Learning Check 4.3
+### Learning Check 3.3
 *Modify the above `summarize` function to create `summary_temp` to also use the `n()` summary function: `summarize(count = n())`. What does the returned value correspond to?*
 
 **Answer:**
@@ -716,7 +717,7 @@ summary_temp2
 ```
 Here we see there are 26,115 rows.
 
-### Learning Check 4.4
+### Learning Check 3.4
 *Why doesn’t the following code work? Run the code line by line instead of all at once, and then look at the data. In other words, run `summary_temp <- weather %>% summarize(mean = mean(temp, na.rm = TRUE))` first.*
 ```{r lc44, eval = FALSE}
 summary_temp3 <- weather %>% 
@@ -727,7 +728,7 @@ summary_temp3 <- weather %>%
 **Answer:**
 This code doesn't work because it isn't nested within the first `summarize()` function. This means that `temp` has already been summarized by `mean()`. The `%>%` is like saying "then" with functions. Since `temp` has already been summarized, there isn't anything left for `sd()` to do!
 
-### Practice 4.4: `group_by` rows
+### Practice 3.4: `group_by` rows
 The `group_by()` function allows us to look at rows (observations) by a variable. This is reminiscent of faceting. For example, if we wanted to look at the mean temperatures of `weather` by month, the code would look like:
 ```{r groupby1}
 sum_monthly_temp <- weather %>% 
@@ -756,7 +757,7 @@ count_by_origin
 ```
 Here we see how many flights departed from each of the three airports in our `flights` data frame.
 
-### Practice 4.4.1: Grouping by more than one variable
+### Practice 3.4.1: Grouping by more than one variable
 The `group_by()` function can hold multiple variables. For example, if we wanted to look at how many flights departed each of the three airports for each month, we could use `group_by(origin, month)`.
 ```{r groupby5}
 count_by_origin_monthly <- flights %>% 
@@ -766,13 +767,13 @@ count_by_origin_monthly
 ```
 Here we see there are 36 rows be each of the 3 airports has counts for 12 months.
 
-### Learning Check 4.5
-*Recall from Chapter 3 when we looked at plots of temperatures by months in NYC. What does the standard deviation column in the `sum_monthly_temp` data frame tell us about temperatures in New York City throughout the year?*
+### Learning Check 3.5
+*Recall from Chapter 2 when we looked at plots of temperatures by months in NYC. What does the standard deviation column in the `sum_monthly_temp` data frame tell us about temperatures in New York City throughout the year?*
 
 **Answer:**
 From the `sum_monthly_temp` data frame, we see that November, December, and January had the most variability (highest `sd`) and March and August had the least variability (lowest `sd`).
 
-### Learning Check 4.6
+### Learning Check 3.6
 *What code would be required to get the mean and standard deviation temperature for each day in 2013 for NYC?*
 
 **Answer:**
@@ -785,7 +786,7 @@ daily_summary
 ```
 Interestingly, we see there are only 364 rows, not 365. Looking at the data frame in R, we see that there is no data for December 31, 2013.
 
-### Learning Check 4.7
+### Learning Check 3.7
 *Recreate `by_monthly_origin`, but instead of grouping via `group_by(origin, month)`, group variables in a different order `group_by(month, origin)`. What differs in the resulting dataset?*
 
 **Answer:**
@@ -803,7 +804,7 @@ by_month_origin <- flights %>%
 by_month_origin
 ```
 
-### Learning Check 4.8
+### Learning Check 3.8
 *How could we identify how many flights left each of the three airports for each `carrier`?*
 
 **Answer:**
@@ -815,13 +816,13 @@ carrier_airport_flightcount <- flights %>%
 carrier_airport_flightcount
 ```
 
-### Learning Check 4.9
+### Learning Check 3.9
 *How does the `filter()` operation differ from a `group_by()` followed by a `summarize()`?*
 
 **Answer:**
 `filter()` selects rows from a data set to create a new data frame. Nothing is new or computed, just filtered. `group_by() %>% summarize()` adds meta data of groups and then computes new values, such as the mean or standard deviation according to those groupings.
 
-### Practice 4.5: `mutate` existing variables
+### Practice 3.5: `mutate` existing variables
 `mutate` can create or compute a new variable based on the existing ones in a data frame. For example, we can use the `temp` variable and the formula for converting Farenheit to Celcius to create a new variable `temp_in_C`.
 
 ```{r mutate1}
@@ -879,25 +880,25 @@ ggplot(flights,
 
 `mutate` can compute multiple new variables at once with the `&` or `,`.
 
-### Learning Check 4.10
+### Learning Check 3.10
 *What do positive values of the `gain` variable in `flights` correspond to? What about negative values? And what about a zero value?*
 
 **Answer:**
 The positive values mean that the flight "made up" time in the air. The negative values mean that the flight "lost" time in the air. Zero would mean that the flight neither lost nor gained any time in air. 
 
-### Learning Check 4.11
+### Learning Check 3.11
 *Could we create the `dep_delay` and `arr_delay` columns by simply subtracting `dep_time` from `sched_dep_time` and similarly for arrivals? Try the code out and explain any differences between the result and what actually appears in `flights.`*
 
 **Answer:**
 No because the times are written as 1258, 1259, 1300, 1301, so they can't be added/subtracted.
 
-### Learning Check 4.12
+### Learning Check 3.12
 *What can we say about the distribution of `gain`? Describe it in a few sentences using the plot and the `gain_summary` data frame values.*
 
 **Answer:**
 It is pretty normally distributed. Most of the gains are between -25 to 25.
 
-### Practice 4.6: `arrange` and sort rows
+### Practice 3.6: `arrange` and sort rows
 `arrange()` can sort/reorder data by a variable. It is typically used after `group_by()` and `summarize()`.
 
 For example, if we wanted to know the most frequent destination airports for all flights departing NYC in 2013:
@@ -910,10 +911,10 @@ freq_dest
 ```
 This output is grouped by destination and counted for each destination and then it is arranged in descending order by `num_flights`. Without `arrange(desc(num_flights), the data would be ordered first by alphabetical order of destinations and in ascending order.
 
-### Practice 4.7: `join` data frames
+### Practice 3.7: `join` data frames
 `join` can merge two different datasets. They need to have some sort of key variable that matches both data frames. For example, `flights` and `airlines` both have `carrier`. Key variables are almost always identification variables that can uniquely identify observational units.`airlines` has `carrier` that is a carrier code such as UA, or DL, but it also has what those codes mean under `name`. `flights` does not have `name`.
 
-### Practice 4.7.1: Matching "key" variable names
+### Practice 3.7.1: Matching "key" variable names
 In order to `join` two data frames, they need to have a matching "key" variable. For `flights` and `airlines` we can use `carrier`. To do this, we use the `inner_join()` function.
 ```{r join1}
 flights_joined <-flights %>% 
@@ -922,7 +923,7 @@ names(flights_joined)
 ```
 Here we see the names of all the variables in `flights_joined` and the newly added variabe of `name` from the merging of `airlines` and `flights`.
 
-### Practice 4.7.2: Different "key" variable names
+### Practice 3.7.2: Different "key" variable names
 Sometimes our "key" variable has a different name in each data frame. For example, if we wanted to know the name of the destination airports in `flights` we might look at the variable `dest`. But, `dest` only has the FAA airport codes, which are often confusing. The data frame `airports` has both the FAA airport codes and the name of the airport. However, `flights` calls the variable with the FAA code `dest` while `airports` calls the variable `faa`. They don't share the same variable name, but they have the same data.
 
 To `join` the two data frames, we need to tell R to treat the variables as having the same name:
@@ -946,7 +947,7 @@ named_dest
 ```
 Here we have a new data frame named `named_dest` where we've grouped and counted the number of flights to each destination. We've then arranged them in descending order by `num_flights`. We've joined `flights` with `airports` via the key variables `"dest" = "faa"`. Then renamed the variable `name` from `airports` to the more descriptive `airport_name` for `named_dest`. `airports` data frame will still have the variable `name` as `name`.
 
-### Practice 4.7.3: Multiple "key" variables
+### Practice 3.7.3: Multiple "key" variables
 If multiple variables are needed to uniquely identify each observational unit, we can use `c()` to "combine" or "concatenate" those variables within `join`.
 
 For example, to join `flights` and `weather`, we need to use `year`, `month`, `day`, `hour`, and `origin`.
@@ -958,23 +959,23 @@ names(flights)
 names(flights_weather_joined)
 ```
 
-### Learning Check 4.13
-*Looking at Figure 4.7, when joining `flights` and `weather` (or, in other words, matching the hourly weather values with each flight), why do we need to join by all of `year`, `month`, `day`, `hour`, and `origin`, and not just `hour`?*
+### Learning Check 3.13
+*Looking at Figure 3.7, when joining `flights` and `weather` (or, in other words, matching the hourly weather values with each flight), why do we need to join by all of `year`, `month`, `day`, `hour`, and `origin`, and not just `hour`?*
 
 **Answer:**
 We need to match on all five of those variables because each observation is uniquely identified by those variables. Many observations have the same hour but have a different month, day, and origin. `hour` is just a number somewhere between 1-23. It is only will all the variables do we get a unique observation.
 
-### Learning Check 4.14
+### Learning Check 3.14
 *What surprises you about the top 10 destinations from NYC in 2013*
 
 **Answer:**
 
 It isn't so much surprising but there are only two destinations that aren't on the east coast, LAX and SFO. I suppose ORD is considered mid-west, but as someone from Oregon, I consider Chicago east coast.
 
-### Practice 4.8: Other verbs
+### Practice 3.8: Other verbs
 Other commonly used verbs in the `dplyr` package include `select()` for returning only a subset of variables/columns, `rename()` for changing the names of variables, and `top_n()` for returning only the top values of a variable.
 
-### Practice 4.8.1: `select` variables
+### Practice 3.8.1: `select` variables
 `select` allows us to return only those variables/columns from a data frame. For example:
 ```{r select1}
 flights %>% 
@@ -1026,7 +1027,7 @@ flights_time <- flights %>%
 flights_time
 ```
 
-### Practice 4.8.2: `rename` variables
+### Practice 3.8.2: `rename` variables
 The verb `rename` is intuitive in that it will rename a variable with another name. One thing to note is the single `=` as opposed to the `==` we've seen before.
 
 ```{r renametimes}
@@ -1037,7 +1038,7 @@ flights_time_new <-flights %>%
 flights_time_new
 ```
 
-### Practice 4.8.3: `top_n` values of a variable
+### Practice 3.8.3: `top_n` values of a variable
 `top_n` allows us to return the top rows of positive `n` or the bottom rows of negative `n`. The default variable, or `wt`, is the last variable in the data frame.
 ```{r topndests}
 named_dest %>% 
@@ -1052,7 +1053,7 @@ named_dest %>%
   arrange(desc(num_flights))
 ```
 
-### Learning Check 4.16
+### Learning Check 3.16
 *What are some ways to select all three of the `dest`, `air_time`, and `distance` variables from `flights`? Give the code showing how to do this in at least three different ways.*
 
 **Answer:**
@@ -1077,7 +1078,7 @@ lc416_3 <-flights %>%
 lc416_3
 ```
 
-### Learning Check 4.17
+### Learning Check 3.17
 *How could one use `starts_with`, `ends_with`, and `contains` to select columns from the `flights` data frame? Provide three different examples in total: one for `starts_with`, one for `ends_with`, and one for `contains`*
 
 **Answer:**
@@ -1103,13 +1104,13 @@ lc417_3
 ```
 
 
-### Learning Check 4.18
+### Learning Check 3.18
 *Why might we want to use the `select` function on a data frame?*
 
 **Answer:**
 To look at only certain variables. This can make it easier for us to read a large data frame with many variables.
 
-### Learning Check 4.19
+### Learning Check 3.19
 *Create a new data frame that shows the top 5 airports with the largest arrival delays from NYC in 2013.*
 
 **Answer:**
@@ -1131,12 +1132,12 @@ top5_airports_with_delays2 <-flights %>%
 top5_airports_with_delays2
 ```
 
-### Learning Check 4.20
+### Learning Check 3.20
 *Using the datasets included in the `nycflights13` package, compute the available seat miles for each airline sorted in descending order. After completing all the necessary data wrangling steps, the resulting data frame should have 16 rows (one for each airline) and 2 columns (airline name and available seat miles).*
 
 **Answer:**
 First, I'll create a new data frame `flights_with_seats` to join `flights` and `planes` by `tailnum` and then join `airlines` by `carrier`. Then, I'll rename `name` to `airline_name` for clarity. Then, I'll select the variables `airline_name`, `distance`, and `seats`. Next I'll calculate the seat miles with `mutate`. 
-```{r lc420_1}
+```{r lc420_1rn}
 flights_with_seats <- flights %>% 
   inner_join(planes, by = "tailnum") %>% 
   inner_join(airlines, by = "carrier") %>% 
@@ -1148,7 +1149,7 @@ flights_with_seats
 I decided to stop here so that I could look at the data before continuing on.
 
 I then created another data frame `seatmiles_airlines` from `flights_with_seats`. I grouped the data by `airline_name` and then used `summarize` and `sum()` to add up all the `seat_miles` by airline_name. I then used `arrange(desc())` to show the total seat_miles in descending order.
-```{r lc420_2}
+```{r lc420_2rn}
 seatmiles_airlines <-flights_with_seats %>% 
   group_by(airline_name) %>% 
   summarize(seat_miles = sum(seat_miles, na.rm = TRUE)) %>% 
@@ -1156,6 +1157,150 @@ seatmiles_airlines <-flights_with_seats %>%
 seatmiles_airlines
 ```
 Here we see that United, Delta, and JetBlue had the most seat miles of the airlines departing NYC in 2013.
+
+## Chapter 4: Data Importing & "Tidy" Data
+This chapter is about importing my own data and making sure it is in a "tidy" format, or one-row-per-observation.
+
+### Practice 4.1.1: Using the console
+We can use the console to import a `.csv` file that is published online. Use the `readr` package to import the file `dem_score.csv` from the website (https://moderndive.com/data/dem_score.csv). We'll use the function `read_csv()` to do so.
+
+```{r importcsv}
+dem_score <- read_csv("https://moderndive.com/data/dem_score.csv")
+dem_score
+```
+Here we see a data frame with scores for how autocratic (-10) or democratic (10) a country is by year. The years are in backticks because R does not allow variable names to start with a number nor contain spaces.
+
+### Practice 4.1.2: Using RStudio's interface
+We can also read in data from an Excel file saved on our computer. We'll click on "Files" in the bottom righthand pane in RStudio. We'll click on "Home" and then find where we saved the above file. I saved mine to my desktop as "dem_score2.xlsx". Click on the file "dem_score2.xlsx" and click "Import Dataset..." and then click "Import" on the popup screen. RStudio will then import the file as a data frame and display it.
+
+### Practice 4.2: Tidy data
+Let's explore the `drinks` data frame in the `fivethirtyeight` package.
+```{r drinks1}
+drinks
+```
+Here we see a tibble of countries and the average number of servings of different kinds of alcohol. Let's look at only 4 countries: USA, China, Italy, and Saudi Arabia. Let's look ignore the variable `total_litres_of_pure_alcohol` and rename the variables `beer_servings`, `spirit_servings`, and `wine_servings` to `beer`, `spirit`, and `wine`.
+
+```{r drinks2}
+drinks4 <- drinks %>% 
+  filter(country %in% c("USA", "China", "Italy", "Saudi Arabia")) %>% 
+  select(-total_litres_of_pure_alcohol) %>% 
+  rename(beer = beer_servings, spirit = spirit_servings, wine = wine_servings)
+drinks4
+```
+
+How would we create a side-by-side, or "dodged", barplot? Well, we can't do that yet because the data isn't in a tidy format. In the tibble above, we see that there are multiple observations (one for beer, one for spirits, and one for wine) for each country. It should looke more like Country-China, Type-beer, Servings-79; Country-China, Type-Spirit, Servings-192; and so on.
+
+To tidy this data, we can use the `gather()` function from the `tidyr` package. The `gather()` function has two arguments: `key` and `value`. `key` will look at the header row and we'll name it with the `=` operator as `type`. `key` will use the header row to populate the observation rows under the new variable `type`. `value` will look at the rest of the rows to populate the the new variable `servings`. Adding in `-country` will tell `gather()` not to tidy that variable.
+```{r drinks3-tidy}
+drinks4_tidy <- drinks4 %>% 
+  gather(key = type, value = servings, -country)
+drinks4_tidy
+
+## Another way to write it would be:
+## drinks4_tidy <- drinks4 %>% 
+##    gather(key = type, value = servings, c(beer, spirit, wine))
+## 
+## or
+## 
+## drinks4_tidy <- drinks4 %>% 
+##    gather(type, servings, -country)
+```
+
+Now that our data is tidy, let's plot it:
+```{r drinkstidyplot, warning=FALSE}
+drinks4_tidy %>% 
+  ggplot(
+    aes(country, servings, fill = type)) +
+  geom_col(position = "dodge")
+  
+```
+
+### Learning Check 4.1
+*What are common characteristics of "tidy" data frames?*
+
+**Answer:**
+One observation per row, variables(characteristics or measurements) are in separate columns, and values are in rows below variables. In table 4.1, we saw `Date`, `Boeing stock price`, `Amazon stock price`, and `Google stock price`. We would want the variables to be `Date`, `Name`, and `Price`. "tidy" data frames are often narrow and long, not wide.
+
+### Learning Check 4.2
+*What makes "tidy" data frames useful for organizing data?*
+
+**Answer:**
+We can use the tidyverse tools to analyze the data. Looking at the plot above, we see that we needed to have the data in a tidy format in order to plot it.
+
+### Learning Check 4.3
+*Take a look at `airline_safety` data frame included in the `fivethirtyeight` package. Remove the variables `incl_reg_subsidiaries` and `avail_seat_km_per_week`. Tidy the data to include new variables `incident_type_years` and `count`.*
+
+**Answer:**
+```{r lc43-1rn}
+## Let's look at the data frame:
+airline_safety
+
+## Now let's remove those two variables:
+airline_safety2 <- airline_safety %>% 
+  select(-c(incl_reg_subsidiaries, avail_seat_km_per_week))
+airline_safety2
+
+## Now let's tidy:
+airline_safety2_tidy <- airline_safety2 %>% 
+  gather(incident_type_years, count, -airline)
+airline_safety2_tidy
+```
+
+### 4.3 Case study: Democracy en Guatemala
+Let's use `dem_score` to look at Guatemala.
+
+```{r guate1}
+guate_dem <- dem_score %>% 
+  filter(country == "Guatemala")
+guate_dem
+```
+
+Let's plot a time series of Guatemala's score's over the forty year period from 1952-1992. Looking at the data frame above, we see that the data frame is very wide, not long and narrow. Let's tidy it.
+```{r guate_tidy}
+guate_dem_tidy <- guate_dem %>% 
+  gather(year, democracy_score, -country)
+guate_dem_tidy
+```
+
+The `year` variable is a `chr` type variable. Let's change it to a numerical value:
+```{r guate_tidy_year}
+guate_dem_tidy2 <- guate_dem_tidy %>% 
+  mutate(year = as.numeric(year))
+guate_dem_tidy2
+```
+
+Now let's plot it:
+```{r guate_tidy_plot}
+  ggplot(data = guate_dem_tidy2,
+         mapping = aes(x = year, y = democracy_score)) +
+  geom_line() +
+  labs(x = "Year", y = "Democracy Score")
+```
+
+### Learning Check 4.4
+*Convert the `dem_score` data frame into a tidy data frame and assign the name of `dem_score_tidy` to the resulting long-formatted data frame.*
+
+**Answer:**
+```{r lc44rn}
+dem_score_tidy <- dem_score %>% 
+  gather(year, democracy_score, -country) %>% 
+  mutate(year = as.numeric(year))
+dem_score_tidy
+```
+
+### Learning Check 4.5
+*Read in the life expectancy data stored at (https://moderndive.com/data/le_mess.csv) and convert it to a tidy data frame.*
+
+**Answer:**
+```{r lc45rn}
+life_expectancy <- read_csv("https://moderndive.com/data/le_mess.csv")
+life_expectancy
+
+life_exp_tidy <- life_expectancy %>% 
+  gather(year, age, -country)
+life_exp_tidy
+```
+
 
 ## Conclusion
 This serves as the conclusion for my work with ModernDive. My goal was to learn enough of the basics of R and Rstudio to be able to transition to Tidy Text Mining. 
