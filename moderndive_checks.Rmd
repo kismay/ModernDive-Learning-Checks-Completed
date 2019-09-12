@@ -149,6 +149,7 @@ ggplot(data = alaska_flights,
                      y = arr_delay)) + 
   geom_point()
 ```
+
 Above is a scatterplot of `alaska_flights` where `dep_delay` is on the x-axis and `arr_delay` is on the y-axis and each observation is represented by a point on the plot. Additionally, we see that 5 rows were removed from the 714 because they are missing values.
 
 ### Learning Check 2.2
@@ -187,6 +188,7 @@ ggplot(
     y = dep_delay)) +
   geom_point()
 ```
+
 This plot shows that more flights scheduled later in the day were delayed compared to much fewer flights delayed that were originally scheduled early in the day. We also see an example of how important it is to understand our data because we see that Alaska Airlines only flew out of NYC in the early morning and the evening as opposed to several times throughout the day. Also, we see that 2 rows were removed for missing values.
 
 ### Practice 2.3.2 Dealing with overplotting
@@ -201,6 +203,7 @@ ggplot(
     y = arr_delay)) +
 geom_point(alpha = .2)  
 ```
+
 This scatterplot's points are set to 20% opacity with the `geom_point(alpha = .2)`. This allows us to more clearly see the density of the points near (0, 0).
 
 Method 2: *Jittering* the points. This introduces some random movement of the points. This should only be used for visualization and the original data should not be altered.
@@ -246,6 +249,7 @@ early_january_weather <- weather %>%
       day <= 15)
 early_january_weather
 ```
+
 Here I've created a data frame that is a subset of the original `weather` dataframe. I did this by creating a new object named `early_january_weather` and used a `filter()` to feed in data from `weather` that matches `origin == "EWR"` or Newark, during the `month == 1` or January, where `day <= 15` or days 1 through 15 on the calendar.
 
 ### Learning Check 2.9
@@ -292,6 +296,7 @@ ggplot(data = early_january_weather,
                      y = humid)) +
   geom_line()
 ```
+
 Here I've created a new linegraph showing the hourly humidity, or `humid`, for Newark Airport in the first 15 days of January 2013.
 
 ### Practice 2.5: Histograms
@@ -302,6 +307,7 @@ ggplot(data = weather,
        mapping = aes(x = temp)) +
   geom_histogram()
 ```
+
 Here we see a suggestion to "Pick better value with `binwidth`" but that R has supplied a `bins = 30` as the default. We also see a warning that one row was removed.
 
 Add a white border to the bins to more clearly see each individual bin and change the fill to color of choice:
@@ -370,6 +376,7 @@ ggplot(data = weather,
   geom_histogram(binwidth = 5, color = "white") +
   facet_wrap(~ month)
 ```
+
 Above we see temps by month. We can further modify the output by asking for the plot to have 4 rows.
 
 ```{r facetmonthrow4, warning=FALSE, message=FALSE}
@@ -378,6 +385,7 @@ ggplot(data = weather,
   geom_histogram(binwidth = 5, color = "white") +
   facet_wrap(~ month, nrow = 4)
 ```
+
 Now we see a basic histogram of temps in a 4x3 arrangement, useful if you're the type that thinks in quarters.
 
 ### Learning Check 2.18
@@ -412,6 +420,7 @@ ggplot(data = weather,
        mapping = aes(x = month, y = temp))+
   geom_boxplot()
 ```
+
 The plot above is not very helpful because the months are numerical instead of categorical. Boxplots require categorical variables in the x-axis.
 
 ```{r boxplotcatmonth, warning=FALSE, message=FALSE}
@@ -419,6 +428,7 @@ ggplot(data = weather,
        mapping = aes(x = factor(month), y = temp)) +
   geom_boxplot()
 ```
+
 Here we a have box plot of the temperatures by month with dots identifying values considered outliers. Outliers in these boxplots are those values that are more than 1.5x greater than the interquartile range (IQR).
 
 ### Learning Check 2.22
@@ -500,6 +510,7 @@ ggplot(data = flights,
        mapping = aes(x = carrier)) +
   geom_bar()
 ```
+
 Here we can see that `UA` or United Airlines has the highest number of flights out of NYC.
 
 ### Learning Check 2.26
@@ -551,6 +562,8 @@ ggplot(data = flights,
        mapping = aes(x = carrier, fill = origin)) +
   geom_bar()
 ```
+
+
 This plot shows the count of flights by carrier and filled in with three different colors according to the origin of the flight. This is a stacked barplot. This isn't the most ideal plot because it is difficult to compare the stacks based on origin unless there are significant differences. This plot suffers from a similar issue as a pie chart, though this is definitely an improvement.
 
 ### Learning Check 2.32
@@ -573,6 +586,7 @@ ggplot(data = flights,
        mapping = aes(x = carrier, fill = origin)) +
   geom_bar(position = "dodge")
 ```
+
 This plot has all the bars starting at 0, making it easier for us to compare the number of flights by carrier and origin. Looking at Delta Airlines, `DL`, it looks like they use both JFK and LaGuardia as hubs.
 
 ### Learning Check 2.34
@@ -595,6 +609,7 @@ ggplot(data = flights,
   geom_bar() +
   facet_wrap(~ origin, ncol = 1)
 ```
+
 Here I've removed the `mapping` of `origin` and added a `facet_wrap` with `~ origin`. I've also included a `ncol = 1` so that all three origins aren't on one row. It could also be written `nrow = 3` since I know how many origins there are.
 
 ### Learning Check 2.35
