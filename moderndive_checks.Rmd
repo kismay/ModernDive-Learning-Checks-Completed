@@ -214,6 +214,7 @@ ggplot(data = alaska_flights,
     width = 30,
     height = 30)
 ```
+
 This plot is similar to the original scatterplot but we can more clearly see how dense the (0, 0) area is.
 
 ### Learning Check 2.7
