@@ -7,4 +7,4 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-[Click here for CV](cv.pdf)
+[Click here for CV](CV_forweb.pdf)

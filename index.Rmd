@@ -9,4 +9,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-![](ck_main.jpeg)
+![](IMG_9254.JPG)

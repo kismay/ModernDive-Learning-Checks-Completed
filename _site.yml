@@ -6,5 +6,7 @@ navbar:
       href: index.html
     - text: "ModernDive Learning Checks"
       href: moderndive_checks.html
+    - text: "TidyText Mining Learning Checks"
+      href: learning_ttm_ch1_2.html
     - text: "CV"
       href: cv.html
