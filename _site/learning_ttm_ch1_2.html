@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Karolyn Ismay   PhD Candidate, Pacific University" />
+
+
+<title>Tidy Text Mining Learning</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="moderndive_checks.html">ModernDive Learning Checks</a>
+</li>
+<li>
+  <a href="learning_ttm_ch1_2.html">TidyText Mining Learning Checks</a>
+</li>
+<li>
+  <a href="cv.html">CV</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Tidy Text Mining Learning</h1>
+<h4 class="author">Karolyn Ismay <br> PhD Candidate, Pacific University</h4>
+<h4 class="date">Summer 2019</h4>
+
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This page documents my completion of the practice examples in the <a href="https://www.tidytextmining.com/">Tidy Text Mining</a>. In addition, this document itself shows my learning and skill development with R.</p>
+</div>
+<div id="chapter-1-notes-tidy-text-format" class="section level2">
+<h2>Chapter 1 Notes: Tidy text format</h2>
+<p>Tidy text format is defined as “a table with one-token-per-row” where a <strong>token</strong> is a “meaningful unit of text, such as a word” used for analysis. To <strong>tokenize</strong> is to split text into tokens. Tidy text mining typically uses single word tokens. Other methods of storying text for analysis include n-grams, sentences, and paragraphs. Using tidy text data, or one-token-per-row/one-word-per-row, allows us to use many “tidy” R tools and packages.</p>
+<p>Other text mining approaches to storing text:</p>
+<ul>
+<li><strong>String:</strong> multiple words, sentences, paragraphs, character vectors.</li>
+<li><strong>Corpus:</strong> raw strings with metadata and additional details.</li>
+<li><strong>Document-term matrix:</strong> a “sparse matrix describing a collection”. A collection could be a corpus (as above). One row per each document and one column for each term. Used for word counts and <strong><em>tf-idf</em></strong> (Chapter 3, “term frequency - inverse document frequency”).</li>
+</ul>
+<div id="the-unnest_tokens-function" class="section level3">
+<h3>1.2 The ‘unnest_tokens’ function</h3>
+<p>Converting text into a tidy text dataset.</p>
+<ol style="list-style-type: decimal">
+<li>Feed in the data,</li>
+<li>Put it into a data frame,</li>
+<li>Take data frame and <code>%&gt;%</code> into <code>unnest_tokens()</code> function and specify <code>(output, input)</code> within the function,</li>
+</ol>
+<p>Below is a poem shown as a character vector:</p>
+<pre class="r"><code>text &lt;- c(&quot;Because I could not stop for Death -&quot;,
+          &quot;He kindly stopped for me -&quot;,
+          &quot;The Carriage held but just Ourselves -&quot;,
+          &quot;and Immortality&quot;)
+text</code></pre>
+<pre><code>## [1] &quot;Because I could not stop for Death -&quot;  
+## [2] &quot;He kindly stopped for me -&quot;            
+## [3] &quot;The Carriage held but just Ourselves -&quot;
+## [4] &quot;and Immortality&quot;</code></pre>
+<p>Here we see the text in quotation marks and separated by commas. We’ve concatenated it with <code>c()</code> and assigned the data as <code>text</code> with <code>&lt;-</code> operator.</p>
+<p>Now, we need to put it into a data frame:</p>
+<pre class="r"><code>## Make sure `library(dplyr)` is loaded. `tibble()` is a tool in `dplyr`. `tibble` does not convert strings to factors and does not use row names, important for tidy tools.
+
+text_df &lt;- tibble(line = 1:4, text = text)
+
+text_df</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##    line text                                  
+##   &lt;int&gt; &lt;chr&gt;                                 
+## 1     1 Because I could not stop for Death -  
+## 2     2 He kindly stopped for me -            
+## 3     3 The Carriage held but just Ourselves -
+## 4     4 and Immortality</code></pre>
+<p>Here we see the data in a data frame, but the text is not in the tidy text format of one-token-per-document-per-row. We need to <strong>tokenize</strong> it!</p>
+<pre class="r"><code>## Make sure library(tidytext) is loaded.
+
+text_df %&gt;% 
+  unnest_tokens(word, text)</code></pre>
+<pre><code>## # A tibble: 20 x 2
+##     line word       
+##    &lt;int&gt; &lt;chr&gt;      
+##  1     1 because    
+##  2     1 i          
+##  3     1 could      
+##  4     1 not        
+##  5     1 stop       
+##  6     1 for        
+##  7     1 death      
+##  8     2 he         
+##  9     2 kindly     
+## 10     2 stopped    
+## 11     2 for        
+## 12     2 me         
+## 13     3 the        
+## 14     3 carriage   
+## 15     3 held       
+## 16     3 but        
+## 17     3 just       
+## 18     3 ourselves  
+## 19     4 and        
+## 20     4 immortality</code></pre>
+<p>The basic arguments in <code>unnest_tokens()</code> are the output (<code>word</code>) and the input (<code>text</code>, a column from <code>text_df</code>). This is reading in <code>text</code> column and unnesting the data by each word. We also see that <code>unnest_tokens()</code> includes a column with <code>line</code> for the line where each word occurs.</p>
+<p><code>unnest_tokens()</code> will convert the text/tokens to lowercase. To prevent this, feed in <code>to_lower = FALSE</code> arguement:</p>
+<pre class="r"><code>text_df %&gt;% 
+  unnest_tokens(word, text, to_lower = FALSE)</code></pre>
+<pre><code>## # A tibble: 20 x 2
+##     line word       
+##    &lt;int&gt; &lt;chr&gt;      
+##  1     1 Because    
+##  2     1 I          
+##  3     1 could      
+##  4     1 not        
+##  5     1 stop       
+##  6     1 for        
+##  7     1 Death      
+##  8     2 He         
+##  9     2 kindly     
+## 10     2 stopped    
+## 11     2 for        
+## 12     2 me         
+## 13     3 The        
+## 14     3 Carriage   
+## 15     3 held       
+## 16     3 but        
+## 17     3 just       
+## 18     3 Ourselves  
+## 19     4 and        
+## 20     4 Immortality</code></pre>
+</div>
+<div id="tidying-the-works-of-jane-austen" class="section level3">
+<h3>1.3 Tidying the works of Jane Austen</h3>
+<p>Clicking on <code>janeaustenr</code> in the Packages tab will display documentation for the package. For <code>janeaustenr</code>, this includes the various dataframes and the texts. The package has six novels where the text data is saved in a one-row-per-line format where a line is the literal printed line in a physical book. If we <code>View(emma)</code> we see the book Emma has been broken down line-by-line in one column. <code>View(austen_books)</code> shows two columns, one labeled <code>text</code> and the other <code>book</code>. <code>text</code> is again broken down line-by-line and and <code>book</code> holds the title of the book where that line is found. Also, we see rows with chapter numbers.</p>
+<p>Since we want to tidy the data word-by-word, it would be useful create a new data frame that also includes columns as to where each word is found by line number and chapter. To do this, we will use <code>group_by()</code>, <code>mutate()</code>, and finally <code>ungroup()</code>:</p>
+<pre class="r"><code>## load `janeaustenr`, `dplyr`, and `stringr` packages
+
+original_books &lt;- austen_books() %&gt;% 
+  group_by(book) %&gt;% 
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, regex(&quot;^chapter [\\divxlc]&quot;,
+                                                 ignore_case = TRUE)))) %&gt;% 
+  ungroup()
+
+original_books</code></pre>
+<pre><code>## # A tibble: 73,422 x 4
+##    text                  book                linenumber chapter
+##    &lt;chr&gt;                 &lt;fct&gt;                    &lt;int&gt;   &lt;int&gt;
+##  1 SENSE AND SENSIBILITY Sense &amp; Sensibility          1       0
+##  2 &quot;&quot;                    Sense &amp; Sensibility          2       0
+##  3 by Jane Austen        Sense &amp; Sensibility          3       0
+##  4 &quot;&quot;                    Sense &amp; Sensibility          4       0
+##  5 (1811)                Sense &amp; Sensibility          5       0
+##  6 &quot;&quot;                    Sense &amp; Sensibility          6       0
+##  7 &quot;&quot;                    Sense &amp; Sensibility          7       0
+##  8 &quot;&quot;                    Sense &amp; Sensibility          8       0
+##  9 &quot;&quot;                    Sense &amp; Sensibility          9       0
+## 10 CHAPTER 1             Sense &amp; Sensibility         10       1
+## # … with 73,412 more rows</code></pre>
+<p>Here we have the data frame <code>original_books</code> which includes all the data from <code>austen_books</code> but also adds <code>linenumber</code> and <code>chapter</code> as columns.</p>
+<p>Next, we nee to <strong>tokenize</strong> the text in a one-token-per-row format with <code>unnest_tokens()</code>:</p>
+<pre class="r"><code>tidy_books &lt;- original_books %&gt;% 
+  unnest_tokens(word, text)
+tidy_books</code></pre>
+<pre><code>## # A tibble: 725,055 x 4
+##    book                linenumber chapter word       
+##    &lt;fct&gt;                    &lt;int&gt;   &lt;int&gt; &lt;chr&gt;      
+##  1 Sense &amp; Sensibility          1       0 sense      
+##  2 Sense &amp; Sensibility          1       0 and        
+##  3 Sense &amp; Sensibility          1       0 sensibility
+##  4 Sense &amp; Sensibility          3       0 by         
+##  5 Sense &amp; Sensibility          3       0 jane       
+##  6 Sense &amp; Sensibility          3       0 austen     
+##  7 Sense &amp; Sensibility          5       0 1811       
+##  8 Sense &amp; Sensibility         10       1 chapter    
+##  9 Sense &amp; Sensibility         10       1 1          
+## 10 Sense &amp; Sensibility         13       1 the        
+## # … with 725,045 more rows</code></pre>
+<p>Now the data is in the tidy text data format.</p>
+<p>We’ll notice that on observation 10, the word “the” is present. The word “the” is considered a stop word, a word (such as <em>of, to, a</em>) typically not useful for analysis. <code>View(stop_words)</code> will show the list of stop words by lexicon. To remove the stop words, we can use <code>anti_join()</code>. To use only one particular lexicon, we can add <code>filter()</code>.</p>
+<pre class="r"><code>data(stop_words)
+
+tidy_books2 &lt;- tidy_books %&gt;% 
+  anti_join(stop_words)
+tidy_books2</code></pre>
+<pre><code>## # A tibble: 217,609 x 4
+##    book                linenumber chapter word       
+##    &lt;fct&gt;                    &lt;int&gt;   &lt;int&gt; &lt;chr&gt;      
+##  1 Sense &amp; Sensibility          1       0 sense      
+##  2 Sense &amp; Sensibility          1       0 sensibility
+##  3 Sense &amp; Sensibility          3       0 jane       
+##  4 Sense &amp; Sensibility          3       0 austen     
+##  5 Sense &amp; Sensibility          5       0 1811       
+##  6 Sense &amp; Sensibility         10       1 chapter    
+##  7 Sense &amp; Sensibility         10       1 1          
+##  8 Sense &amp; Sensibility         13       1 family     
+##  9 Sense &amp; Sensibility         13       1 dashwood   
+## 10 Sense &amp; Sensibility         13       1 settled    
+## # … with 217,599 more rows</code></pre>
+<pre class="r"><code>## To filter:
+## stop_words_onix &lt;- stop_words %&gt;% 
+##  filter(lexicon == &quot;onix&quot;)
+## replace anti_join(stop_words) with: anti_join(stop_words_onix)</code></pre>
+<p>To find the most common words, we can use dplyr’s <code>count()</code>:</p>
+<pre class="r"><code>tidy_books2 %&gt;% 
+  count(word, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 13,914 x 2
+##    word       n
+##    &lt;chr&gt;  &lt;int&gt;
+##  1 miss    1855
+##  2 time    1337
+##  3 fanny    862
+##  4 dear     822
+##  5 lady     817
+##  6 sir      806
+##  7 day      797
+##  8 emma     787
+##  9 sister   727
+## 10 house    699
+## # … with 13,904 more rows</code></pre>
+<p>With the text data in the tidy format, we can create visualizations using <code>ggplot2</code>. Here we have a plot with the most frequent words:</p>
+<pre class="r"><code>tidy_books2 %&gt;% 
+  count(word, sort = TRUE) %&gt;% 
+  filter(n &gt; 600) %&gt;% 
+  mutate(word = reorder(word,n)) %&gt;% 
+  ggplot(aes(word, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/tidying-jane-plot-1.png" width="672" /></p>
+</div>
+<div id="the-gutenbergr-package" class="section level3">
+<h3>1.4 The gutenbergr package</h3>
+<p>The gutenbergr package can pull public domain works from the Project Gutenberg collection. The <code>gutenberg_download()</code> function can pull works by their Project Gutenberg ID. The package also has functions that can look at metadata, taking out unhelpful header/footer data, and look at information about authors.</p>
+<p><code>gutenberg_metadata</code> contains information about each work in the collection, such as the ID number of each work, the author, and which language it is in. To find texts we can use a variety of methods:</p>
+<pre class="r"><code>gutenberg_metadata %&gt;% 
+  filter(author == &quot;Wells, H. G. (Herbert George)&quot;)</code></pre>
+<pre><code>## # A tibble: 81 x 8
+##    gutenberg_id title author gutenberg_autho… language gutenberg_books…
+##           &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;           
+##  1           35 The … Wells…               30 en       Science Fiction…
+##  2           36 The … Wells…               30 en       Movie Books/Sci…
+##  3          159 The … Wells…               30 en       Best Books Ever…
+##  4          456 The … Wells…               30 en       Science Fiction 
+##  5          524 Ann … Wells…               30 en       &lt;NA&gt;            
+##  6          718 Tono… Wells…               30 en       Best Books Ever…
+##  7          775 When… Wells…               30 en       Science Fiction 
+##  8          780 The … Wells…               30 en       &lt;NA&gt;            
+##  9         1013 The … Wells…               30 en       Science Fiction…
+## 10         1046 God,… Wells…               30 en       Bestsellers, Am…
+## # … with 71 more rows, and 2 more variables: rights &lt;chr&gt;, has_text &lt;lgl&gt;</code></pre>
+<pre class="r"><code>gutenberg_metadata %&gt;% 
+  filter(title == &quot;The Time Machine&quot;)</code></pre>
+<pre><code>## # A tibble: 3 x 8
+##   gutenberg_id title author gutenberg_autho… language gutenberg_books…
+##          &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;           
+## 1           35 The … Wells…               30 en       Science Fiction…
+## 2         6620 The … Wells…               30 en       Movie Books/Sci…
+## 3        17401 The … Wells…               30 en       Movie Books     
+## # … with 2 more variables: rights &lt;chr&gt;, has_text &lt;lgl&gt;</code></pre>
+</div>
+<div id="word-frequencies" class="section level3">
+<h3>1.5 Word frequencies</h3>
+<p>Let’s download the texts for H. G. Wells’ books <em>The Time Machine</em>, <em>The War of the Worlds</em>, <em>The Invisible Man</em>, and <em>The Island of Doctor Moreau</em>.</p>
+<pre class="r"><code>if(!file.exists(&quot;hgwells.rds&quot;)){
+  hgwells &lt;- gutenberg_download(c(35, 36, 5230, 159))
+  write_rds(hgwells, &quot;hgwells.rds&quot;)
+} else{
+  hgwells &lt;- read_rds(&quot;hgwells.rds&quot;)
+}</code></pre>
+<p>Next, we’ll need to tidy the data:</p>
+<pre class="r"><code>tidy_hgwells &lt;- hgwells %&gt;% 
+  unnest_tokens(word, text) %&gt;% 
+  anti_join(stop_words)</code></pre>
+<p>What are the most common words in these novels?</p>
+<pre class="r"><code>tidy_hgwells %&gt;% 
+  count(word, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 11,769 x 2
+##    word       n
+##    &lt;chr&gt;  &lt;int&gt;
+##  1 time     454
+##  2 people   302
+##  3 door     260
+##  4 heard    249
+##  5 black    232
+##  6 stood    229
+##  7 white    222
+##  8 hand     218
+##  9 kemp     213
+## 10 eyes     210
+## # … with 11,759 more rows</code></pre>
+<p>Next, we’ll look at some works from the Brontë sisters: <em>Jane Eyre</em>, <em>Wuthering Heights</em>, <em>The Tenant of Wildfell Hall</em>, <em>Villette</em>, and <em>Agnes Grey</em>.</p>
+<pre class="r"><code>bronte &lt;- gutenberg_download(c(1260, 768, 969, 9182, 767))</code></pre>
+<pre><code>## Determining mirror for Project Gutenberg from http://www.gutenberg.org/robot/harvest</code></pre>
+<pre><code>## Using mirror http://aleph.gutenberg.org</code></pre>
+<p>Then we’ll tidy them:</p>
+<pre class="r"><code>tidy_bronte &lt;- bronte %&gt;% 
+  unnest_tokens(word, text) %&gt;% 
+  anti_join(stop_words)</code></pre>
+<p>An now we’ll look at the most common words:</p>
+<pre class="r"><code>tidy_bronte %&gt;% 
+  count(word, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 23,050 x 2
+##    word       n
+##    &lt;chr&gt;  &lt;int&gt;
+##  1 time    1065
+##  2 miss     855
+##  3 day      827
+##  4 hand     768
+##  5 eyes     713
+##  6 night    647
+##  7 heart    638
+##  8 looked   601
+##  9 door     592
+## 10 half     586
+## # … with 23,040 more rows</code></pre>
+<p>Next, let’s look at these three collections together. We’ll calculate the fequency for each word in the three collections by binding the data frames together. We’ll use <code>spread</code> and <code>gather</code> to reshape the dataframe so we can plot it.</p>
+<pre class="r"><code>frequency &lt;- bind_rows(mutate(tidy_books2, author = &quot;Jane Austen&quot;),
+                       mutate(tidy_hgwells, author = &quot;H. G. Wells&quot;),
+                       mutate(tidy_bronte, author = &quot;Brontë Sisters&quot;)) %&gt;% 
+  mutate(word = str_extract(word, &quot;[a-z&#39;]+&quot;)) %&gt;% 
+  count(author, word) %&gt;% 
+  group_by(author) %&gt;% 
+  mutate(proportion = n / sum(n)) %&gt;% 
+  select(-n) %&gt;% 
+  spread(author, proportion) %&gt;% 
+  gather(author, proportion, `Brontë Sisters`:`H. G. Wells`)</code></pre>
+<p>We used <code>str_extract()</code> because the code from Project Gutenberg includes underscores to indicate emphasis such as italics. We want something like “<em>by</em>” to be counted the same as “by” instead of a whole other word.</p>
+<p>Next, we’ll plot:</p>
+<pre class="r"><code>ggplot(frequency,
+       aes(x = proportion,
+           y = `Jane Austen`, color = abs(`Jane Austen` - proportion))) +
+  geom_abline(color = &quot;gray40&quot;, lty = 2) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  scale_color_gradient(limits = c(0, 0.001), low = &quot;darkslategray4&quot;, high = &quot;gray75&quot;) +
+  facet_wrap(~author, ncol = 2) +
+  theme(legend.position = &quot;none&quot;) +
+  labs(y = &quot;Jane Austen&quot;, x = NULL)</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/comparing-plot-1.png" width="672" /></p>
+<p>This plot compares Austen’s books to the Brontë Sisters and H. G. Wells. Words closer to the dashed line have simliar frequencies. Words further above the line are more often found in Austen’s works. We see that Austen and the Brontë Sisters had closer frequencies of words than did Austen and H. G. Wells.</p>
+<p>Next, we’ll use a correlation test to see how similar or different these sets of word frequencies are.</p>
+<pre class="r"><code>cor.test(data = frequency[frequency$author == &quot;Brontë Sisters&quot;,],
+         ~ proportion + `Jane Austen`)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  proportion and Jane Austen
+## t = 119.65, df = 10404, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.7527869 0.7689642
+## sample estimates:
+##       cor 
+## 0.7609938</code></pre>
+<pre class="r"><code>cor.test(data = frequency[frequency$author == &quot;H. G. Wells&quot;,],
+         ~ proportion + `Jane Austen`)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  proportion and Jane Austen
+## t = 36.441, df = 6053, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.4032800 0.4445987
+## sample estimates:
+##       cor 
+## 0.4241601</code></pre>
+<p>Here we see that yes, there is more correlation between Austen’s and the Brontë Sisters’ works than between Austen’s and Wells’ works.</p>
+</div>
+</div>
+<div id="chapter-2-notes-sentiment-analysis-with-tidy-data" class="section level2">
+<h2>Chapter 2 Notes: Sentiment analysis with tidy data</h2>
+<p>Sentiment analysis can look at individual words or the over sentiment of an entire work. There are many sentiment lexicons that look for positive/negative sentiment and also possibly emotions such as joy, anger, sadness, and so on. The <code>tidytext</code> package includes several lexicons including <code>AFINN</code>, <code>bing</code>, and <code>nrc</code>.</p>
+<p>To download these lexicons, we’ll use <code>get_sentiments(&quot;&quot;)</code> and selection <code>1</code>.</p>
+<pre class="r"><code>sentiments_afinn &lt;- get_sentiments(&quot;afinn&quot;)
+sentiments_bing &lt;- get_sentiments(&quot;bing&quot;)
+sentiments_nrc &lt;- get_sentiments(&quot;nrc&quot;)</code></pre>
+<div id="sentiment-analysis-with-inner-join" class="section level3">
+<h3>2.2 Sentiment analysis with inner join</h3>
+<p>Using <code>inner_join</code> for sentiment analysis is similar to using <code>anti_join</code>. To answer the question <em>what are the most common joy words in Emma</em>, we’ll use `unnest_tokens()&quot; again.</p>
+<pre class="r"><code>tidy_books3 &lt;- austen_books() %&gt;% 
+  group_by(book) %&gt;% 
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, regex(&quot;^chapter [\\divxlc]&quot;,
+                                                 ignore_case = TRUE)))) %&gt;% 
+  ungroup() %&gt;% 
+  unnest_tokens(word, text)</code></pre>
+<p>The output argument in <code>unnest_tokens()</code> is <code>word</code>. This is useful because the sentiment lexicons and the stop words datasets also have columns named <code>word</code>, thus making it easier to do inner and anti joins.</p>
+<p>Now that the data is tidy, let’s <code>filter()</code> the nrc lexicon for <code>joy</code> and join it with <code>tidy_books3</code> filtering for <code>Emma</code>.</p>
+<pre class="r"><code>nrc_joy &lt;- sentiments_nrc %&gt;% 
+  filter(sentiment == &quot;joy&quot;)
+
+tidy_books3 %&gt;% 
+  filter(book == &quot;Emma&quot;) %&gt;% 
+  inner_join(nrc_joy) %&gt;% 
+  count(word, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 303 x 2
+##    word        n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 good      359
+##  2 young     192
+##  3 friend    166
+##  4 hope      143
+##  5 happy     125
+##  6 love      117
+##  7 deal       92
+##  8 found      92
+##  9 present    89
+## 10 kind       82
+## # … with 293 more rows</code></pre>
+<p>Here we see a list of the most common “joy” words in the book Emma.</p>
+<p>We can also look at sentiment changes over the course of a novel by defining chunks of text. Using too small of a chunk can lead to not having enough data to get a good idea of the sentiment while having too large of a chunk can water down the sentiment. It depends on each individual text. For this, we’ll use 80 lines. We’ll use <code>spread()</code> to create separate columns for negative and positive sentiment. We’ll also calculate net sentiment.</p>
+<pre class="r"><code>austen_sentiment80 &lt;- tidy_books %&gt;% 
+  inner_join(sentiments_bing) %&gt;% 
+  count(book, index = linenumber %/% 80, sentiment) %&gt;% 
+  spread(sentiment, n, fill = 0) %&gt;% 
+  mutate(sentiment = positive - negative)</code></pre>
+<p>This gives us a data frame with the title of the book, and index number for the chunk of text we’re looking at, the total negative and total positive words, and the net sentiment between the two.</p>
+<p>Now we can plot <code>austen_sentiment80</code> with <code>index</code> on the x axis to show sentiment across the narrative timeline of each book. Since each book is a different length, we’ll use <code>scales = &quot;free_x&quot;</code> in <code>facet_wrap()</code> to make the plots uniformly sized.</p>
+<pre class="r"><code>ggplot(austen_sentiment80, 
+       aes(index, sentiment, fill = book)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~book, ncol = 2, scales = &quot;free_x&quot;)</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/austen-sentiment-80-plotted-1.png" width="672" /></p>
+<p>Having read a few of the books plotted, I have a good guess at what is going on in the plot when there are sudden changes in the net sentiment between chunks.</p>
+</div>
+<div id="comparing-the-three-sentiment-dictionaries" class="section level3">
+<h3>2.3 Comparing the three sentiment dictionaries</h3>
+<p>Some sentiment lexicons are more appropriate for some questions than others. Sometimes they’re tailor made for certain purposes or they’re made by people from a particular field to suite that field. Because of this, it can be useful to compare lexicons. Let’s look at the book <em>Pride &amp; Prejudice</em> with three different lexicons.</p>
+<pre class="r"><code>pride_prejudice &lt;- tidy_books %&gt;% 
+  filter(book == &quot;Pride &amp; Prejudice&quot;)
+pride_prejudice</code></pre>
+<pre><code>## # A tibble: 122,204 x 4
+##    book              linenumber chapter word     
+##    &lt;fct&gt;                  &lt;int&gt;   &lt;int&gt; &lt;chr&gt;    
+##  1 Pride &amp; Prejudice          1       0 pride    
+##  2 Pride &amp; Prejudice          1       0 and      
+##  3 Pride &amp; Prejudice          1       0 prejudice
+##  4 Pride &amp; Prejudice          3       0 by       
+##  5 Pride &amp; Prejudice          3       0 jane     
+##  6 Pride &amp; Prejudice          3       0 austen   
+##  7 Pride &amp; Prejudice          7       1 chapter  
+##  8 Pride &amp; Prejudice          7       1 1        
+##  9 Pride &amp; Prejudice         10       1 it       
+## 10 Pride &amp; Prejudice         10       1 is       
+## # … with 122,194 more rows</code></pre>
+<p>Now that we have the book isolated, we’ll <code>inner_join</code> it with the lexicons. However, AFINN uses scores rather than positive/negative, so we’ll need to treat that one separately.</p>
+<pre class="r"><code>pp_afinn &lt;- pride_prejudice %&gt;% 
+  inner_join(sentiments_afinn) %&gt;% 
+  group_by(index = linenumber %/% 80) %&gt;% 
+  summarise(sentiment = sum(value)) %&gt;% 
+  mutate(method = &quot;AFINN&quot;)
+
+pp_bing_nrc &lt;- bind_rows(pride_prejudice %&gt;% 
+                           inner_join(sentiments_bing) %&gt;% 
+                           mutate(method = &quot;Bing et al.&quot;),
+                         pride_prejudice %&gt;% 
+                           inner_join(sentiments_nrc %&gt;% 
+                                        filter(sentiment %in% c(&quot;positive&quot;, &quot;negative&quot;))) %&gt;% 
+                           mutate(method = &quot;NRC&quot;)) %&gt;% 
+  count(method, index = linenumber %/% 80, sentiment) %&gt;% 
+  spread(sentiment, n, fill = 0) %&gt;% 
+  mutate(sentiment = positive - negative)</code></pre>
+<p>Here we have the sentiment scores for each chunck of <em>Pride &amp; Prejudice</em> in two data frames named <code>pp_afinn</code> and <code>pp_bing_nrc</code>.</p>
+<p>Now to plot them:</p>
+<pre class="r"><code>bind_rows(pp_afinn, pp_bing_nrc) %&gt;%
+  ggplot(aes(index, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol=1)</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/pp3lexicons3-1.png" width="672" /></p>
+<p>There are definite differences in the plots above, but they all follow the same general flow. The AFINN lexicon has higher highs, the NRC lexicon has very few negatives, and the Bing et al. lexicon tends to stay closer to 0. This shows us that each lexicon is unique. Let’s take a look at the lexicons themselves.</p>
+<p>Let’s look at the number of negative and positive words in NRC and Bing et al.:</p>
+<pre class="r"><code>sentiments_nrc %&gt;% 
+  filter(sentiment %in% c(&quot;positive&quot;,
+                          &quot;negative&quot;)) %&gt;% 
+  count(sentiment)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   sentiment     n
+##   &lt;chr&gt;     &lt;int&gt;
+## 1 negative   3324
+## 2 positive   2312</code></pre>
+<pre class="r"><code>sentiments_bing %&gt;% 
+  count(sentiment)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   sentiment     n
+##   &lt;chr&gt;     &lt;int&gt;
+## 1 negative   4781
+## 2 positive   2005</code></pre>
+<p>It looks like NRC has about a thousand more negative sentiment words than positive sentiment words. Bing et al. has 2776 more negative words than positive words. This could be making a difference in the <em>Pride &amp; Prejudice</em> plots above.</p>
+</div>
+<div id="most-common-positive-and-negative-words" class="section level3">
+<h3>2.4 Most common positive and negative words</h3>
+<p>Linking the texts with sentiments allows us to look at the most commong positive and negative words are. Let’s look at Austen’s works using the Bing et al. lexicon.</p>
+<pre class="r"><code>bing_word_counts &lt;- tidy_books %&gt;% 
+  inner_join(sentiments_bing) %&gt;% 
+  count(word, sentiment, sort = TRUE) %&gt;% 
+  ungroup()
+bing_word_counts</code></pre>
+<pre><code>## # A tibble: 2,585 x 3
+##    word     sentiment     n
+##    &lt;chr&gt;    &lt;chr&gt;     &lt;int&gt;
+##  1 miss     negative   1855
+##  2 well     positive   1523
+##  3 good     positive   1380
+##  4 great    positive    981
+##  5 like     positive    725
+##  6 better   positive    639
+##  7 enough   positive    613
+##  8 happy    positive    534
+##  9 love     positive    495
+## 10 pleasure positive    462
+## # … with 2,575 more rows</code></pre>
+<pre class="r"><code>bing_word_counts %&gt;% 
+  group_by(sentiment) %&gt;% 
+  top_n(10) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(word = reorder(word, n)) %&gt;% 
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = &quot;free_y&quot;) +
+  labs(y=&quot;contribution to sentiment&quot;, 
+       x= NULL) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/mostcommon1-1.png" width="672" /></p>
+<p>Oh no! The word “miss” is marked as negative, as in “miss the mark” or “I miss my dog” when likely Austen used it as a title for characters such as “Hello Miss Emma”. We can add the word “miss” to a set of custom stop words.</p>
+<pre class="r"><code>custom_stop_words &lt;- bind_rows(tibble(word = c(&quot;miss&quot;), lexicon = c(&quot;custom&quot;)),
+                               stop_words)
+custom_stop_words</code></pre>
+<pre><code>## # A tibble: 1,150 x 2
+##    word        lexicon
+##    &lt;chr&gt;       &lt;chr&gt;  
+##  1 miss        custom 
+##  2 a           SMART  
+##  3 a&#39;s         SMART  
+##  4 able        SMART  
+##  5 about       SMART  
+##  6 above       SMART  
+##  7 according   SMART  
+##  8 accordingly SMART  
+##  9 across      SMART  
+## 10 actually    SMART  
+## # … with 1,140 more rows</code></pre>
+<p>Now let’s plot number of positive and negative words without stop words:</p>
+<pre class="r"><code>bing_word_counts &lt;- tidy_books %&gt;% 
+  anti_join(custom_stop_words) %&gt;% 
+  inner_join(sentiments_bing) %&gt;% 
+  count(word, sentiment, sort = TRUE) %&gt;% 
+  ungroup()
+bing_word_counts</code></pre>
+<pre><code>## # A tibble: 2,554 x 3
+##    word      sentiment     n
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt;
+##  1 happy     positive    534
+##  2 love      positive    495
+##  3 pleasure  positive    462
+##  4 poor      negative    424
+##  5 happiness positive    369
+##  6 comfort   positive    292
+##  7 doubt     negative    281
+##  8 affection positive    272
+##  9 perfectly positive    271
+## 10 glad      positive    263
+## # … with 2,544 more rows</code></pre>
+<pre class="r"><code>bing_word_counts %&gt;% 
+  group_by(sentiment) %&gt;% 
+  top_n(10) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(word = reorder(word, n)) %&gt;% 
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = &quot;free_y&quot;) +
+  labs(y=&quot;contribution to sentiment&quot;, 
+       x= NULL) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/mostcommon-custom-stop-words-1.png" width="672" /></p>
+</div>
+<div id="wordclouds" class="section level3">
+<h3>2.5 Wordclouds</h3>
+<p>The tidy text format works well for ggplot2, but it also works well for wordclouds. Let’s try it:</p>
+<pre class="r"><code>tidy_books %&gt;% 
+  anti_join(stop_words) %&gt;% 
+  count(word) %&gt;% 
+  with(wordcloud(word, n, max.words = 100))</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/wordcloud1-1.png" width="672" /></p>
+<p>To do a <code>comparison.cloud()</code> we need to reshape the data frame to a matrix with <code>acast()</code>.</p>
+<pre class="r"><code>tidy_books %&gt;% 
+  inner_join(sentiments_bing) %&gt;% 
+  count(word, sentiment, sort = TRUE) %&gt;% 
+  acast(word ~ sentiment, value.var = &quot;n&quot;, fill = 0) %&gt;% 
+  comparison.cloud(colors = c(&quot;gray20&quot;, &quot;gray80&quot;),
+                   max.words = 100)</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/comparison-cloud-1.png" width="672" /></p>
+</div>
+<div id="looking-at-unites-beyond-just-words" class="section level3">
+<h3>2.6 Looking at unites beyond just words</h3>
+<p>Looking at singular words is useful, but there are times when looking at an entire sentence is more useful. Let’s look at one:</p>
+<pre class="r"><code>pp_sentences &lt;- tibble(text = prideprejudice) %&gt;% 
+  unnest_tokens(sentence, text, token = &quot;sentences&quot;)
+
+pp_sentences$sentence[2]</code></pre>
+<pre><code>## [1] &quot;however little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered the rightful property of some one or other of their daughters.&quot;</code></pre>
+<p>Sentence tokenizing doesn’t always work well with dialogue. Using <code>iconv()</code> for example <code>iconv(text, to = 'latin1')</code> in a mutate function before unnesting might be helpful. Another option is to use the regex pattern in <code>unnest_tokens()</code>.</p>
+<pre class="r"><code>austen_chapters &lt;- austen_books() %&gt;% 
+  group_by(book) %&gt;% 
+  unnest_tokens(chapter, text, token = &quot;regex&quot;,
+                pattern = &quot;Chapter|CHAPTER [\\dIVXLC]&quot;) %&gt;% 
+  ungroup()
+austen_chapters %&gt;% 
+  group_by(book) %&gt;% 
+  summarise(chapters = n())</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   book                chapters
+##   &lt;fct&gt;                  &lt;int&gt;
+## 1 Sense &amp; Sensibility       51
+## 2 Pride &amp; Prejudice         62
+## 3 Mansfield Park            49
+## 4 Emma                      56
+## 5 Northanger Abbey          32
+## 6 Persuasion                25</code></pre>
+<p>Let’s find the most negative chapters in each of Austen’s books. First we’ll get the list of negative words from the Bing et al. lexicon. Then we’ll make a data frame with the number of words in each chapter to normalize for length. Then we’ll count the number of negative words in each chapter and divide by the total number of words in each chapter. Which chapter in each book as the highest proportion of negative words?</p>
+<pre class="r"><code>bing_neg &lt;- sentiments_bing %&gt;% 
+  filter(sentiment == &quot;negative&quot;)
+
+wordcounts &lt;- tidy_books %&gt;% 
+  group_by(book, chapter) %&gt;% 
+  summarise(words = n())
+
+tidy_books %&gt;% 
+  semi_join(bing_neg) %&gt;% 
+  group_by(book, chapter) %&gt;% 
+  summarise(negativewords = n()) %&gt;% 
+  left_join(wordcounts, by = c(&quot;book&quot;, &quot;chapter&quot;)) %&gt;% 
+  mutate(ratio = negativewords/words) %&gt;% 
+  filter(chapter !=0) %&gt;% 
+  top_n(1) %&gt;% 
+  ungroup()</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   book                chapter negativewords words  ratio
+##   &lt;fct&gt;                 &lt;int&gt;         &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+## 1 Sense &amp; Sensibility      43           161  3405 0.0473
+## 2 Pride &amp; Prejudice        34           111  2104 0.0528
+## 3 Mansfield Park           46           173  3685 0.0469
+## 4 Emma                     15           151  3340 0.0452
+## 5 Northanger Abbey         21           149  2982 0.0500
+## 6 Persuasion                4            62  1807 0.0343</code></pre>
+</div>
+</div>
+<div id="chapter-3-notes-analyzing-word-and-document-frequency-tf-idf" class="section level2">
+<h2>Chapter 3 Notes: Analyzing word and document frequency: tf-idf</h2>
+<p>Text mining aims to quantify what a document is about by looking at the words that make up that document. One way to do this is <em>term frequency</em> (tf), or how often a word shows up in a document. However, there are a lot of words that don’t carry a lot of context, our stop words. However, sometimes there are words that are considered stop words that have more meaning than they seem. How do we account for that?</p>
+<p>One way is to consider a word’s <em>inverse document frequency</em> (idf). The idf decreases the weight of often used words and increases the weight of words that aren’t used as often. Together, <em>tf-idf</em> can tell us the term’s frequency adjusted for how often it appears in a document compared to a collection (corpus) of documents.</p>
+<div id="term-frequency-in-jane-austens-novels" class="section level3">
+<h3>3.1 Term frequency in Jane Austen’s novels</h3>
+<p>First, let’s count the most common words. Use <code>dplyr</code>’s <code>group_by()</code> and <code>join()</code> functions.</p>
+<pre class="r"><code>book_words &lt;- austen_books() %&gt;%
+  unnest_tokens(word, text) %&gt;% 
+  count(book, word, sort = TRUE)
+
+total_words &lt;- book_words %&gt;% 
+  group_by(book) %&gt;% 
+  summarise(total = sum(n))
+
+book_words2 &lt;- left_join(book_words, total_words, by = &quot;book&quot;)
+
+book_words2</code></pre>
+<pre><code>## # A tibble: 40,379 x 4
+##    book              word      n  total
+##    &lt;fct&gt;             &lt;chr&gt; &lt;int&gt;  &lt;int&gt;
+##  1 Mansfield Park    the    6206 160460
+##  2 Mansfield Park    to     5475 160460
+##  3 Mansfield Park    and    5438 160460
+##  4 Emma              to     5239 160996
+##  5 Emma              the    5201 160996
+##  6 Emma              and    4896 160996
+##  7 Mansfield Park    of     4778 160460
+##  8 Pride &amp; Prejudice the    4331 122204
+##  9 Emma              of     4291 160996
+## 10 Pride &amp; Prejudice to     4162 122204
+## # … with 40,369 more rows</code></pre>
+<p>Here <code>n</code> is the number of times that the <code>word</code> shows up in the <code>book</code> and the <code>total</code> is the total number of words in that <code>book</code>. Next, let’s plot <code>n/total</code> for each novel.</p>
+<pre class="r"><code>ggplot(book_words2,
+       aes(n/total, fill = book)) +
+  geom_histogram(show.legend = FALSE) +
+  xlim(NA, .0009) +
+  facet_wrap(~book, ncol = 2, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/austen-freq-ntotal-1.png" width="672" /></p>
+<p>Here we see that there a few words that occur frequently and many words that occur less frequently.</p>
+</div>
+<div id="zipfs-law" class="section level3">
+<h3>3.2 Zipf’s Law</h3>
+<p>Having distributions like the one above is very common in language and follows Zipf’s Law that the frequency that word appears in a document is inversely proportional to its rank.</p>
+<pre class="r"><code>freq_by_rank &lt;- book_words2 %&gt;% 
+  group_by(book) %&gt;%
+  mutate(rank = row_number(),
+         &#39;term frequency&#39; = n/total)
+freq_by_rank</code></pre>
+<pre><code>## # A tibble: 40,379 x 6
+## # Groups:   book [6]
+##    book              word      n  total  rank `term frequency`
+##    &lt;fct&gt;             &lt;chr&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt;            &lt;dbl&gt;
+##  1 Mansfield Park    the    6206 160460     1           0.0387
+##  2 Mansfield Park    to     5475 160460     2           0.0341
+##  3 Mansfield Park    and    5438 160460     3           0.0339
+##  4 Emma              to     5239 160996     1           0.0325
+##  5 Emma              the    5201 160996     2           0.0323
+##  6 Emma              and    4896 160996     3           0.0304
+##  7 Mansfield Park    of     4778 160460     4           0.0298
+##  8 Pride &amp; Prejudice the    4331 122204     1           0.0354
+##  9 Emma              of     4291 160996     4           0.0267
+## 10 Pride &amp; Prejudice to     4162 122204     2           0.0341
+## # … with 40,369 more rows</code></pre>
+<p>Then we can plot <code>rank</code> and <code>term frequency</code>.</p>
+<pre class="r"><code>freq_by_rank %&gt;% 
+  ggplot(aes(rank, `term frequency`, color = book)) +
+  geom_line(size = 1.1, alpha = 0.8, show.legend = FALSE) +
+  scale_x_log10() +
+  scale_y_log10()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/zipfs2-1.png" width="672" /></p>
+<p>This plot shows that Austen’s books tend to follow Zipf’s law, but not perfectly.</p>
+<p>To find the exponent of the power law is for the middle section of the rank range.</p>
+<pre class="r"><code>rank_subset &lt;- freq_by_rank %&gt;% 
+  filter(rank &lt; 500,
+         rank &gt; 10)
+
+lm(log10(`term frequency`) ~ log10(rank), data = rank_subset)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log10(`term frequency`) ~ log10(rank), data = rank_subset)
+## 
+## Coefficients:
+## (Intercept)  log10(rank)  
+##     -0.6226      -1.1125</code></pre>
+<p>Now to plot it:</p>
+<pre class="r"><code>freq_by_rank %&gt;% 
+  ggplot(aes(rank, `term frequency`, color = book )) +
+  geom_abline(intercept = -0.62, slope = -1.1, color = &quot;gray50&quot;, linetype = 2) +
+  geom_line(size = 1.1, alpha = 0.8, show.legend = FALSE) +
+  scale_x_log10() +
+  scale_y_log10()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/zipfs-plot-1.png" width="672" /></p>
+<p>It is common to see deviations where the high rank words are but it is apparently uncommon to see such deviation in the low rank words. Austen uses a lower percentage of the most common words.</p>
+</div>
+<div id="the-bind_tf_idf-function" class="section level3">
+<h3>3.3 The <code>bind_tf_idf</code> function</h3>
+<p>The <code>bind_tf_idf</code> function is part of the <code>tidytext</code> package. It takes a data frame with tidy text (one row per term per document). The arguments are as follows: <code>bind_tf_idf(tbl, term, document, n)</code> where <code>tbl</code> is a tidy text dataset, <code>term</code> is the column containing terms as string or symbol, <code>document</code> is the column containing the document IDs, as string or symbol, and <code>n</code> is the column containing document-term counts as string or symbol. Run <code>?bind_tf_idf</code> after you’ve loaded the <code>tidytext</code> package.</p>
+<p>Let’s use it:</p>
+<pre class="r"><code>book_words_bindtf &lt;- book_words %&gt;% 
+  bind_tf_idf(word, book, n)
+
+## notice here that we did not specify the `tbl` because we already said we&#39;re using the `book_words` data frame.
+
+book_words_bindtf</code></pre>
+<pre><code>## # A tibble: 40,379 x 6
+##    book              word      n     tf   idf tf_idf
+##    &lt;fct&gt;             &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Mansfield Park    the    6206 0.0387     0      0
+##  2 Mansfield Park    to     5475 0.0341     0      0
+##  3 Mansfield Park    and    5438 0.0339     0      0
+##  4 Emma              to     5239 0.0325     0      0
+##  5 Emma              the    5201 0.0323     0      0
+##  6 Emma              and    4896 0.0304     0      0
+##  7 Mansfield Park    of     4778 0.0298     0      0
+##  8 Pride &amp; Prejudice the    4331 0.0354     0      0
+##  9 Emma              of     4291 0.0267     0      0
+## 10 Pride &amp; Prejudice to     4162 0.0341     0      0
+## # … with 40,369 more rows</code></pre>
+<p>Here we see that the most common words (the, two, and, of, etc.) have an idf of 0 and a tf-idf of essentially zero.</p>
+<p>Let’s look at terms that have high tf-idf:</p>
+<pre class="r"><code> book_words_bindtf %&gt;% 
+  arrange(desc(tf_idf))</code></pre>
+<pre><code>## # A tibble: 40,379 x 6
+##    book                word          n      tf   idf  tf_idf
+##    &lt;fct&gt;               &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Sense &amp; Sensibility elinor      623 0.00519  1.79 0.00931
+##  2 Sense &amp; Sensibility marianne    492 0.00410  1.79 0.00735
+##  3 Mansfield Park      crawford    493 0.00307  1.79 0.00551
+##  4 Pride &amp; Prejudice   darcy       373 0.00305  1.79 0.00547
+##  5 Persuasion          elliot      254 0.00304  1.79 0.00544
+##  6 Emma                emma        786 0.00488  1.10 0.00536
+##  7 Northanger Abbey    tilney      196 0.00252  1.79 0.00452
+##  8 Emma                weston      389 0.00242  1.79 0.00433
+##  9 Pride &amp; Prejudice   bennet      294 0.00241  1.79 0.00431
+## 10 Persuasion          wentworth   191 0.00228  1.79 0.00409
+## # … with 40,369 more rows</code></pre>
+<p>Here we see names of characters from the books. They are important and distictive of each book.</p>
+<p>Now let’s visualize the data:</p>
+<pre class="r"><code>book_words_bindtf %&gt;% 
+  arrange(desc(tf_idf)) %&gt;% 
+  mutate(word = factor(word, levels = rev(unique(word)))) %&gt;% 
+  group_by(book) %&gt;% 
+  top_n(15) %&gt;% 
+  ungroup() %&gt;% 
+  ggplot(aes(word, tf_idf, fill = book)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = &quot;tf-idf&quot;) +
+  facet_wrap(~book, ncol = 2, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<pre><code>## Selecting by tf_idf</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/high-tf-idf-vis-1.png" width="672" /></p>
+<p>Here I see the highest tf-idf words in each book. I see lots of character’s names, meaning that Austen has similar language across her books and that names are distinctive to each book. I also notice that some of the names are repeated with an apostrophe-s, or the possessive of a name.</p>
+</div>
+<div id="a-corpus-of-physics-texts" class="section level3">
+<h3>3.4 A corpus of physics texts</h3>
+<p>Now we’ll look at terms in a collection of classic physics books from Project Gutenberg: <em>Discourse on Floating Bodies</em> by Galileo Galilei, <em>Treatise on Light</em> by Christiaan Huygens, <em>Experiments with Alternate Currents of High Potential and High Frequency</em> by Nikola Tesla, and <em>Relativity: The Special and General Theory</em> by Albert Einstein.</p>
+<p>I’ll use the function <code>gutenberg_download()</code> from the <code>gutenbergr</code> package. Because these are all from different authors, we’ll add the argument <code>meta_fields = &quot;author&quot;</code> to make sure it is included in the data frame.</p>
+<pre class="r"><code>physics &lt;- gutenberg_download(c(37729, 14725, 13476, 30155), 
+                              meta_fields = &quot;author&quot;)
+
+## Next we&#39;ll tidy the data
+
+physics_words &lt;- physics %&gt;% 
+  unnest_tokens(word, text) %&gt;% 
+  count(author, word, sort = TRUE)
+## in `count(author, word, sort = TRUE)` the `count` function is grouping by author, then by word, sorting in descending order.
+physics_words</code></pre>
+<pre><code>## # A tibble: 12,671 x 3
+##    author              word      n
+##    &lt;chr&gt;               &lt;chr&gt; &lt;int&gt;
+##  1 Galilei, Galileo    the    3760
+##  2 Tesla, Nikola       the    3604
+##  3 Huygens, Christiaan the    3553
+##  4 Einstein, Albert    the    2993
+##  5 Galilei, Galileo    of     2049
+##  6 Einstein, Albert    of     2028
+##  7 Tesla, Nikola       of     1737
+##  8 Huygens, Christiaan of     1708
+##  9 Huygens, Christiaan to     1207
+## 10 Tesla, Nikola       a      1176
+## # … with 12,661 more rows</code></pre>
+<p>We see lots of stop words here. This is very common. When we calculate te tf-idf, we’ll see which words are most important. One thing we’ll need to be careful of is that each of these documents are different lengths. Remember the arguments for <code>bind_tf_idf(tbl, term, document, n)</code>. In this case, the term is still <code>word</code> but the document is <code>author</code>.</p>
+<pre class="r"><code>library(forcats)
+
+physics_tfidf &lt;- physics_words %&gt;% 
+  bind_tf_idf(word, author, n) %&gt;% 
+  mutate(word = fct_reorder(word, tf_idf)) %&gt;% 
+  mutate(author = factor(author, levels = c(&quot;Galilei, Galileo&quot;, 
+                                            &quot;Huygens, Christiaan&quot;,
+                                            &quot;Tesla, Nikola&quot;, 
+                                            &quot;Einstein, Albert&quot;)))
+physics_tfidf</code></pre>
+<pre><code>## # A tibble: 12,671 x 6
+##    author              word      n     tf   idf tf_idf
+##    &lt;fct&gt;               &lt;fct&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Galilei, Galileo    the    3760 0.0935     0      0
+##  2 Tesla, Nikola       the    3604 0.0913     0      0
+##  3 Huygens, Christiaan the    3553 0.0928     0      0
+##  4 Einstein, Albert    the    2993 0.0952     0      0
+##  5 Galilei, Galileo    of     2049 0.0510     0      0
+##  6 Einstein, Albert    of     2028 0.0645     0      0
+##  7 Tesla, Nikola       of     1737 0.0440     0      0
+##  8 Huygens, Christiaan of     1708 0.0446     0      0
+##  9 Huygens, Christiaan to     1207 0.0315     0      0
+## 10 Tesla, Nikola       a      1176 0.0298     0      0
+## # … with 12,661 more rows</code></pre>
+<p>Now, let’s plot it:</p>
+<pre class="r"><code>physics_tfidf %&gt;% 
+  group_by(author) %&gt;% 
+  top_n(15, tf_idf) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(word = reorder(word, tf_idf)) %&gt;% 
+  ggplot(aes(word, tf_idf, fill = author)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = &quot;tf_idf&quot;) +
+  facet_wrap(~author, ncol = 2, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/physics-plot-1.png" width="672" /></p>
+<p>This is interesting but what’s the deal with the &quot;_&quot; and the “<em>k</em>” and why was Tesla talking about figs so much? Let’s take a look at the data:</p>
+<pre class="r"><code>physics %&gt;% 
+  filter(str_detect(text, &quot;_k_&quot;)) %&gt;% 
+  select(text)</code></pre>
+<pre><code>## # A tibble: 7 x 1
+##   text                                                                  
+##   &lt;chr&gt;                                                                 
+## 1 surface AB at the points AK_k_B. Then instead of the hemispherical    
+## 2 would needs be that from all the other points K_k_B there should      
+## 3 necessarily be equal to CD, because C_k_ is equal to CK, and C_g_ to  
+## 4 the crystal at K_k_, all the points of the wave CO_oc_ will have      
+## 5 O_o_ has reached K_k_. Which is easy to comprehend, since, of these   
+## 6 CO_oc_ in the crystal, when O_o_ has arrived at K_k_, because it forms
+## 7 ρ is the average density of the matter and _k_ is a constant connected</code></pre>
+<p>This doesn’t look too meaningful. I will add it to a group of stopwords to remove them:</p>
+<pre class="r"><code>physics_stopwords &lt;- tibble(word = c(&quot;ab&quot;, &quot;ac&quot;, &quot;rc&quot;, &quot;cm&quot;, &quot;cg&quot;, &quot;_k_&quot;, &quot;_k&quot;, &quot;co&quot;, &quot;_x&quot;, &quot;fig&quot;, &quot;cb&quot;, &quot;ak&quot;, &quot;d&quot;, &quot;bn&quot;, &quot;ad&quot;, &quot;_v_&quot;, &quot;cd&quot;, &quot;_i.e&quot;, &quot;bc&quot;))
+
+## When I ran all of this code, there were additional stopwords that appeared, so I came back to this section to add them. The words I added were &quot;cb&quot;, &quot;ak&quot;, &quot;d&quot;, &quot;bn&quot;, &quot;ad&quot;, &quot;_v_&quot;, &quot;cd&quot;, &quot;_i.e&quot;, and &quot;bc&quot;.
+
+physics_words_stopped &lt;- anti_join(physics_words, physics_stopwords, by = &quot;word&quot;)
+
+## Now let&#39;s calculate the tf-idf and then plot the data:
+physics_tfidf2 &lt;- physics_words_stopped %&gt;% 
+  bind_tf_idf(word, author, n) %&gt;% 
+  mutate(word = str_remove_all(word, &quot;_&quot;)) %&gt;% 
+  mutate(word = fct_reorder(word, tf_idf)) %&gt;% 
+  mutate(author = factor(author, levels = c(&quot;Galilei, Galileo&quot;, 
+                                            &quot;Huygens, Christiaan&quot;,
+                                            &quot;Tesla, Nikola&quot;, 
+                                            &quot;Einstein, Albert&quot;)))
+
+## Notice we also removed the &quot;_&quot; we found.
+
+physics_tfidf2</code></pre>
+<pre><code>## # A tibble: 12,648 x 6
+##    author              word      n     tf   idf tf_idf
+##    &lt;fct&gt;               &lt;fct&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Galilei, Galileo    the    3760 0.0937     0      0
+##  2 Tesla, Nikola       the    3604 0.0915     0      0
+##  3 Huygens, Christiaan the    3553 0.0939     0      0
+##  4 Einstein, Albert    the    2993 0.0964     0      0
+##  5 Galilei, Galileo    of     2049 0.0511     0      0
+##  6 Einstein, Albert    of     2028 0.0653     0      0
+##  7 Tesla, Nikola       of     1737 0.0441     0      0
+##  8 Huygens, Christiaan of     1708 0.0451     0      0
+##  9 Huygens, Christiaan to     1207 0.0319     0      0
+## 10 Tesla, Nikola       a      1176 0.0299     0      0
+## # … with 12,638 more rows</code></pre>
+<pre class="r"><code>## Plotting:
+
+physics_tfidf2 %&gt;% 
+  group_by(author) %&gt;% 
+  top_n(15, tf_idf) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(word = reorder(word, tf_idf)) %&gt;% 
+  ggplot(aes(word, tf_idf, fill = author)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = NULL, y = &quot;tf_idf&quot;) +
+  facet_wrap(~author, ncol = 2, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/physics_stopwords2-1.png" width="672" /></p>
+<p>Now the plot has words that are on their face much more meaningful than the plot we had before. If you compare my code with what’s in tidytextmining, you’ll see I plotted this a little differently. I noticed when I used <code>reorder_within()</code> and viewed the resulting data frame my text was no longer tidy. It had each word as “the_Einstein, Albert” and “the_Tesla, Nikola”. I decided to use the code that was in the original bind&amp;plot.</p>
+</div>
+</div>
+<div id="chapter-4-notes-relationships-between-words-n-grams-and-correlations" class="section level2">
+<h2>Chapter 4 Notes: Relationships between words: n-grams and correlations</h2>
+<p>Tidy text has focused on one word per row per document, but now I’ll look at n-grams and correlations. This will allow me to look at the relationships between words, words that follow other words and words that tend to show up nearby one another in documents. I’ll use <code>token = &quot;ngrams&quot;</code> argument to look at adjacent words, <code>ggraph</code> to make network plots, and <code>widyr</code> that can “calculate pairwise correlations and distances within a tidy data frame”.</p>
+<div id="tokenizing-by-n-gram" class="section level3">
+<h3>4.1 Tokenizing by n-gram</h3>
+<p><code>unnest_tokens()</code> can be adjusted by the argument <code>token = &quot;ngrams&quot;</code> and <code>n = 2</code> to set the number of words to 2. This will pull words that are directly next to one another, so we’ll see overlap where word #2 is paired with word #1 and word #3. Each pair will have its own row. Thus row 1 would have words 1&amp;2, row 2 would have words 2&amp;3, row 3 would have words 3&amp;4, and so on.</p>
+<pre class="r"><code>austen_bigrams &lt;- austen_books() %&gt;% 
+  unnest_tokens(bigram, text, token = &quot;ngrams&quot;, n = 2)
+austen_bigrams</code></pre>
+<pre><code>## # A tibble: 725,049 x 2
+##    book                bigram         
+##    &lt;fct&gt;               &lt;chr&gt;          
+##  1 Sense &amp; Sensibility sense and      
+##  2 Sense &amp; Sensibility and sensibility
+##  3 Sense &amp; Sensibility sensibility by 
+##  4 Sense &amp; Sensibility by jane        
+##  5 Sense &amp; Sensibility jane austen    
+##  6 Sense &amp; Sensibility austen 1811    
+##  7 Sense &amp; Sensibility 1811 chapter   
+##  8 Sense &amp; Sensibility chapter 1      
+##  9 Sense &amp; Sensibility 1 the          
+## 10 Sense &amp; Sensibility the family     
+## # … with 725,039 more rows</code></pre>
+</div>
+<div id="counting-and-filtering-n-grams" class="section level3">
+<h3>4.1.1 Counting and filtering n-grams</h3>
+<p><code>dplyr</code> can be used on n-grams:</p>
+<pre class="r"><code>austen_bigrams %&gt;% 
+  count(bigram, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 211,236 x 2
+##    bigram       n
+##    &lt;chr&gt;    &lt;int&gt;
+##  1 of the    3017
+##  2 to be     2787
+##  3 in the    2368
+##  4 it was    1781
+##  5 i am      1545
+##  6 she had   1472
+##  7 of her    1445
+##  8 to the    1387
+##  9 she was   1377
+## 10 had been  1299
+## # … with 211,226 more rows</code></pre>
+<p>There are lots of stop words here. Using <code>separate()</code> can split a column into multiple columns like so:</p>
+<pre class="r"><code>bigrams_separated &lt;- austen_bigrams %&gt;% 
+  separate(bigram, c(&quot;word1&quot;, &quot;word2&quot;), sep = &quot; &quot;)
+bigrams_separated</code></pre>
+<pre><code>## # A tibble: 725,049 x 3
+##    book                word1       word2      
+##    &lt;fct&gt;               &lt;chr&gt;       &lt;chr&gt;      
+##  1 Sense &amp; Sensibility sense       and        
+##  2 Sense &amp; Sensibility and         sensibility
+##  3 Sense &amp; Sensibility sensibility by         
+##  4 Sense &amp; Sensibility by          jane       
+##  5 Sense &amp; Sensibility jane        austen     
+##  6 Sense &amp; Sensibility austen      1811       
+##  7 Sense &amp; Sensibility 1811        chapter    
+##  8 Sense &amp; Sensibility chapter     1          
+##  9 Sense &amp; Sensibility 1           the        
+## 10 Sense &amp; Sensibility the         family     
+## # … with 725,039 more rows</code></pre>
+<pre class="r"><code>## Now we&#39;ll filter out the stop words:
+
+bigrams_filtered &lt;- bigrams_separated %&gt;% 
+  filter(!word1 %in% stop_words$word) %&gt;% 
+  filter(!word2 %in% stop_words$word)
+bigrams_filtered</code></pre>
+<pre><code>## # A tibble: 44,784 x 3
+##    book                word1       word2       
+##    &lt;fct&gt;               &lt;chr&gt;       &lt;chr&gt;       
+##  1 Sense &amp; Sensibility jane        austen      
+##  2 Sense &amp; Sensibility austen      1811        
+##  3 Sense &amp; Sensibility 1811        chapter     
+##  4 Sense &amp; Sensibility chapter     1           
+##  5 Sense &amp; Sensibility norland     park        
+##  6 Sense &amp; Sensibility surrounding acquaintance
+##  7 Sense &amp; Sensibility late        owner       
+##  8 Sense &amp; Sensibility advanced    age         
+##  9 Sense &amp; Sensibility constant    companion   
+## 10 Sense &amp; Sensibility happened    ten         
+## # … with 44,774 more rows</code></pre>
+<pre class="r"><code>## Now to count:
+bigrams_counts &lt;- bigrams_filtered %&gt;% 
+  count(word1, word2, sort = TRUE)
+bigrams_counts</code></pre>
+<pre><code>## # A tibble: 33,421 x 3
+##    word1   word2         n
+##    &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt;
+##  1 sir     thomas      287
+##  2 miss    crawford    215
+##  3 captain wentworth   170
+##  4 miss    woodhouse   162
+##  5 frank   churchill   132
+##  6 lady    russell     118
+##  7 lady    bertram     114
+##  8 sir     walter      113
+##  9 miss    fairfax     109
+## 10 colonel brandon     108
+## # … with 33,411 more rows</code></pre>
+<p>Here we see that Austen often attaches titles to character’s names. Next we can recombine the words with <code>unite()</code> from the <code>tidyr</code> package.</p>
+<pre class="r"><code>bigrams_united &lt;- bigrams_filtered %&gt;% 
+  unite(bigram, word1, word2, sep = &quot; &quot;)
+bigrams_united</code></pre>
+<pre><code>## # A tibble: 44,784 x 2
+##    book                bigram                  
+##    &lt;fct&gt;               &lt;chr&gt;                   
+##  1 Sense &amp; Sensibility jane austen             
+##  2 Sense &amp; Sensibility austen 1811             
+##  3 Sense &amp; Sensibility 1811 chapter            
+##  4 Sense &amp; Sensibility chapter 1               
+##  5 Sense &amp; Sensibility norland park            
+##  6 Sense &amp; Sensibility surrounding acquaintance
+##  7 Sense &amp; Sensibility late owner              
+##  8 Sense &amp; Sensibility advanced age            
+##  9 Sense &amp; Sensibility constant companion      
+## 10 Sense &amp; Sensibility happened ten            
+## # … with 44,774 more rows</code></pre>
+<p>Let’s try it with trigams:</p>
+<pre class="r"><code>austen_trigams &lt;- austen_books() %&gt;% 
+  unnest_tokens(trigram, text, token = &quot;ngrams&quot;, n = 3) %&gt;% 
+  separate(trigram, c(&quot;word1&quot;, &quot;word2&quot;, &quot;word3&quot;), sep = &quot; &quot;) %&gt;% 
+  filter(!word1 %in% stop_words$word, 
+         !word2 %in% stop_words$word,
+         !word3 %in% stop_words$word) %&gt;% 
+  count(word1, word2, word3, sort = TRUE)
+
+## the filter() is used with ! and %in% here. We&#39;re asking R to spit out all the words in word1 that are not also found in the stop_words data frame under the variable &quot;word&quot;. When I think of filtering something I&#39;m often thinking of &quot;filtering out&quot; or removing something, but I should think of it as a colander where the stuff that I want (like pasta) is what gets held on to, not the pasta water. 
+## the ! operator was a little confusing here too and it&#39;s possibly due to the order. Initially I read it as &quot;throw away the words that aren&#39;t in word1 in stop_words&quot;. However, to put the code into plain english, I should read it as &quot;show me all the words in word1 that aren&#39;t also in stop_words&#39; word column. I often feel like R writes everything backwards...
+
+austen_trigams</code></pre>
+<pre><code>## # A tibble: 8,757 x 4
+##    word1     word2     word3         n
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt;
+##  1 dear      miss      woodhouse    23
+##  2 miss      de        bourgh       18
+##  3 lady      catherine de           14
+##  4 catherine de        bourgh       13
+##  5 poor      miss      taylor       11
+##  6 sir       walter    elliot       11
+##  7 ten       thousand  pounds       11
+##  8 dear      sir       thomas       10
+##  9 twenty    thousand  pounds        8
+## 10 replied   miss      crawford      7
+## # … with 8,747 more rows</code></pre>
+</div>
+<div id="analyzing-bigrams" class="section level3">
+<h3>4.1.2 Analyzing bigrams</h3>
+<p>Using bigrams we can look specifically at things that tend to go together in language, such as streets. We often write streets as “Yahmill street” or “Lovejoy street”.</p>
+<pre class="r"><code>bigrams_filtered %&gt;% 
+  filter(word2 == &quot;street&quot;) %&gt;% 
+  count(book, word1, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 34 x 3
+##    book                word1           n
+##    &lt;fct&gt;               &lt;chr&gt;       &lt;int&gt;
+##  1 Sense &amp; Sensibility berkeley       16
+##  2 Sense &amp; Sensibility harley         16
+##  3 Northanger Abbey    pulteney       14
+##  4 Northanger Abbey    milsom         11
+##  5 Mansfield Park      wimpole        10
+##  6 Pride &amp; Prejudice   gracechurch     9
+##  7 Sense &amp; Sensibility conduit         6
+##  8 Sense &amp; Sensibility bond            5
+##  9 Persuasion          milsom          5
+## 10 Persuasion          rivers          4
+## # … with 24 more rows</code></pre>
+<pre class="r"><code>## Note that we used `count(book, word1)` not just `count(word1)`. Using just `word1` would have returned a count of all the times a street like Milsom appears in all of the books. It appears 11 times in Northanger Abbey and 5 times in Persuation for a total of 16 times. Adding `book` let&#39;s us see a count of word1 by book.</code></pre>
+<p>We can also treat bigrams as terms for tf-idf.</p>
+<pre class="r"><code>bigrams_tf_idf &lt;- bigrams_united %&gt;% 
+  count(book, bigram) %&gt;% 
+  bind_tf_idf(bigram, book, n) %&gt;% 
+  arrange(desc(tf_idf))
+bigrams_tf_idf</code></pre>
+<pre><code>## # A tibble: 36,217 x 6
+##    book                bigram                n     tf   idf tf_idf
+##    &lt;fct&gt;               &lt;chr&gt;             &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Persuasion          captain wentworth   170 0.0299  1.79 0.0535
+##  2 Mansfield Park      sir thomas          287 0.0287  1.79 0.0515
+##  3 Mansfield Park      miss crawford       215 0.0215  1.79 0.0386
+##  4 Persuasion          lady russell        118 0.0207  1.79 0.0371
+##  5 Persuasion          sir walter          113 0.0198  1.79 0.0356
+##  6 Emma                miss woodhouse      162 0.0170  1.79 0.0305
+##  7 Northanger Abbey    miss tilney          82 0.0159  1.79 0.0286
+##  8 Sense &amp; Sensibility colonel brandon     108 0.0150  1.79 0.0269
+##  9 Emma                frank churchill     132 0.0139  1.79 0.0248
+## 10 Pride &amp; Prejudice   lady catherine      100 0.0138  1.79 0.0247
+## # … with 36,207 more rows</code></pre>
+<pre class="r"><code>bigrams_tf_idf %&gt;% 
+  group_by(book) %&gt;% 
+  top_n(15, tf_idf) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(bigram = reorder(bigram, tf_idf)) %&gt;% 
+  ggplot(aes(bigram, tf_idf, fill = book)) +
+  geom_col(show.legend = FALSE) +
+  labs (x = NULL, y = &quot;tf_idf&quot;) +
+  facet_wrap(~book, ncol = 2, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/bigram_tf_idf_plot-1.png" width="672" /></p>
+<pre class="r"><code>## Note that running this code without `mutate(bigram = reorder(bigram, tf_idf))` resulted in a plot where the bigrams were not in descending order.</code></pre>
+<p>Again we see a lot of proper nouns and names with titles. We also see things like “cried Emma” and “replied Elizabeth” which makes sense since these are main characters who often speak.</p>
+</div>
+<div id="using-bigrams-to-provide-context-in-sentiment-analysis" class="section level3">
+<h3>4.1.3 Using bigrams to provide context in sentiment analysis</h3>
+<p>Using bigrams for sentiment analysis can add a lot of context. We might see a sentence that says “I am not happy about this” and while the word “happy” is there, we know the sentiment is negative, not positive. Bigrams can help here.</p>
+<pre class="r"><code>bigrams_separated %&gt;% 
+  filter(word1 == &quot;not&quot;) %&gt;% 
+  count(word1, word2, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 1,246 x 3
+##    word1 word2     n
+##    &lt;chr&gt; &lt;chr&gt; &lt;int&gt;
+##  1 not   be      610
+##  2 not   to      355
+##  3 not   have    327
+##  4 not   know    252
+##  5 not   a       189
+##  6 not   think   176
+##  7 not   been    160
+##  8 not   the     147
+##  9 not   at      129
+## 10 not   in      118
+## # … with 1,236 more rows</code></pre>
+<p>By looking at bigrams that would change the sentiment of a single word, we can throw out or change the sentiment contribution of that single word.</p>
+<pre class="r"><code>sentiments_afinn &lt;- get_sentiments(&quot;afinn&quot;)</code></pre>
+<pre class="r"><code>not_words &lt;- bigrams_separated %&gt;% 
+  filter(word1 == &quot;not&quot;) %&gt;% 
+  inner_join(sentiments_afinn, by = c(word2 = &quot;word&quot;)) %&gt;% 
+  count(word2, value, sort = TRUE)
+not_words</code></pre>
+<pre><code>## # A tibble: 245 x 3
+##    word2   value     n
+##    &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt;
+##  1 like        2    99
+##  2 help        2    82
+##  3 want        1    45
+##  4 wish        1    39
+##  5 allow       1    36
+##  6 care        2    23
+##  7 sorry      -1    21
+##  8 leave      -1    18
+##  9 pretend    -1    18
+## 10 worth       2    17
+## # … with 235 more rows</code></pre>
+<p>Here we see the most common words that are preceded by “not” are the words “like”, “help”, and &quot;want. We can calculate which words had the biggest impact in the wrong sentiment direction. We can multiply the sentiment score (value) by the number of times it appears (n).</p>
+<pre class="r"><code>not_words %&gt;% 
+  mutate(contribution = n * value) %&gt;% 
+  arrange(desc(abs(contribution))) %&gt;% 
+  head(20) %&gt;% 
+  mutate(word2 = reorder(word2, contribution)) %&gt;% 
+  ggplot(aes(word2, n * value, fill = n * value &gt; 0)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = &quot;Words preceded by \&quot;not\&quot;&quot;, 
+       y = &quot;Sentiment value * number of occurences&quot;) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/bigram_afinn_plot-1.png" width="672" /></p>
+<p>Here we see the top 20 words preceded by “not” that contribute incorrect sentiment. We see that “not like” and “not help” are big contributors!</p>
+<p>Let’s look at more words that contribute to incorrect sentiment:</p>
+<pre class="r"><code>negation_words &lt;- c(&quot;not&quot;, &quot;no&quot;, &quot;never&quot;, &quot;without&quot;, &quot;don&#39;t&quot;, &quot;won&#39;t&quot;)
+
+negated_words &lt;- bigrams_separated %&gt;% 
+  filter(word1 %in% negation_words) %&gt;% 
+  inner_join(sentiments_afinn, by = c(word2 = &quot;word&quot;)) %&gt;% 
+  count(word1, word2, value, sort = TRUE)
+negated_words</code></pre>
+<pre><code>## # A tibble: 536 x 4
+##    word1 word2 value     n
+##    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
+##  1 no    doubt    -1   102
+##  2 not   like      2    99
+##  3 not   help      2    82
+##  4 no    no       -1    60
+##  5 not   want      1    45
+##  6 not   wish      1    39
+##  7 not   allow     1    36
+##  8 not   care      2    23
+##  9 no    harm     -2    22
+## 10 not   sorry    -1    21
+## # … with 526 more rows</code></pre>
+<pre class="r"><code>negated_words %&gt;% 
+  mutate(contribution = n * value) %&gt;% 
+  arrange(desc(abs(contribution))) %&gt;% 
+  head(20) %&gt;% 
+  mutate(word2 = reorder(word2, contribution)) %&gt;% 
+  ggplot(aes(word2, n * value, fill = n * value &gt; 0)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = &quot;Words preceded by negating term&quot;,
+       y = &quot;Sentiment value * number of occurences&quot;) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/bigram_negated_words_plot-1.png" width="672" /></p>
+</div>
+<div id="visualizing-a-network-of-bigrams-with-ggraph" class="section level3">
+<h3>4.1.4 Visualizing a network of bigrams with ggraph</h3>
+<p>Another way to look at the relationships between words is to look at a network of multiple words all at once instead of just the top pairs. We can create nodes with the tidy data because the data has three variables: the “from”, the “to”, and the weight (n). In <code>igraph</code> we can use <code>graph_from_data_frame()</code>.</p>
+<pre class="r"><code>bigrams_graph &lt;- bigrams_counts %&gt;% 
+  filter(n &gt; 20) %&gt;% 
+  graph_from_data_frame()
+bigrams_graph</code></pre>
+<pre><code>## IGRAPH 42faaea DN-- 91 77 -- 
+## + attr: name (v/c), n (e/n)
+## + edges from 42faaea (vertex names):
+##  [1] sir     -&gt;thomas     miss    -&gt;crawford   captain -&gt;wentworth 
+##  [4] miss    -&gt;woodhouse  frank   -&gt;churchill  lady    -&gt;russell   
+##  [7] lady    -&gt;bertram    sir     -&gt;walter     miss    -&gt;fairfax   
+## [10] colonel -&gt;brandon    miss    -&gt;bates      lady    -&gt;catherine 
+## [13] sir     -&gt;john       jane    -&gt;fairfax    miss    -&gt;tilney    
+## [16] lady    -&gt;middleton  miss    -&gt;bingley    thousand-&gt;pounds    
+## [19] miss    -&gt;dashwood   miss    -&gt;bennet     john    -&gt;knightley 
+## [22] miss    -&gt;morland    captain -&gt;benwick    dear    -&gt;miss      
+## + ... omitted several edges</code></pre>
+<pre class="r"><code>set.seed(2017)
+
+## Using `set.seed(2017) will allow the graph below to print out the same for anyone who tries to reproduce the code.
+
+ggraph(bigrams_graph, layout = &quot;fr&quot;) +
+  geom_edge_link() +
+  geom_node_point() +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1)</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/bigram_graph-1.png" width="672" /></p>
+<p>In the above graph, we see that there are common nodes of “sir” or “lady” and different character’s names branching off.</p>
+<p>We can add more adjustments to the graph:</p>
+<pre class="r"><code>set.seed(2016)
+
+a &lt;- grid::arrow(type = &quot;closed&quot;, length = unit(.10, &quot;inches&quot;))
+
+ggraph(bigrams_graph, layout = &quot;fr&quot;) +
+  geom_edge_link(aes(edge_alpha = n), 
+                 show.legend = FALSE,
+                 arrow = a,
+                 end_cap = circle(.01, &#39;inches&#39;)) +
+  geom_node_point(color = &quot;lightblue&quot;, size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/graph_additional_layers-1.png" width="672" /></p>
+</div>
+<div id="visualizing-bigrams-in-other-texts" class="section level3">
+<h3>4.1.5 Visualizing bigrams in other texts</h3>
+<p>To make it easy to count bigrams and visualize bigrams, we can make a function:</p>
+<pre class="r"><code>count_bigrams &lt;- function(dataset) {
+  dataset %&gt;% 
+    unnest_tokens(bigram, text, token = &quot;ngrams&quot;, n = 2) %&gt;% 
+    separate(bigram, c(&quot;word1&quot;, &quot;word2&quot;), sep = &quot; &quot;) %&gt;% 
+    filter(!word1 %in% stop_words$word,
+           !word2 %in% stop_words$word) %&gt;% 
+    count(word1, word2, sort = TRUE)
+}
+
+visualize_bigrams &lt;- function(bigrams) {
+  set.seed(2016)
+  a &lt;- grid::arrow(type = &quot;closed&quot;, 
+                   length = unit(.15, &quot;inches&quot;))
+  
+  bigrams %&gt;% 
+    graph_from_data_frame() %&gt;% 
+    ggraph(layout = &quot;fr&quot;) +
+    geom_edge_link(aes(edge_alpha = n),
+                   show.legend = FALSE,
+                   arrow = a) +
+    geom_node_point(color = &quot;lightblue&quot;, size = 4) +
+    geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+    theme_void()
+}</code></pre>
+<p>Now we can use the functions <code>count_bigrams()</code> and <code>visualize_bigrams()</code> more easily. Let’s try it out:</p>
+<pre class="r"><code>## download the text:
+
+kjv &lt;- gutenberg_download(10)
+
+## bigram the text:
+
+kjv_bigrams &lt;- kjv %&gt;% 
+  count_bigrams()
+
+## filter out rare combos and numbers
+
+kjv_bigrams %&gt;% 
+  filter(n &gt; 40,
+         !str_detect(word1, &quot;\\d&quot;),
+         !str_detect(word2, &quot;\\d&quot;)) %&gt;% 
+  visualize_bigrams()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/KJV_download-1.png" width="672" /></p>
+<p>We see a lot of “thy” and “thou” and “thine”. These could be considered stop words.</p>
+</div>
+<div id="counting-and-correlating-pairs-of-words-with-the-widyr-package" class="section level3">
+<h3>4.2 Counting and correlating pairs of words with the widyr package</h3>
+<p>Sometimes we’re interested in words that aren’t right next to one another but tend to co-occur in a document(s), chapter(s), or other grouping. To do this, we need to be able to compare between rows and make our tidy, narrow data, into a wide format. They widyr package can do this.</p>
+</div>
+<div id="counting-and-correlating-among-sections" class="section level3">
+<h3>4.2.1 Counting and correlating among sections</h3>
+<p>Back in Chapter 2, we looked at sections of the book <em>Pride and Prejudice</em> for sentiment analysis. We can do something similar to find what words tend to appear within the same section:</p>
+<pre class="r"><code>## we call corpus `austen_books()`, filter for just P&amp;P, add in a new variable called section that is 1 section per ten rows, we don&#39;t want to look at section 0 since the actual text of the book starts on row 10, we&#39;ve unnested tokens and filtered out stop words.
+
+austen_section_words &lt;- austen_books() %&gt;% 
+  filter(book == &quot;Pride &amp; Prejudice&quot;) %&gt;% 
+  mutate(section = row_number() %/% 10) %&gt;% 
+    filter(section &gt; 0) %&gt;% 
+  unnest_tokens(word, text) %&gt;% 
+  filter(!word %in% stop_words$word)
+
+austen_section_words</code></pre>
+<pre><code>## # A tibble: 37,240 x 3
+##    book              section word        
+##    &lt;fct&gt;               &lt;dbl&gt; &lt;chr&gt;       
+##  1 Pride &amp; Prejudice       1 truth       
+##  2 Pride &amp; Prejudice       1 universally 
+##  3 Pride &amp; Prejudice       1 acknowledged
+##  4 Pride &amp; Prejudice       1 single      
+##  5 Pride &amp; Prejudice       1 possession  
+##  6 Pride &amp; Prejudice       1 fortune     
+##  7 Pride &amp; Prejudice       1 wife        
+##  8 Pride &amp; Prejudice       1 feelings    
+##  9 Pride &amp; Prejudice       1 views       
+## 10 Pride &amp; Prejudice       1 entering    
+## # … with 37,230 more rows</code></pre>
+<p>Now we can use the widyr package’s <code>pairwise_count()</code> to find the words that co-occur within sections. Usage: <code>pairwise_count(tbl item, feature)</code>. Where <code>item</code> is the thing we’re counting and spits out <code>item1</code> and <code>item2</code>, and where <code>feature</code> is the scope of each chunk/co-occurance area.</p>
+<pre class="r"><code>word_pairs &lt;- austen_section_words %&gt;% 
+  pairwise_count(word, section, sort = TRUE)
+word_pairs</code></pre>
+<pre><code>## # A tibble: 796,008 x 3
+##    item1     item2         n
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt;
+##  1 darcy     elizabeth   144
+##  2 elizabeth darcy       144
+##  3 miss      elizabeth   110
+##  4 elizabeth miss        110
+##  5 elizabeth jane        106
+##  6 jane      elizabeth   106
+##  7 miss      darcy        92
+##  8 darcy     miss         92
+##  9 elizabeth bingley      91
+## 10 bingley   elizabeth    91
+## # … with 795,998 more rows</code></pre>
+<p>Here we see the pair Darcy &amp; Elizabeth and Elizabeth &amp; Darcy. Let’s find the most common words that co-occur with Darcy:</p>
+<pre class="r"><code>word_pairs %&gt;% 
+  filter(item1 == &quot;darcy&quot;)</code></pre>
+<pre><code>## # A tibble: 2,930 x 3
+##    item1 item2         n
+##    &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;
+##  1 darcy elizabeth   144
+##  2 darcy miss         92
+##  3 darcy bingley      86
+##  4 darcy jane         46
+##  5 darcy bennet       45
+##  6 darcy sister       45
+##  7 darcy time         41
+##  8 darcy lady         38
+##  9 darcy friend       37
+## 10 darcy wickham      37
+## # … with 2,920 more rows</code></pre>
+</div>
+<div id="pairwise-correlation" class="section level3">
+<h3>4.2.2 Pairwise correlation</h3>
+<p>Looking at the example of Elizabeth &amp; Darcy, we see that they’re very common terms in the book, which makes sense, they’re the main characters. We could also look at correlation among words, or how often words co-occur compared to how often they occur separately.</p>
+<p>The function <code>pairwise_cor()</code> in widyr calculates the phi coefficient (equivalent to the Pearson correlation when applied to binary data) between words based on how often they co-occur in the same section.</p>
+<pre class="r"><code>## first let&#39;s filter relatively common words
+
+word_cors &lt;- austen_section_words %&gt;% 
+  group_by(word) %&gt;% 
+  filter(n() &gt;= 20) %&gt;% 
+  pairwise_cor(word, section, sort = TRUE)
+word_cors</code></pre>
+<pre><code>## # A tibble: 154,842 x 3
+##    item1     item2     correlation
+##    &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;
+##  1 bourgh    de              0.951
+##  2 de        bourgh          0.951
+##  3 pounds    thousand        0.701
+##  4 thousand  pounds          0.701
+##  5 william   sir             0.664
+##  6 sir       william         0.664
+##  7 catherine lady            0.663
+##  8 lady      catherine       0.663
+##  9 forster   colonel         0.622
+## 10 colonel   forster         0.622
+## # … with 154,832 more rows</code></pre>
+<p>Again, this format is helpful for digging into.</p>
+<pre class="r"><code>word_cors %&gt;% 
+  filter(item1 == &quot;pounds&quot;)</code></pre>
+<pre><code>## # A tibble: 393 x 3
+##    item1  item2     correlation
+##    &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
+##  1 pounds thousand       0.701 
+##  2 pounds ten            0.231 
+##  3 pounds fortune        0.164 
+##  4 pounds settled        0.149 
+##  5 pounds wickham&#39;s      0.142 
+##  6 pounds children       0.129 
+##  7 pounds mother&#39;s       0.119 
+##  8 pounds believed       0.0932
+##  9 pounds estate         0.0890
+## 10 pounds ready          0.0860
+## # … with 383 more rows</code></pre>
+<pre class="r"><code>word_cors %&gt;% 
+  filter(item1 %in% c(&quot;elizabeth&quot;, &quot;pounds&quot;, &quot;married&quot;, &quot;pride&quot;, &quot;looked&quot;)) %&gt;% 
+  group_by(item1) %&gt;% 
+  top_n(6) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(item2 = reorder(item2, correlation)) %&gt;% 
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  facet_wrap(~ item1, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/other_word_cors-1.png" width="672" /></p>
+<pre class="r"><code>## Note that geom_bar&#39;s default is `stat = &quot;bin&quot;` where the bar&#39;s height is equal the count of whatever x is. Since we want the bars to show the value we&#39;ve calculated for correlation, we have to tell geom_bar that `stat = &quot;identity&quot;`</code></pre>
+<p>Next we can visualize the data:</p>
+<pre class="r"><code>set.seed(2016)
+
+word_cors %&gt;% 
+  filter(correlation &gt; .175) %&gt;% 
+  graph_from_data_frame() %&gt;% 
+  ggraph(layout = &quot;fr&quot;) +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = &quot;lightblue&quot;, size = 4) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void()</code></pre>
+<p><img src="learning_ttm_ch1_2_files/figure-html/word_cor_viz-1.png" width="672" /></p>
+<p>Here we see a visualization of words that are at least .175 correlated in terms of appearing in the same 10 line section. Unlike the networks of bigrams, these terms do not have a directional arrow because they are linked by being in the same 10 line section. Again, unlike bigrams, we see words we would expect to see near but perhaps not next to one another such as mother &amp; father, ten &amp; thousand &amp; pounds, and news &amp; brighton.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVGlkeSBUZXh0IE1pbmluZyBMZWFybmluZyIKYXV0aG9yOiAiS2Fyb2x5biBJc21heSA8YnI+IFBoRCBDYW5kaWRhdGUsIFBhY2lmaWMgVW5pdmVyc2l0eSIKZGF0ZTogIlN1bW1lciAyMDE5IgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKCiMjIHR1cm4gb24geGFyaW5nYW46OmluZl9tcigpCgpgYGAKCmBgYHtyIGxvYWQtcGFja2FnZXMsIG1lc3NhZ2U9RkFMU0UsIHJlc3VsdHM9ImhpZGUiLCBpbmNsdWRlPUZBTFNFfQoKYygKICAiYmxvZ2Rvd24iLCAKICAiYm9va2Rvd24iLAogICJicm9vbSIsIAogICJkcGx5ciIsCiAgImV2YWx1YXRlIiwgCiAgImZpdmV0aGlydHllaWdodCIsIAogICJnZ3Bsb3QyIiwgCiAgImdncmFwaCIsIAogICJnb29nbGVkcml2ZSIsIAogICJncmlkIiwgCiAgImdyaWRFeHRyYSIsIAogICJndXRlbmJlcmdyIiwgCiAgImlncmFwaCIsIAogICJqYW5lYXVzdGVuciIsIAogICJrYWJsZUV4dHJhIiwgCiAgImtuaXRyIiwgCiAgImxhdHRpY2UiLCAKICAibGF6eWV2YWwiLCAKICAibHVicmlkYXRlIiwgCiAgIm1hcmtkb3duIiwgCiAgIm1vZGVybmRpdmUiLCAKICAicHVycnIiLCAKICAicXVhbnRlZGEiLAogICJSQ29sb3JCcmV3ZXIiLCAKICAicmVhZHIiLCAKICAicmVzaGFwZTIiLAogICJybWFya2Rvd24iLCAKICAic2NhbGVzIiwKICAic2hpbnkiLAogICJzdG9wd29yZHMiLAogICJzdHJpbmdyIiwKICAidGV4dGRhdGEiLAogICJ0aWJibGUiLAogICJ0aWR5ciIsIAogICJ0aWR5c2VsZWN0IiwgCiAgInRpZHl0ZXh0IiwgCiAgInRpZHl2ZXJzZSIsCiAgInRtIiwKICAid2lkeXIiLAogICJ3b3JkY2xvdWQiLCAKICAieGFyaW5nYW4iCikgLT4gcGFja2FnZV92ZWN0b3IKCnB1cnJyOjp3YWxrKC54ID0gcGFja2FnZV92ZWN0b3IsIC5mID0gbGlicmFyeSwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKQoKIyMgdHVybiBvbiB4YXJpbmdhbjo6aW5mX21yKCkKCmBgYAoKIyMgSW50cm9kdWN0aW9uCgpUaGlzIHBhZ2UgZG9jdW1lbnRzIG15IGNvbXBsZXRpb24gb2YgdGhlIHByYWN0aWNlIGV4YW1wbGVzIGluIHRoZSBbVGlkeSBUZXh0IE1pbmluZ10oaHR0cHM6Ly93d3cudGlkeXRleHRtaW5pbmcuY29tLykuIEluIGFkZGl0aW9uLCB0aGlzIGRvY3VtZW50IGl0c2VsZiBzaG93cyBteSBsZWFybmluZyBhbmQgc2tpbGwgZGV2ZWxvcG1lbnQgd2l0aCBSLgoKIyMgQ2hhcHRlciAxIE5vdGVzOiBUaWR5IHRleHQgZm9ybWF0CgpUaWR5IHRleHQgZm9ybWF0IGlzIGRlZmluZWQgYXMgImEgdGFibGUgd2l0aCBvbmUtdG9rZW4tcGVyLXJvdyIgd2hlcmUgYSAqKnRva2VuKiogaXMgYSAibWVhbmluZ2Z1bCB1bml0IG9mIHRleHQsIHN1Y2ggYXMgYSB3b3JkIiB1c2VkIGZvciBhbmFseXNpcy4gVG8gKip0b2tlbml6ZSoqIGlzIHRvIHNwbGl0IHRleHQgaW50byB0b2tlbnMuIFRpZHkgdGV4dCBtaW5pbmcgdHlwaWNhbGx5IHVzZXMgc2luZ2xlIHdvcmQgdG9rZW5zLiBPdGhlciBtZXRob2RzIG9mIHN0b3J5aW5nIHRleHQgZm9yIGFuYWx5c2lzIGluY2x1ZGUgbi1ncmFtcywgc2VudGVuY2VzLCBhbmQgcGFyYWdyYXBocy4gVXNpbmcgdGlkeSB0ZXh0IGRhdGEsIG9yIG9uZS10b2tlbi1wZXItcm93L29uZS13b3JkLXBlci1yb3csIGFsbG93cyB1cyB0byB1c2UgbWFueSAidGlkeSIgUiB0b29scyBhbmQgcGFja2FnZXMuCgpPdGhlciB0ZXh0IG1pbmluZyBhcHByb2FjaGVzIHRvIHN0b3JpbmcgdGV4dDoKCiogKipTdHJpbmc6KiogbXVsdGlwbGUgd29yZHMsIHNlbnRlbmNlcywgcGFyYWdyYXBocywgY2hhcmFjdGVyIHZlY3RvcnMuIAoqICoqQ29ycHVzOioqIHJhdyBzdHJpbmdzIHdpdGggbWV0YWRhdGEgYW5kIGFkZGl0aW9uYWwgZGV0YWlscy4KKiAqKkRvY3VtZW50LXRlcm0gbWF0cml4OioqIGEgInNwYXJzZSBtYXRyaXggZGVzY3JpYmluZyBhIGNvbGxlY3Rpb24iLiBBIGNvbGxlY3Rpb24gY291bGQgYmUgYSBjb3JwdXMgKGFzIGFib3ZlKS4gT25lIHJvdyBwZXIgZWFjaCBkb2N1bWVudCBhbmQgb25lIGNvbHVtbiBmb3IgZWFjaCB0ZXJtLiBVc2VkIGZvciB3b3JkIGNvdW50cyBhbmQgKioqdGYtaWRmKioqIChDaGFwdGVyIDMsICJ0ZXJtIGZyZXF1ZW5jeSAtIGludmVyc2UgZG9jdW1lbnQgZnJlcXVlbmN5IikuCgojIyMgMS4yIFRoZSAndW5uZXN0X3Rva2VucycgZnVuY3Rpb24KCkNvbnZlcnRpbmcgdGV4dCBpbnRvIGEgdGlkeSB0ZXh0IGRhdGFzZXQuIAoKMS4gRmVlZCBpbiB0aGUgZGF0YSwKMi4gUHV0IGl0IGludG8gYSBkYXRhIGZyYW1lLAozLiBUYWtlIGRhdGEgZnJhbWUgYW5kIGAgJT4lIGAgaW50byBgdW5uZXN0X3Rva2VucygpYCBmdW5jdGlvbiBhbmQgc3BlY2lmeSBgKG91dHB1dCwgaW5wdXQpYCB3aXRoaW4gdGhlIGZ1bmN0aW9uLAoKCkJlbG93IGlzIGEgcG9lbSBzaG93biBhcyBhIGNoYXJhY3RlciB2ZWN0b3I6CmBgYHtyIHVubmVzdC10b2tlbnMtMX0KdGV4dCA8LSBjKCJCZWNhdXNlIEkgY291bGQgbm90IHN0b3AgZm9yIERlYXRoIC0iLAogICAgICAgICAgIkhlIGtpbmRseSBzdG9wcGVkIGZvciBtZSAtIiwKICAgICAgICAgICJUaGUgQ2FycmlhZ2UgaGVsZCBidXQganVzdCBPdXJzZWx2ZXMgLSIsCiAgICAgICAgICAiYW5kIEltbW9ydGFsaXR5IikKdGV4dApgYGAKCkhlcmUgd2Ugc2VlIHRoZSB0ZXh0IGluIHF1b3RhdGlvbiBtYXJrcyBhbmQgc2VwYXJhdGVkIGJ5IGNvbW1hcy4gV2UndmUgY29uY2F0ZW5hdGVkIGl0IHdpdGggYGMoKWAgYW5kIGFzc2lnbmVkIHRoZSBkYXRhIGFzIGB0ZXh0YCB3aXRoIGA8LWAgb3BlcmF0b3IuCgpOb3csIHdlIG5lZWQgdG8gcHV0IGl0IGludG8gYSBkYXRhIGZyYW1lOgpgYGB7ciB1bm5lc3QtdG9rZW5zLTJ9CiMjIE1ha2Ugc3VyZSBgbGlicmFyeShkcGx5cilgIGlzIGxvYWRlZC4gYHRpYmJsZSgpYCBpcyBhIHRvb2wgaW4gYGRwbHlyYC4gYHRpYmJsZWAgZG9lcyBub3QgY29udmVydCBzdHJpbmdzIHRvIGZhY3RvcnMgYW5kIGRvZXMgbm90IHVzZSByb3cgbmFtZXMsIGltcG9ydGFudCBmb3IgdGlkeSB0b29scy4KCnRleHRfZGYgPC0gdGliYmxlKGxpbmUgPSAxOjQsIHRleHQgPSB0ZXh0KQoKdGV4dF9kZgpgYGAKCkhlcmUgd2Ugc2VlIHRoZSBkYXRhIGluIGEgZGF0YSBmcmFtZSwgYnV0IHRoZSB0ZXh0IGlzIG5vdCBpbiB0aGUgdGlkeSB0ZXh0IGZvcm1hdCBvZiBvbmUtdG9rZW4tcGVyLWRvY3VtZW50LXBlci1yb3cuIFdlIG5lZWQgdG8gKip0b2tlbml6ZSoqIGl0IQoKYGBge3IgdW5uZXN0LXRva2Vucy0zfQojIyBNYWtlIHN1cmUgbGlicmFyeSh0aWR5dGV4dCkgaXMgbG9hZGVkLgoKdGV4dF9kZiAlPiUgCiAgdW5uZXN0X3Rva2Vucyh3b3JkLCB0ZXh0KQpgYGAKClRoZSBiYXNpYyBhcmd1bWVudHMgaW4gYHVubmVzdF90b2tlbnMoKWAgYXJlIHRoZSBvdXRwdXQgKGB3b3JkYCkgYW5kIHRoZSBpbnB1dCAoYHRleHRgLCBhIGNvbHVtbiBmcm9tIGB0ZXh0X2RmYCkuIFRoaXMgaXMgcmVhZGluZyBpbiBgdGV4dGAgY29sdW1uIGFuZCB1bm5lc3RpbmcgdGhlIGRhdGEgYnkgZWFjaCB3b3JkLiBXZSBhbHNvIHNlZSB0aGF0IGB1bm5lc3RfdG9rZW5zKClgIGluY2x1ZGVzIGEgY29sdW1uIHdpdGggYGxpbmVgIGZvciB0aGUgbGluZSB3aGVyZSBlYWNoIHdvcmQgb2NjdXJzLgoKYHVubmVzdF90b2tlbnMoKWAgd2lsbCBjb252ZXJ0IHRoZSB0ZXh0L3Rva2VucyB0byBsb3dlcmNhc2UuIFRvIHByZXZlbnQgdGhpcywgZmVlZCBpbiBgdG9fbG93ZXIgPSBGQUxTRWAgYXJndWVtZW50OgpgYGB7ciB1bm5lc3QtdG9rZW5zLTR9CnRleHRfZGYgJT4lIAogIHVubmVzdF90b2tlbnMod29yZCwgdGV4dCwgdG9fbG93ZXIgPSBGQUxTRSkKYGBgCgojIyMgMS4zIFRpZHlpbmcgdGhlIHdvcmtzIG9mIEphbmUgQXVzdGVuCkNsaWNraW5nIG9uIGBqYW5lYXVzdGVucmAgaW4gdGhlIFBhY2thZ2VzIHRhYiB3aWxsIGRpc3BsYXkgZG9jdW1lbnRhdGlvbiBmb3IgdGhlIHBhY2thZ2UuIEZvciBgamFuZWF1c3RlbnJgLCB0aGlzIGluY2x1ZGVzIHRoZSB2YXJpb3VzIGRhdGFmcmFtZXMgYW5kIHRoZSB0ZXh0cy4gVGhlIHBhY2thZ2UgaGFzIHNpeCBub3ZlbHMgd2hlcmUgdGhlIHRleHQgZGF0YSBpcyBzYXZlZCBpbiBhIG9uZS1yb3ctcGVyLWxpbmUgZm9ybWF0IHdoZXJlIGEgbGluZSBpcyB0aGUgbGl0ZXJhbCBwcmludGVkIGxpbmUgaW4gYSBwaHlzaWNhbCBib29rLiBJZiB3ZSBgVmlldyhlbW1hKWAgd2Ugc2VlIHRoZSBib29rIEVtbWEgaGFzIGJlZW4gYnJva2VuIGRvd24gbGluZS1ieS1saW5lIGluIG9uZSBjb2x1bW4uIGBWaWV3KGF1c3Rlbl9ib29rcylgIHNob3dzIHR3byBjb2x1bW5zLCBvbmUgbGFiZWxlZCBgdGV4dGAgYW5kIHRoZSBvdGhlciBgYm9va2AuIGB0ZXh0YCBpcyBhZ2FpbiBicm9rZW4gZG93biBsaW5lLWJ5LWxpbmUgYW5kIGFuZCBgYm9va2AgaG9sZHMgdGhlIHRpdGxlIG9mIHRoZSBib29rIHdoZXJlIHRoYXQgbGluZSBpcyBmb3VuZC4gQWxzbywgd2Ugc2VlIHJvd3Mgd2l0aCBjaGFwdGVyIG51bWJlcnMuCgpTaW5jZSB3ZSB3YW50IHRvIHRpZHkgdGhlIGRhdGEgd29yZC1ieS13b3JkLCBpdCB3b3VsZCBiZSB1c2VmdWwgY3JlYXRlIGEgbmV3IGRhdGEgZnJhbWUgdGhhdCBhbHNvIGluY2x1ZGVzIGNvbHVtbnMgYXMgdG8gd2hlcmUgZWFjaCB3b3JkIGlzIGZvdW5kIGJ5IGxpbmUgbnVtYmVyIGFuZCBjaGFwdGVyLiBUbyBkbyB0aGlzLCB3ZSB3aWxsIHVzZSBgZ3JvdXBfYnkoKWAsIGBtdXRhdGUoKWAsIGFuZCBmaW5hbGx5IGB1bmdyb3VwKClgOgpgYGB7ciB0aWR5aW5nLWphbmV9CiMjIGxvYWQgYGphbmVhdXN0ZW5yYCwgYGRwbHlyYCwgYW5kIGBzdHJpbmdyYCBwYWNrYWdlcwoKb3JpZ2luYWxfYm9va3MgPC0gYXVzdGVuX2Jvb2tzKCkgJT4lIAogIGdyb3VwX2J5KGJvb2spICU+JSAKICBtdXRhdGUobGluZW51bWJlciA9IHJvd19udW1iZXIoKSwKICAgICAgICAgY2hhcHRlciA9IGN1bXN1bShzdHJfZGV0ZWN0KHRleHQsIHJlZ2V4KCJeY2hhcHRlciBbXFxkaXZ4bGNdIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlnbm9yZV9jYXNlID0gVFJVRSkpKSkgJT4lIAogIHVuZ3JvdXAoKQoKb3JpZ2luYWxfYm9va3MKYGBgCgpIZXJlIHdlIGhhdmUgdGhlIGRhdGEgZnJhbWUgYG9yaWdpbmFsX2Jvb2tzYCB3aGljaCBpbmNsdWRlcyBhbGwgdGhlIGRhdGEgZnJvbSBgYXVzdGVuX2Jvb2tzYCBidXQgYWxzbyBhZGRzIGBsaW5lbnVtYmVyYCBhbmQgYGNoYXB0ZXJgIGFzIGNvbHVtbnMuCgpOZXh0LCB3ZSBuZWUgdG8gKip0b2tlbml6ZSoqIHRoZSB0ZXh0IGluIGEgb25lLXRva2VuLXBlci1yb3cgZm9ybWF0IHdpdGggYHVubmVzdF90b2tlbnMoKWA6CmBgYHtyIHRpZHlpbmctamFuZTJ9CnRpZHlfYm9va3MgPC0gb3JpZ2luYWxfYm9va3MgJT4lIAogIHVubmVzdF90b2tlbnMod29yZCwgdGV4dCkKdGlkeV9ib29rcwpgYGAKCk5vdyB0aGUgZGF0YSBpcyBpbiB0aGUgdGlkeSB0ZXh0IGRhdGEgZm9ybWF0LgoKV2UnbGwgbm90aWNlIHRoYXQgb24gb2JzZXJ2YXRpb24gMTAsIHRoZSB3b3JkICJ0aGUiIGlzIHByZXNlbnQuIFRoZSB3b3JkICJ0aGUiIGlzIGNvbnNpZGVyZWQgYSBzdG9wIHdvcmQsIGEgd29yZCAoc3VjaCBhcyAqb2YsIHRvLCBhKikgdHlwaWNhbGx5IG5vdCB1c2VmdWwgZm9yIGFuYWx5c2lzLiBgVmlldyhzdG9wX3dvcmRzKWAgd2lsbCBzaG93IHRoZSBsaXN0IG9mIHN0b3Agd29yZHMgYnkgbGV4aWNvbi4gVG8gcmVtb3ZlIHRoZSBzdG9wIHdvcmRzLCB3ZSBjYW4gdXNlIGBhbnRpX2pvaW4oKWAuIFRvIHVzZSBvbmx5IG9uZSBwYXJ0aWN1bGFyIGxleGljb24sIHdlIGNhbiBhZGQgYGZpbHRlcigpYC4KYGBge3IgdGlkeWluZy1qYW5lMywgbWVzc2FnZT1GQUxTRX0KZGF0YShzdG9wX3dvcmRzKQoKdGlkeV9ib29rczIgPC0gdGlkeV9ib29rcyAlPiUgCiAgYW50aV9qb2luKHN0b3Bfd29yZHMpCnRpZHlfYm9va3MyCgojIyBUbyBmaWx0ZXI6CiMjIHN0b3Bfd29yZHNfb25peCA8LSBzdG9wX3dvcmRzICU+JSAKIyMgIGZpbHRlcihsZXhpY29uID09ICJvbml4IikKIyMgcmVwbGFjZSBhbnRpX2pvaW4oc3RvcF93b3Jkcykgd2l0aDogYW50aV9qb2luKHN0b3Bfd29yZHNfb25peCkKYGBgCgpUbyBmaW5kIHRoZSBtb3N0IGNvbW1vbiB3b3Jkcywgd2UgY2FuIHVzZSBkcGx5cidzIGBjb3VudCgpYDoKYGBge3IgdGlkeWluZy1qYW5lLWNvdW50fQp0aWR5X2Jvb2tzMiAlPiUgCiAgY291bnQod29yZCwgc29ydCA9IFRSVUUpCmBgYAoKV2l0aCB0aGUgdGV4dCBkYXRhIGluIHRoZSB0aWR5IGZvcm1hdCwgd2UgY2FuIGNyZWF0ZSB2aXN1YWxpemF0aW9ucyB1c2luZyBgZ2dwbG90MmAuIEhlcmUgd2UgaGF2ZSBhIHBsb3Qgd2l0aCB0aGUgbW9zdCBmcmVxdWVudCB3b3JkczoKYGBge3IgdGlkeWluZy1qYW5lLXBsb3R9CnRpZHlfYm9va3MyICU+JSAKICBjb3VudCh3b3JkLCBzb3J0ID0gVFJVRSkgJT4lIAogIGZpbHRlcihuID4gNjAwKSAlPiUgCiAgbXV0YXRlKHdvcmQgPSByZW9yZGVyKHdvcmQsbikpICU+JSAKICBnZ3Bsb3QoYWVzKHdvcmQsIG4pKSArCiAgZ2VvbV9jb2woKSArCiAgeGxhYihOVUxMKSArCiAgY29vcmRfZmxpcCgpCmBgYAoKIyMjIDEuNCBUaGUgZ3V0ZW5iZXJnciBwYWNrYWdlCgpUaGUgZ3V0ZW5iZXJnciBwYWNrYWdlIGNhbiBwdWxsIHB1YmxpYyBkb21haW4gd29ya3MgZnJvbSB0aGUgUHJvamVjdCBHdXRlbmJlcmcgY29sbGVjdGlvbi4gVGhlIGBndXRlbmJlcmdfZG93bmxvYWQoKWAgZnVuY3Rpb24gY2FuIHB1bGwgd29ya3MgYnkgdGhlaXIgUHJvamVjdCBHdXRlbmJlcmcgSUQuIFRoZSBwYWNrYWdlIGFsc28gaGFzIGZ1bmN0aW9ucyB0aGF0IGNhbiBsb29rIGF0IG1ldGFkYXRhLCB0YWtpbmcgb3V0IHVuaGVscGZ1bCBoZWFkZXIvZm9vdGVyIGRhdGEsIGFuZCBsb29rIGF0IGluZm9ybWF0aW9uIGFib3V0IGF1dGhvcnMuCgpgZ3V0ZW5iZXJnX21ldGFkYXRhYCBjb250YWlucyBpbmZvcm1hdGlvbiBhYm91dCBlYWNoIHdvcmsgaW4gdGhlIGNvbGxlY3Rpb24sIHN1Y2ggYXMgdGhlIElEIG51bWJlciBvZiBlYWNoIHdvcmssIHRoZSBhdXRob3IsIGFuZCB3aGljaCBsYW5ndWFnZSBpdCBpcyBpbi4gVG8gZmluZCB0ZXh0cyB3ZSBjYW4gdXNlIGEgdmFyaWV0eSBvZiBtZXRob2RzOgpgYGB7ciBmaW5kLXRleHRzMX0KZ3V0ZW5iZXJnX21ldGFkYXRhICU+JSAKICBmaWx0ZXIoYXV0aG9yID09ICJXZWxscywgSC4gRy4gKEhlcmJlcnQgR2VvcmdlKSIpCgpndXRlbmJlcmdfbWV0YWRhdGEgJT4lIAogIGZpbHRlcih0aXRsZSA9PSAiVGhlIFRpbWUgTWFjaGluZSIpCmBgYAoKIyMjIDEuNSBXb3JkIGZyZXF1ZW5jaWVzCgpMZXQncyBkb3dubG9hZCB0aGUgdGV4dHMgZm9yIEguIEcuIFdlbGxzJyBib29rcyAqVGhlIFRpbWUgTWFjaGluZSosICpUaGUgV2FyIG9mIHRoZSBXb3JsZHMqLCAqVGhlIEludmlzaWJsZSBNYW4qLCBhbmQgKlRoZSBJc2xhbmQgb2YgRG9jdG9yIE1vcmVhdSouCmBgYHtyIGRvd25sb2FkLWhnd2VsbHMsIG1lc3NhZ2U9RkFMU0V9CgppZighZmlsZS5leGlzdHMoImhnd2VsbHMucmRzIikpewogIGhnd2VsbHMgPC0gZ3V0ZW5iZXJnX2Rvd25sb2FkKGMoMzUsIDM2LCA1MjMwLCAxNTkpKQogIHdyaXRlX3JkcyhoZ3dlbGxzLCAiaGd3ZWxscy5yZHMiKQp9IGVsc2V7CiAgaGd3ZWxscyA8LSByZWFkX3JkcygiaGd3ZWxscy5yZHMiKQp9CgoKYGBgCgpOZXh0LCB3ZSdsbCBuZWVkIHRvIHRpZHkgdGhlIGRhdGE6CmBgYHtyIHRpZHktd2VsbHMxLCBtZXNzYWdlPUZBTFNFfQp0aWR5X2hnd2VsbHMgPC0gaGd3ZWxscyAlPiUgCiAgdW5uZXN0X3Rva2Vucyh3b3JkLCB0ZXh0KSAlPiUgCiAgYW50aV9qb2luKHN0b3Bfd29yZHMpCmBgYAoKV2hhdCBhcmUgdGhlIG1vc3QgY29tbW9uIHdvcmRzIGluIHRoZXNlIG5vdmVscz8KYGBge3IgbW9zdC1jb21tb24taGd3ZWxsc30KdGlkeV9oZ3dlbGxzICU+JSAKICBjb3VudCh3b3JkLCBzb3J0ID0gVFJVRSkKYGBgCgpOZXh0LCB3ZSdsbCBsb29rIGF0IHNvbWUgd29ya3MgZnJvbSB0aGUgQnJvbnTDqyBzaXN0ZXJzOiAqSmFuZSBFeXJlKiwgKld1dGhlcmluZyBIZWlnaHRzKiwgKlRoZSBUZW5hbnQgb2YgV2lsZGZlbGwgSGFsbCosICpWaWxsZXR0ZSosIGFuZCAqQWduZXMgR3JleSouCmBgYHtyIGJyb250ZTF9CmJyb250ZSA8LSBndXRlbmJlcmdfZG93bmxvYWQoYygxMjYwLCA3NjgsIDk2OSwgOTE4MiwgNzY3KSkKYGBgCgpUaGVuIHdlJ2xsIHRpZHkgdGhlbToKYGBge3IgYnJvbnRlLXRpZHksIG1lc3NhZ2U9RkFMU0V9CnRpZHlfYnJvbnRlIDwtIGJyb250ZSAlPiUgCiAgdW5uZXN0X3Rva2Vucyh3b3JkLCB0ZXh0KSAlPiUgCiAgYW50aV9qb2luKHN0b3Bfd29yZHMpCmBgYAoKQW4gbm93IHdlJ2xsIGxvb2sgYXQgdGhlIG1vc3QgY29tbW9uIHdvcmRzOgpgYGB7ciBicm9udGUtbW9zdC1jb21tb259CnRpZHlfYnJvbnRlICU+JSAKICBjb3VudCh3b3JkLCBzb3J0ID0gVFJVRSkKYGBgCgpOZXh0LCBsZXQncyBsb29rIGF0IHRoZXNlIHRocmVlIGNvbGxlY3Rpb25zIHRvZ2V0aGVyLiBXZSdsbCBjYWxjdWxhdGUgdGhlIGZlcXVlbmN5IGZvciBlYWNoIHdvcmQgaW4gdGhlIHRocmVlIGNvbGxlY3Rpb25zIGJ5IGJpbmRpbmcgdGhlIGRhdGEgZnJhbWVzIHRvZ2V0aGVyLiBXZSdsbCB1c2UgYHNwcmVhZGAgYW5kIGBnYXRoZXJgIHRvIHJlc2hhcGUgdGhlIGRhdGFmcmFtZSBzbyB3ZSBjYW4gcGxvdCBpdC4KYGBge3IgY29tcGFyaW5nLWF1c3Rlbi1oZ3dlbGxzLWJyb250ZX0KZnJlcXVlbmN5IDwtIGJpbmRfcm93cyhtdXRhdGUodGlkeV9ib29rczIsIGF1dGhvciA9ICJKYW5lIEF1c3RlbiIpLAogICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh0aWR5X2hnd2VsbHMsIGF1dGhvciA9ICJILiBHLiBXZWxscyIpLAogICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZSh0aWR5X2Jyb250ZSwgYXV0aG9yID0gIkJyb250w6sgU2lzdGVycyIpKSAlPiUgCiAgbXV0YXRlKHdvcmQgPSBzdHJfZXh0cmFjdCh3b3JkLCAiW2EteiddKyIpKSAlPiUgCiAgY291bnQoYXV0aG9yLCB3b3JkKSAlPiUgCiAgZ3JvdXBfYnkoYXV0aG9yKSAlPiUgCiAgbXV0YXRlKHByb3BvcnRpb24gPSBuIC8gc3VtKG4pKSAlPiUgCiAgc2VsZWN0KC1uKSAlPiUgCiAgc3ByZWFkKGF1dGhvciwgcHJvcG9ydGlvbikgJT4lIAogIGdhdGhlcihhdXRob3IsIHByb3BvcnRpb24sIGBCcm9udMOrIFNpc3RlcnNgOmBILiBHLiBXZWxsc2ApCmBgYAoKV2UgdXNlZCBgc3RyX2V4dHJhY3QoKWAgYmVjYXVzZSB0aGUgY29kZSBmcm9tIFByb2plY3QgR3V0ZW5iZXJnIGluY2x1ZGVzIHVuZGVyc2NvcmVzIHRvIGluZGljYXRlIGVtcGhhc2lzIHN1Y2ggYXMgaXRhbGljcy4gV2Ugd2FudCBzb21ldGhpbmcgbGlrZSAiX2J5XyIgdG8gYmUgY291bnRlZCB0aGUgc2FtZSBhcyAiYnkiIGluc3RlYWQgb2YgYSB3aG9sZSBvdGhlciB3b3JkLgoKTmV4dCwgd2UnbGwgcGxvdDoKYGBge3IgY29tcGFyaW5nLXBsb3QsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmdncGxvdChmcmVxdWVuY3ksCiAgICAgICBhZXMoeCA9IHByb3BvcnRpb24sCiAgICAgICAgICAgeSA9IGBKYW5lIEF1c3RlbmAsIGNvbG9yID0gYWJzKGBKYW5lIEF1c3RlbmAgLSBwcm9wb3J0aW9uKSkpICsKICBnZW9tX2FibGluZShjb2xvciA9ICJncmF5NDAiLCBsdHkgPSAyKSArCiAgZ2VvbV9qaXR0ZXIoYWxwaGEgPSAwLjEsIHNpemUgPSAyLjUsIHdpZHRoID0gMC4zLCBoZWlnaHQgPSAwLjMpICsKICBnZW9tX3RleHQoYWVzKGxhYmVsID0gd29yZCksIGNoZWNrX292ZXJsYXAgPSBUUlVFLCB2anVzdCA9IDEuNSkgKwogIHNjYWxlX3hfbG9nMTAobGFiZWxzID0gcGVyY2VudF9mb3JtYXQoKSkgKwogIHNjYWxlX3lfbG9nMTAobGFiZWxzID0gcGVyY2VudF9mb3JtYXQoKSkgKwogIHNjYWxlX2NvbG9yX2dyYWRpZW50KGxpbWl0cyA9IGMoMCwgMC4wMDEpLCBsb3cgPSAiZGFya3NsYXRlZ3JheTQiLCBoaWdoID0gImdyYXk3NSIpICsKICBmYWNldF93cmFwKH5hdXRob3IsIG5jb2wgPSAyKSArCiAgdGhlbWUobGVnZW5kLnBvc2l0aW9uID0gIm5vbmUiKSArCiAgbGFicyh5ID0gIkphbmUgQXVzdGVuIiwgeCA9IE5VTEwpCmBgYAoKVGhpcyBwbG90IGNvbXBhcmVzIEF1c3RlbidzIGJvb2tzIHRvIHRoZSBCcm9udMOrIFNpc3RlcnMgYW5kIEguIEcuIFdlbGxzLiBXb3JkcyBjbG9zZXIgdG8gdGhlIGRhc2hlZCBsaW5lIGhhdmUgc2ltbGlhciBmcmVxdWVuY2llcy4gV29yZHMgZnVydGhlciBhYm92ZSB0aGUgbGluZSBhcmUgbW9yZSBvZnRlbiBmb3VuZCBpbiBBdXN0ZW4ncyB3b3Jrcy4gV2Ugc2VlIHRoYXQgQXVzdGVuIGFuZCB0aGUgQnJvbnTDqyBTaXN0ZXJzIGhhZCBjbG9zZXIgZnJlcXVlbmNpZXMgb2Ygd29yZHMgdGhhbiBkaWQgQXVzdGVuIGFuZCBILiBHLiBXZWxscy4KCk5leHQsIHdlJ2xsIHVzZSBhIGNvcnJlbGF0aW9uIHRlc3QgdG8gc2VlIGhvdyBzaW1pbGFyIG9yIGRpZmZlcmVudCB0aGVzZSBzZXRzIG9mIHdvcmQgZnJlcXVlbmNpZXMgYXJlLgpgYGB7ciBjb21wYXJlLWZyZXEtY29ycn0KY29yLnRlc3QoZGF0YSA9IGZyZXF1ZW5jeVtmcmVxdWVuY3kkYXV0aG9yID09ICJCcm9udMOrIFNpc3RlcnMiLF0sCiAgICAgICAgIH4gcHJvcG9ydGlvbiArIGBKYW5lIEF1c3RlbmApCmNvci50ZXN0KGRhdGEgPSBmcmVxdWVuY3lbZnJlcXVlbmN5JGF1dGhvciA9PSAiSC4gRy4gV2VsbHMiLF0sCiAgICAgICAgIH4gcHJvcG9ydGlvbiArIGBKYW5lIEF1c3RlbmApCmBgYAoKSGVyZSB3ZSBzZWUgdGhhdCB5ZXMsIHRoZXJlIGlzIG1vcmUgY29ycmVsYXRpb24gYmV0d2VlbiBBdXN0ZW4ncyBhbmQgdGhlIEJyb250w6sgU2lzdGVycycgd29ya3MgdGhhbiBiZXR3ZWVuIEF1c3RlbidzIGFuZCBXZWxscycgd29ya3MuCgojIyBDaGFwdGVyIDIgTm90ZXM6IFNlbnRpbWVudCBhbmFseXNpcyB3aXRoIHRpZHkgZGF0YQoKU2VudGltZW50IGFuYWx5c2lzIGNhbiBsb29rIGF0IGluZGl2aWR1YWwgd29yZHMgb3IgdGhlIG92ZXIgc2VudGltZW50IG9mIGFuIGVudGlyZSB3b3JrLiBUaGVyZSBhcmUgbWFueSBzZW50aW1lbnQgbGV4aWNvbnMgdGhhdCBsb29rIGZvciBwb3NpdGl2ZS9uZWdhdGl2ZSBzZW50aW1lbnQgYW5kIGFsc28gcG9zc2libHkgZW1vdGlvbnMgc3VjaCBhcyBqb3ksIGFuZ2VyLCBzYWRuZXNzLCBhbmQgc28gb24uIFRoZSBgdGlkeXRleHRgIHBhY2thZ2UgaW5jbHVkZXMgc2V2ZXJhbCBsZXhpY29ucyBpbmNsdWRpbmcgYEFGSU5OYCwgYGJpbmdgLCBhbmQgYG5yY2AuIAoKVG8gZG93bmxvYWQgdGhlc2UgbGV4aWNvbnMsIHdlJ2xsIHVzZSBgZ2V0X3NlbnRpbWVudHMoIiIpYCBhbmQgc2VsZWN0aW9uIGAxYC4KYGBge3IgZ2V0LXNlbnRpbWVudHN9CgpzZW50aW1lbnRzX2FmaW5uIDwtIGdldF9zZW50aW1lbnRzKCJhZmlubiIpCnNlbnRpbWVudHNfYmluZyA8LSBnZXRfc2VudGltZW50cygiYmluZyIpCnNlbnRpbWVudHNfbnJjIDwtIGdldF9zZW50aW1lbnRzKCJucmMiKQoKYGBgCgoKCiMjIyAyLjIgU2VudGltZW50IGFuYWx5c2lzIHdpdGggaW5uZXIgam9pbgoKVXNpbmcgYGlubmVyX2pvaW5gIGZvciBzZW50aW1lbnQgYW5hbHlzaXMgaXMgc2ltaWxhciB0byB1c2luZyBgYW50aV9qb2luYC4gVG8gYW5zd2VyIHRoZSBxdWVzdGlvbiAqd2hhdCBhcmUgdGhlIG1vc3QgY29tbW9uIGpveSB3b3JkcyBpbiBFbW1hKiwgd2UnbGwgdXNlIGB1bm5lc3RfdG9rZW5zKCkiIGFnYWluLgpgYGB7ciBlbW1hLXVubmVzdGVkfQp0aWR5X2Jvb2tzMyA8LSBhdXN0ZW5fYm9va3MoKSAlPiUgCiAgZ3JvdXBfYnkoYm9vaykgJT4lIAogIG11dGF0ZShsaW5lbnVtYmVyID0gcm93X251bWJlcigpLAogICAgICAgICBjaGFwdGVyID0gY3Vtc3VtKHN0cl9kZXRlY3QodGV4dCwgcmVnZXgoIl5jaGFwdGVyIFtcXGRpdnhsY10iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWdub3JlX2Nhc2UgPSBUUlVFKSkpKSAlPiUgCiAgdW5ncm91cCgpICU+JSAKICB1bm5lc3RfdG9rZW5zKHdvcmQsIHRleHQpCmBgYAoKVGhlIG91dHB1dCBhcmd1bWVudCBpbiBgdW5uZXN0X3Rva2VucygpYCBpcyBgd29yZGAuIFRoaXMgaXMgdXNlZnVsIGJlY2F1c2UgdGhlIHNlbnRpbWVudCBsZXhpY29ucyBhbmQgdGhlIHN0b3Agd29yZHMgZGF0YXNldHMgYWxzbyBoYXZlIGNvbHVtbnMgbmFtZWQgYHdvcmRgLCB0aHVzIG1ha2luZyBpdCBlYXNpZXIgdG8gZG8gaW5uZXIgYW5kIGFudGkgam9pbnMuCgpOb3cgdGhhdCB0aGUgZGF0YSBpcyB0aWR5LCBsZXQncyBgZmlsdGVyKClgIHRoZSBucmMgbGV4aWNvbiBmb3IgYGpveWAgYW5kIGpvaW4gaXQgd2l0aCBgdGlkeV9ib29rczNgIGZpbHRlcmluZyBmb3IgYEVtbWFgLgpgYGB7ciBlbW1hLWpveSwgbWVzc2FnZT1GQUxTRX0KbnJjX2pveSA8LSBzZW50aW1lbnRzX25yYyAlPiUgCiAgZmlsdGVyKHNlbnRpbWVudCA9PSAiam95IikKCnRpZHlfYm9va3MzICU+JSAKICBmaWx0ZXIoYm9vayA9PSAiRW1tYSIpICU+JSAKICBpbm5lcl9qb2luKG5yY19qb3kpICU+JSAKICBjb3VudCh3b3JkLCBzb3J0ID0gVFJVRSkKYGBgCgpIZXJlIHdlIHNlZSBhIGxpc3Qgb2YgdGhlIG1vc3QgY29tbW9uICJqb3kiIHdvcmRzIGluIHRoZSBib29rIEVtbWEuCgpXZSBjYW4gYWxzbyBsb29rIGF0IHNlbnRpbWVudCBjaGFuZ2VzIG92ZXIgdGhlIGNvdXJzZSBvZiBhIG5vdmVsIGJ5IGRlZmluaW5nIGNodW5rcyBvZiB0ZXh0LiBVc2luZyB0b28gc21hbGwgb2YgYSBjaHVuayBjYW4gbGVhZCB0byBub3QgaGF2aW5nIGVub3VnaCBkYXRhIHRvIGdldCBhIGdvb2QgaWRlYSBvZiB0aGUgc2VudGltZW50IHdoaWxlIGhhdmluZyB0b28gbGFyZ2Ugb2YgYSBjaHVuayBjYW4gd2F0ZXIgZG93biB0aGUgc2VudGltZW50LiBJdCBkZXBlbmRzIG9uIGVhY2ggaW5kaXZpZHVhbCB0ZXh0LiBGb3IgdGhpcywgd2UnbGwgdXNlIDgwIGxpbmVzLiBXZSdsbCB1c2UgYHNwcmVhZCgpYCB0byBjcmVhdGUgc2VwYXJhdGUgY29sdW1ucyBmb3IgbmVnYXRpdmUgYW5kIHBvc2l0aXZlIHNlbnRpbWVudC4gV2UnbGwgYWxzbyBjYWxjdWxhdGUgbmV0IHNlbnRpbWVudC4KYGBge3IgYXVzdGVuLXNlbnRpbWVudC04MGxpbmVzLCBtZXNzYWdlPUZBTFNFfQoKYXVzdGVuX3NlbnRpbWVudDgwIDwtIHRpZHlfYm9va3MgJT4lIAogIGlubmVyX2pvaW4oc2VudGltZW50c19iaW5nKSAlPiUgCiAgY291bnQoYm9vaywgaW5kZXggPSBsaW5lbnVtYmVyICUvJSA4MCwgc2VudGltZW50KSAlPiUgCiAgc3ByZWFkKHNlbnRpbWVudCwgbiwgZmlsbCA9IDApICU+JSAKICBtdXRhdGUoc2VudGltZW50ID0gcG9zaXRpdmUgLSBuZWdhdGl2ZSkKCmBgYAoKVGhpcyBnaXZlcyB1cyBhIGRhdGEgZnJhbWUgd2l0aCB0aGUgdGl0bGUgb2YgdGhlIGJvb2ssIGFuZCBpbmRleCBudW1iZXIgZm9yIHRoZSBjaHVuayBvZiB0ZXh0IHdlJ3JlIGxvb2tpbmcgYXQsIHRoZSB0b3RhbCBuZWdhdGl2ZSBhbmQgdG90YWwgcG9zaXRpdmUgd29yZHMsIGFuZCB0aGUgbmV0IHNlbnRpbWVudCBiZXR3ZWVuIHRoZSB0d28uCgpOb3cgd2UgY2FuIHBsb3QgYGF1c3Rlbl9zZW50aW1lbnQ4MGAgd2l0aCBgaW5kZXhgIG9uIHRoZSB4IGF4aXMgdG8gc2hvdyBzZW50aW1lbnQgYWNyb3NzIHRoZSBuYXJyYXRpdmUgdGltZWxpbmUgb2YgZWFjaCBib29rLiBTaW5jZSBlYWNoIGJvb2sgaXMgYSBkaWZmZXJlbnQgbGVuZ3RoLCB3ZSdsbCB1c2UgYHNjYWxlcyA9ICJmcmVlX3giYCBpbiBgZmFjZXRfd3JhcCgpYCB0byBtYWtlIHRoZSBwbG90cyB1bmlmb3JtbHkgc2l6ZWQuCmBgYHtyIGF1c3Rlbi1zZW50aW1lbnQtODAtcGxvdHRlZH0KZ2dwbG90KGF1c3Rlbl9zZW50aW1lbnQ4MCwgCiAgICAgICBhZXMoaW5kZXgsIHNlbnRpbWVudCwgZmlsbCA9IGJvb2spKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGZhY2V0X3dyYXAofmJvb2ssIG5jb2wgPSAyLCBzY2FsZXMgPSAiZnJlZV94IikKYGBgCgpIYXZpbmcgcmVhZCBhIGZldyBvZiB0aGUgYm9va3MgcGxvdHRlZCwgSSBoYXZlIGEgZ29vZCBndWVzcyBhdCB3aGF0IGlzIGdvaW5nIG9uIGluIHRoZSBwbG90IHdoZW4gdGhlcmUgYXJlIHN1ZGRlbiBjaGFuZ2VzIGluIHRoZSBuZXQgc2VudGltZW50IGJldHdlZW4gY2h1bmtzLgoKIyMjIDIuMyBDb21wYXJpbmcgdGhlIHRocmVlIHNlbnRpbWVudCBkaWN0aW9uYXJpZXMKClNvbWUgc2VudGltZW50IGxleGljb25zIGFyZSBtb3JlIGFwcHJvcHJpYXRlIGZvciBzb21lIHF1ZXN0aW9ucyB0aGFuIG90aGVycy4gU29tZXRpbWVzIHRoZXkncmUgdGFpbG9yIG1hZGUgZm9yIGNlcnRhaW4gcHVycG9zZXMgb3IgdGhleSdyZSBtYWRlIGJ5IHBlb3BsZSBmcm9tIGEgcGFydGljdWxhciBmaWVsZCB0byBzdWl0ZSB0aGF0IGZpZWxkLiBCZWNhdXNlIG9mIHRoaXMsIGl0IGNhbiBiZSB1c2VmdWwgdG8gY29tcGFyZSBsZXhpY29ucy4gTGV0J3MgbG9vayBhdCB0aGUgYm9vayAqUHJpZGUgJiBQcmVqdWRpY2UqIHdpdGggdGhyZWUgZGlmZmVyZW50IGxleGljb25zLgoKYGBge3IgcHAzbGV4aWNvbnN9CnByaWRlX3ByZWp1ZGljZSA8LSB0aWR5X2Jvb2tzICU+JSAKICBmaWx0ZXIoYm9vayA9PSAiUHJpZGUgJiBQcmVqdWRpY2UiKQpwcmlkZV9wcmVqdWRpY2UKYGBgCgpOb3cgdGhhdCB3ZSBoYXZlIHRoZSBib29rIGlzb2xhdGVkLCB3ZSdsbCBgaW5uZXJfam9pbmAgaXQgd2l0aCB0aGUgbGV4aWNvbnMuIEhvd2V2ZXIsIEFGSU5OIHVzZXMgc2NvcmVzIHJhdGhlciB0aGFuIHBvc2l0aXZlL25lZ2F0aXZlLCBzbyB3ZSdsbCBuZWVkIHRvIHRyZWF0IHRoYXQgb25lIHNlcGFyYXRlbHkuIApgYGB7ciBwcDNsZXhpY29uczIsIG1lc3NhZ2U9RkFMU0V9CnBwX2FmaW5uIDwtIHByaWRlX3ByZWp1ZGljZSAlPiUgCiAgaW5uZXJfam9pbihzZW50aW1lbnRzX2FmaW5uKSAlPiUgCiAgZ3JvdXBfYnkoaW5kZXggPSBsaW5lbnVtYmVyICUvJSA4MCkgJT4lIAogIHN1bW1hcmlzZShzZW50aW1lbnQgPSBzdW0odmFsdWUpKSAlPiUgCiAgbXV0YXRlKG1ldGhvZCA9ICJBRklOTiIpCgpwcF9iaW5nX25yYyA8LSBiaW5kX3Jvd3MocHJpZGVfcHJlanVkaWNlICU+JSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgaW5uZXJfam9pbihzZW50aW1lbnRzX2JpbmcpICU+JSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKG1ldGhvZCA9ICJCaW5nIGV0IGFsLiIpLAogICAgICAgICAgICAgICAgICAgICAgICAgcHJpZGVfcHJlanVkaWNlICU+JSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgaW5uZXJfam9pbihzZW50aW1lbnRzX25yYyAlPiUgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIoc2VudGltZW50ICVpbiUgYygicG9zaXRpdmUiLCAibmVnYXRpdmUiKSkpICU+JSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKG1ldGhvZCA9ICJOUkMiKSkgJT4lIAogIGNvdW50KG1ldGhvZCwgaW5kZXggPSBsaW5lbnVtYmVyICUvJSA4MCwgc2VudGltZW50KSAlPiUgCiAgc3ByZWFkKHNlbnRpbWVudCwgbiwgZmlsbCA9IDApICU+JSAKICBtdXRhdGUoc2VudGltZW50ID0gcG9zaXRpdmUgLSBuZWdhdGl2ZSkKICAKYGBgCgpIZXJlIHdlIGhhdmUgdGhlIHNlbnRpbWVudCBzY29yZXMgZm9yIGVhY2ggY2h1bmNrIG9mICpQcmlkZSAmIFByZWp1ZGljZSogaW4gdHdvIGRhdGEgZnJhbWVzIG5hbWVkIGBwcF9hZmlubmAgYW5kIGBwcF9iaW5nX25yY2AuIAoKTm93IHRvIHBsb3QgdGhlbToKYGBge3IgcHAzbGV4aWNvbnMzfQpiaW5kX3Jvd3MocHBfYWZpbm4sIHBwX2JpbmdfbnJjKSAlPiUKICBnZ3Bsb3QoYWVzKGluZGV4LCBzZW50aW1lbnQsIGZpbGwgPSBtZXRob2QpKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGZhY2V0X3dyYXAofm1ldGhvZCwgbmNvbD0xKQogIApgYGAKClRoZXJlIGFyZSBkZWZpbml0ZSBkaWZmZXJlbmNlcyBpbiB0aGUgcGxvdHMgYWJvdmUsIGJ1dCB0aGV5IGFsbCBmb2xsb3cgdGhlIHNhbWUgZ2VuZXJhbCBmbG93LiBUaGUgQUZJTk4gbGV4aWNvbiBoYXMgaGlnaGVyIGhpZ2hzLCB0aGUgTlJDIGxleGljb24gaGFzIHZlcnkgZmV3IG5lZ2F0aXZlcywgYW5kIHRoZSBCaW5nIGV0IGFsLiBsZXhpY29uIHRlbmRzIHRvIHN0YXkgY2xvc2VyIHRvIDAuIFRoaXMgc2hvd3MgdXMgdGhhdCBlYWNoIGxleGljb24gaXMgdW5pcXVlLiBMZXQncyB0YWtlIGEgbG9vayBhdCB0aGUgbGV4aWNvbnMgdGhlbXNlbHZlcy4KCkxldCdzIGxvb2sgYXQgdGhlIG51bWJlciBvZiBuZWdhdGl2ZSBhbmQgcG9zaXRpdmUgd29yZHMgaW4gTlJDIGFuZCBCaW5nIGV0IGFsLjoKYGBge3IgY29tcGFyZS1ucmMtYmluZ30Kc2VudGltZW50c19ucmMgJT4lIAogIGZpbHRlcihzZW50aW1lbnQgJWluJSBjKCJwb3NpdGl2ZSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgIm5lZ2F0aXZlIikpICU+JSAKICBjb3VudChzZW50aW1lbnQpCgpzZW50aW1lbnRzX2JpbmcgJT4lIAogIGNvdW50KHNlbnRpbWVudCkKYGBgCgpJdCBsb29rcyBsaWtlIE5SQyBoYXMgYWJvdXQgYSB0aG91c2FuZCBtb3JlIG5lZ2F0aXZlIHNlbnRpbWVudCB3b3JkcyB0aGFuIHBvc2l0aXZlIHNlbnRpbWVudCB3b3Jkcy4gQmluZyBldCBhbC4gaGFzIDI3NzYgbW9yZSBuZWdhdGl2ZSB3b3JkcyB0aGFuIHBvc2l0aXZlIHdvcmRzLiBUaGlzIGNvdWxkIGJlIG1ha2luZyBhIGRpZmZlcmVuY2UgaW4gdGhlICpQcmlkZSAmIFByZWp1ZGljZSogcGxvdHMgYWJvdmUuCgojIyMgMi40IE1vc3QgY29tbW9uIHBvc2l0aXZlIGFuZCBuZWdhdGl2ZSB3b3JkcwoKTGlua2luZyB0aGUgdGV4dHMgd2l0aCBzZW50aW1lbnRzIGFsbG93cyB1cyB0byBsb29rIGF0IHRoZSBtb3N0IGNvbW1vbmcgcG9zaXRpdmUgYW5kIG5lZ2F0aXZlIHdvcmRzIGFyZS4gTGV0J3MgbG9vayBhdCBBdXN0ZW4ncyB3b3JrcyB1c2luZyB0aGUgQmluZyBldCBhbC4gbGV4aWNvbi4KYGBge3IgbW9zdGNvbW1vbjEsIG1lc3NhZ2U9RkFMU0V9CmJpbmdfd29yZF9jb3VudHMgPC0gdGlkeV9ib29rcyAlPiUgCiAgaW5uZXJfam9pbihzZW50aW1lbnRzX2JpbmcpICU+JSAKICBjb3VudCh3b3JkLCBzZW50aW1lbnQsIHNvcnQgPSBUUlVFKSAlPiUgCiAgdW5ncm91cCgpCmJpbmdfd29yZF9jb3VudHMKCmJpbmdfd29yZF9jb3VudHMgJT4lIAogIGdyb3VwX2J5KHNlbnRpbWVudCkgJT4lIAogIHRvcF9uKDEwKSAlPiUgCiAgdW5ncm91cCgpICU+JSAKICBtdXRhdGUod29yZCA9IHJlb3JkZXIod29yZCwgbikpICU+JSAKICBnZ3Bsb3QoYWVzKHdvcmQsIG4sIGZpbGwgPSBzZW50aW1lbnQpKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGZhY2V0X3dyYXAofnNlbnRpbWVudCwgc2NhbGVzID0gImZyZWVfeSIpICsKICBsYWJzKHk9ImNvbnRyaWJ1dGlvbiB0byBzZW50aW1lbnQiLCAKICAgICAgIHg9IE5VTEwpICsKICBjb29yZF9mbGlwKCkKYGBgCgpPaCBubyEgVGhlIHdvcmQgIm1pc3MiIGlzIG1hcmtlZCBhcyBuZWdhdGl2ZSwgYXMgaW4gIm1pc3MgdGhlIG1hcmsiIG9yICJJIG1pc3MgbXkgZG9nIiB3aGVuIGxpa2VseSBBdXN0ZW4gdXNlZCBpdCBhcyBhIHRpdGxlIGZvciBjaGFyYWN0ZXJzIHN1Y2ggYXMgIkhlbGxvIE1pc3MgRW1tYSIuIFdlIGNhbiBhZGQgdGhlIHdvcmQgIm1pc3MiIHRvIGEgc2V0IG9mIGN1c3RvbSBzdG9wIHdvcmRzLgoKYGBge3IgY3VzdG9tLXN0b3Atd29yZHN9CmN1c3RvbV9zdG9wX3dvcmRzIDwtIGJpbmRfcm93cyh0aWJibGUod29yZCA9IGMoIm1pc3MiKSwgbGV4aWNvbiA9IGMoImN1c3RvbSIpKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0b3Bfd29yZHMpCmN1c3RvbV9zdG9wX3dvcmRzCmBgYAoKTm93IGxldCdzIHBsb3QgbnVtYmVyIG9mIHBvc2l0aXZlIGFuZCBuZWdhdGl2ZSB3b3JkcyB3aXRob3V0IHN0b3Agd29yZHM6CmBgYHtyIG1vc3Rjb21tb24tY3VzdG9tLXN0b3Atd29yZHMsIG1lc3NhZ2U9RkFMU0V9CmJpbmdfd29yZF9jb3VudHMgPC0gdGlkeV9ib29rcyAlPiUgCiAgYW50aV9qb2luKGN1c3RvbV9zdG9wX3dvcmRzKSAlPiUgCiAgaW5uZXJfam9pbihzZW50aW1lbnRzX2JpbmcpICU+JSAKICBjb3VudCh3b3JkLCBzZW50aW1lbnQsIHNvcnQgPSBUUlVFKSAlPiUgCiAgdW5ncm91cCgpCmJpbmdfd29yZF9jb3VudHMKCmJpbmdfd29yZF9jb3VudHMgJT4lIAogIGdyb3VwX2J5KHNlbnRpbWVudCkgJT4lIAogIHRvcF9uKDEwKSAlPiUgCiAgdW5ncm91cCgpICU+JSAKICBtdXRhdGUod29yZCA9IHJlb3JkZXIod29yZCwgbikpICU+JSAKICBnZ3Bsb3QoYWVzKHdvcmQsIG4sIGZpbGwgPSBzZW50aW1lbnQpKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGZhY2V0X3dyYXAofnNlbnRpbWVudCwgc2NhbGVzID0gImZyZWVfeSIpICsKICBsYWJzKHk9ImNvbnRyaWJ1dGlvbiB0byBzZW50aW1lbnQiLCAKICAgICAgIHg9IE5VTEwpICsKICBjb29yZF9mbGlwKCkKYGBgCgojIyMgMi41IFdvcmRjbG91ZHMKClRoZSB0aWR5IHRleHQgZm9ybWF0IHdvcmtzIHdlbGwgZm9yIGdncGxvdDIsIGJ1dCBpdCBhbHNvIHdvcmtzIHdlbGwgZm9yIHdvcmRjbG91ZHMuIExldCdzIHRyeSBpdDoKYGBge3Igd29yZGNsb3VkMSwgbWVzc2FnZT1GQUxTRX0KdGlkeV9ib29rcyAlPiUgCiAgYW50aV9qb2luKHN0b3Bfd29yZHMpICU+JSAKICBjb3VudCh3b3JkKSAlPiUgCiAgd2l0aCh3b3JkY2xvdWQod29yZCwgbiwgbWF4LndvcmRzID0gMTAwKSkKCmBgYAoKVG8gZG8gYSBgY29tcGFyaXNvbi5jbG91ZCgpYCB3ZSBuZWVkIHRvIHJlc2hhcGUgdGhlIGRhdGEgZnJhbWUgdG8gYSBtYXRyaXggd2l0aCBgYWNhc3QoKWAuCmBgYHtyIGNvbXBhcmlzb24tY2xvdWQsIG1lc3NhZ2U9RkFMU0V9CnRpZHlfYm9va3MgJT4lIAogIGlubmVyX2pvaW4oc2VudGltZW50c19iaW5nKSAlPiUgCiAgY291bnQod29yZCwgc2VudGltZW50LCBzb3J0ID0gVFJVRSkgJT4lIAogIGFjYXN0KHdvcmQgfiBzZW50aW1lbnQsIHZhbHVlLnZhciA9ICJuIiwgZmlsbCA9IDApICU+JSAKICBjb21wYXJpc29uLmNsb3VkKGNvbG9ycyA9IGMoImdyYXkyMCIsICJncmF5ODAiKSwKICAgICAgICAgICAgICAgICAgIG1heC53b3JkcyA9IDEwMCkKYGBgCgojIyMgMi42IExvb2tpbmcgYXQgdW5pdGVzIGJleW9uZCBqdXN0IHdvcmRzCgpMb29raW5nIGF0IHNpbmd1bGFyIHdvcmRzIGlzIHVzZWZ1bCwgYnV0IHRoZXJlIGFyZSB0aW1lcyB3aGVuIGxvb2tpbmcgYXQgYW4gZW50aXJlIHNlbnRlbmNlIGlzIG1vcmUgdXNlZnVsLiBMZXQncyBsb29rIGF0IG9uZToKYGBge3IgcHAtc2VudGVuY2UxLCBtZXNzYWdlPUZBTFNFfQpwcF9zZW50ZW5jZXMgPC0gdGliYmxlKHRleHQgPSBwcmlkZXByZWp1ZGljZSkgJT4lIAogIHVubmVzdF90b2tlbnMoc2VudGVuY2UsIHRleHQsIHRva2VuID0gInNlbnRlbmNlcyIpCgpwcF9zZW50ZW5jZXMkc2VudGVuY2VbMl0KYGBgCgpTZW50ZW5jZSB0b2tlbml6aW5nIGRvZXNuJ3QgYWx3YXlzIHdvcmsgd2VsbCB3aXRoIGRpYWxvZ3VlLiBVc2luZyBgaWNvbnYoKWAgZm9yIGV4YW1wbGUgYGljb252KHRleHQsIHRvID0gJ2xhdGluMScpYCBpbiBhIG11dGF0ZSBmdW5jdGlvbiBiZWZvcmUgdW5uZXN0aW5nIG1pZ2h0IGJlIGhlbHBmdWwuIEFub3RoZXIgb3B0aW9uIGlzIHRvIHVzZSB0aGUgcmVnZXggcGF0dGVybiBpbiBgdW5uZXN0X3Rva2VucygpYC4KYGBge3IgYXVzdGVuLWJ5LWNoYXB0ZXJzfQoKYXVzdGVuX2NoYXB0ZXJzIDwtIGF1c3Rlbl9ib29rcygpICU+JSAKICBncm91cF9ieShib29rKSAlPiUgCiAgdW5uZXN0X3Rva2VucyhjaGFwdGVyLCB0ZXh0LCB0b2tlbiA9ICJyZWdleCIsCiAgICAgICAgICAgICAgICBwYXR0ZXJuID0gIkNoYXB0ZXJ8Q0hBUFRFUiBbXFxkSVZYTENdIikgJT4lIAogIHVuZ3JvdXAoKQphdXN0ZW5fY2hhcHRlcnMgJT4lIAogIGdyb3VwX2J5KGJvb2spICU+JSAKICBzdW1tYXJpc2UoY2hhcHRlcnMgPSBuKCkpCmBgYAoKTGV0J3MgZmluZCB0aGUgbW9zdCBuZWdhdGl2ZSBjaGFwdGVycyBpbiBlYWNoIG9mIEF1c3RlbidzIGJvb2tzLiBGaXJzdCB3ZSdsbCBnZXQgdGhlIGxpc3Qgb2YgbmVnYXRpdmUgd29yZHMgZnJvbSB0aGUgQmluZyBldCBhbC4gbGV4aWNvbi4gVGhlbiB3ZSdsbCBtYWtlIGEgZGF0YSBmcmFtZSB3aXRoIHRoZSBudW1iZXIgb2Ygd29yZHMgaW4gZWFjaCBjaGFwdGVyIHRvIG5vcm1hbGl6ZSBmb3IgbGVuZ3RoLiBUaGVuIHdlJ2xsIGNvdW50IHRoZSBudW1iZXIgb2YgbmVnYXRpdmUgd29yZHMgaW4gZWFjaCBjaGFwdGVyIGFuZCBkaXZpZGUgYnkgdGhlIHRvdGFsIG51bWJlciBvZiB3b3JkcyBpbiBlYWNoIGNoYXB0ZXIuIFdoaWNoIGNoYXB0ZXIgaW4gZWFjaCBib29rIGFzIHRoZSBoaWdoZXN0IHByb3BvcnRpb24gb2YgbmVnYXRpdmUgd29yZHM/CmBgYHtyIG1vc3QtbmVnYXRpdmUtY2hhcHRlcnMsIG1lc3NhZ2U9RkFMU0V9CmJpbmdfbmVnIDwtIHNlbnRpbWVudHNfYmluZyAlPiUgCiAgZmlsdGVyKHNlbnRpbWVudCA9PSAibmVnYXRpdmUiKQoKd29yZGNvdW50cyA8LSB0aWR5X2Jvb2tzICU+JSAKICBncm91cF9ieShib29rLCBjaGFwdGVyKSAlPiUgCiAgc3VtbWFyaXNlKHdvcmRzID0gbigpKQoKdGlkeV9ib29rcyAlPiUgCiAgc2VtaV9qb2luKGJpbmdfbmVnKSAlPiUgCiAgZ3JvdXBfYnkoYm9vaywgY2hhcHRlcikgJT4lIAogIHN1bW1hcmlzZShuZWdhdGl2ZXdvcmRzID0gbigpKSAlPiUgCiAgbGVmdF9qb2luKHdvcmRjb3VudHMsIGJ5ID0gYygiYm9vayIsICJjaGFwdGVyIikpICU+JSAKICBtdXRhdGUocmF0aW8gPSBuZWdhdGl2ZXdvcmRzL3dvcmRzKSAlPiUgCiAgZmlsdGVyKGNoYXB0ZXIgIT0wKSAlPiUgCiAgdG9wX24oMSkgJT4lIAogIHVuZ3JvdXAoKQoKYGBgCgojIyBDaGFwdGVyIDMgTm90ZXM6IEFuYWx5emluZyB3b3JkIGFuZCBkb2N1bWVudCBmcmVxdWVuY3k6IHRmLWlkZgoKVGV4dCBtaW5pbmcgYWltcyB0byBxdWFudGlmeSB3aGF0IGEgZG9jdW1lbnQgaXMgYWJvdXQgYnkgbG9va2luZyBhdCB0aGUgd29yZHMgdGhhdCBtYWtlIHVwIHRoYXQgZG9jdW1lbnQuIE9uZSB3YXkgdG8gZG8gdGhpcyBpcyAqdGVybSBmcmVxdWVuY3kqICh0ZiksIG9yIGhvdyBvZnRlbiBhIHdvcmQgc2hvd3MgdXAgaW4gYSBkb2N1bWVudC4gSG93ZXZlciwgdGhlcmUgYXJlIGEgbG90IG9mIHdvcmRzIHRoYXQgZG9uJ3QgY2FycnkgYSBsb3Qgb2YgY29udGV4dCwgb3VyIHN0b3Agd29yZHMuIEhvd2V2ZXIsIHNvbWV0aW1lcyB0aGVyZSBhcmUgd29yZHMgdGhhdCBhcmUgY29uc2lkZXJlZCBzdG9wIHdvcmRzIHRoYXQgaGF2ZSBtb3JlIG1lYW5pbmcgdGhhbiB0aGV5IHNlZW0uIEhvdyBkbyB3ZSBhY2NvdW50IGZvciB0aGF0PwoKT25lIHdheSBpcyB0byBjb25zaWRlciBhIHdvcmQncyAqaW52ZXJzZSBkb2N1bWVudCBmcmVxdWVuY3kqIChpZGYpLiBUaGUgaWRmIGRlY3JlYXNlcyB0aGUgd2VpZ2h0IG9mIG9mdGVuIHVzZWQgd29yZHMgYW5kIGluY3JlYXNlcyB0aGUgd2VpZ2h0IG9mIHdvcmRzIHRoYXQgYXJlbid0IHVzZWQgYXMgb2Z0ZW4uIFRvZ2V0aGVyLCAqdGYtaWRmKiBjYW4gdGVsbCB1cyB0aGUgdGVybSdzIGZyZXF1ZW5jeSBhZGp1c3RlZCBmb3IgaG93IG9mdGVuIGl0IGFwcGVhcnMgaW4gYSBkb2N1bWVudCBjb21wYXJlZCB0byBhIGNvbGxlY3Rpb24gKGNvcnB1cykgb2YgZG9jdW1lbnRzLgoKIyMjIDMuMSBUZXJtIGZyZXF1ZW5jeSBpbiBKYW5lIEF1c3RlbidzIG5vdmVscwoKRmlyc3QsIGxldCdzIGNvdW50IHRoZSBtb3N0IGNvbW1vbiB3b3Jkcy4gVXNlIGBkcGx5cmAncyBgZ3JvdXBfYnkoKWAgYW5kIGBqb2luKClgIGZ1bmN0aW9ucy4KYGBge3IgYXVzdGVuLWZyZXF1ZW5jeTF9Cgpib29rX3dvcmRzIDwtIGF1c3Rlbl9ib29rcygpICU+JQogIHVubmVzdF90b2tlbnMod29yZCwgdGV4dCkgJT4lIAogIGNvdW50KGJvb2ssIHdvcmQsIHNvcnQgPSBUUlVFKQoKdG90YWxfd29yZHMgPC0gYm9va193b3JkcyAlPiUgCiAgZ3JvdXBfYnkoYm9vaykgJT4lIAogIHN1bW1hcmlzZSh0b3RhbCA9IHN1bShuKSkKCmJvb2tfd29yZHMyIDwtIGxlZnRfam9pbihib29rX3dvcmRzLCB0b3RhbF93b3JkcywgYnkgPSAiYm9vayIpCgpib29rX3dvcmRzMgpgYGAKCkhlcmUgYG5gIGlzIHRoZSBudW1iZXIgb2YgdGltZXMgdGhhdCB0aGUgYHdvcmRgIHNob3dzIHVwIGluIHRoZSBgYm9va2AgYW5kIHRoZSBgdG90YWxgIGlzIHRoZSB0b3RhbCBudW1iZXIgb2Ygd29yZHMgaW4gdGhhdCBgYm9va2AuIE5leHQsIGxldCdzIHBsb3QgYG4vdG90YWxgIGZvciBlYWNoIG5vdmVsLgoKYGBge3IgYXVzdGVuLWZyZXEtbnRvdGFsLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpnZ3Bsb3QoYm9va193b3JkczIsCiAgICAgICBhZXMobi90b3RhbCwgZmlsbCA9IGJvb2spKSArCiAgZ2VvbV9oaXN0b2dyYW0oc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIHhsaW0oTkEsIC4wMDA5KSArCiAgZmFjZXRfd3JhcCh+Ym9vaywgbmNvbCA9IDIsIHNjYWxlcyA9ICJmcmVlX3kiKQpgYGAKCkhlcmUgd2Ugc2VlIHRoYXQgdGhlcmUgYSBmZXcgd29yZHMgdGhhdCBvY2N1ciBmcmVxdWVudGx5IGFuZCBtYW55IHdvcmRzIHRoYXQgb2NjdXIgbGVzcyBmcmVxdWVudGx5LgoKIyMjIDMuMiBaaXBmJ3MgTGF3CgpIYXZpbmcgZGlzdHJpYnV0aW9ucyBsaWtlIHRoZSBvbmUgYWJvdmUgaXMgdmVyeSBjb21tb24gaW4gbGFuZ3VhZ2UgYW5kIGZvbGxvd3MgWmlwZidzIExhdyB0aGF0IHRoZSBmcmVxdWVuY3kgdGhhdCB3b3JkIGFwcGVhcnMgaW4gYSBkb2N1bWVudCBpcyBpbnZlcnNlbHkgcHJvcG9ydGlvbmFsIHRvIGl0cyByYW5rLgoKYGBge3IgemlwZnMxfQpmcmVxX2J5X3JhbmsgPC0gYm9va193b3JkczIgJT4lIAogIGdyb3VwX2J5KGJvb2spICU+JQogIG11dGF0ZShyYW5rID0gcm93X251bWJlcigpLAogICAgICAgICAndGVybSBmcmVxdWVuY3knID0gbi90b3RhbCkKZnJlcV9ieV9yYW5rCmBgYAoKVGhlbiB3ZSBjYW4gcGxvdCBgcmFua2AgYW5kIGB0ZXJtIGZyZXF1ZW5jeWAuCmBgYHtyIHppcGZzMn0KZnJlcV9ieV9yYW5rICU+JSAKICBnZ3Bsb3QoYWVzKHJhbmssIGB0ZXJtIGZyZXF1ZW5jeWAsIGNvbG9yID0gYm9vaykpICsKICBnZW9tX2xpbmUoc2l6ZSA9IDEuMSwgYWxwaGEgPSAwLjgsIHNob3cubGVnZW5kID0gRkFMU0UpICsKICBzY2FsZV94X2xvZzEwKCkgKwogIHNjYWxlX3lfbG9nMTAoKQpgYGAKClRoaXMgcGxvdCBzaG93cyB0aGF0IEF1c3RlbidzIGJvb2tzIHRlbmQgdG8gZm9sbG93IFppcGYncyBsYXcsIGJ1dCBub3QgcGVyZmVjdGx5LiAKClRvIGZpbmQgdGhlIGV4cG9uZW50IG9mIHRoZSBwb3dlciBsYXcgaXMgZm9yIHRoZSBtaWRkbGUgc2VjdGlvbiBvZiB0aGUgcmFuayByYW5nZS4KYGBge3IgemlwZnMtcG93ZXItbGF3LWV4cG9uZW50fQpyYW5rX3N1YnNldCA8LSBmcmVxX2J5X3JhbmsgJT4lIAogIGZpbHRlcihyYW5rIDwgNTAwLAogICAgICAgICByYW5rID4gMTApCgpsbShsb2cxMChgdGVybSBmcmVxdWVuY3lgKSB+IGxvZzEwKHJhbmspLCBkYXRhID0gcmFua19zdWJzZXQpCmBgYAoKTm93IHRvIHBsb3QgaXQ6CmBgYHtyIHppcGZzLXBsb3R9CmZyZXFfYnlfcmFuayAlPiUgCiAgZ2dwbG90KGFlcyhyYW5rLCBgdGVybSBmcmVxdWVuY3lgLCBjb2xvciA9IGJvb2sgKSkgKwogIGdlb21fYWJsaW5lKGludGVyY2VwdCA9IC0wLjYyLCBzbG9wZSA9IC0xLjEsIGNvbG9yID0gImdyYXk1MCIsIGxpbmV0eXBlID0gMikgKwogIGdlb21fbGluZShzaXplID0gMS4xLCBhbHBoYSA9IDAuOCwgc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIHNjYWxlX3hfbG9nMTAoKSArCiAgc2NhbGVfeV9sb2cxMCgpCmBgYAoKSXQgaXMgY29tbW9uIHRvIHNlZSBkZXZpYXRpb25zIHdoZXJlIHRoZSBoaWdoIHJhbmsgd29yZHMgYXJlIGJ1dCBpdCBpcyBhcHBhcmVudGx5IHVuY29tbW9uIHRvIHNlZSBzdWNoIGRldmlhdGlvbiBpbiB0aGUgbG93IHJhbmsgd29yZHMuIEF1c3RlbiB1c2VzIGEgbG93ZXIgcGVyY2VudGFnZSBvZiB0aGUgbW9zdCBjb21tb24gd29yZHMuCgojIyMgMy4zIFRoZSBgYmluZF90Zl9pZGZgIGZ1bmN0aW9uCgpUaGUgYGJpbmRfdGZfaWRmYCBmdW5jdGlvbiBpcyBwYXJ0IG9mIHRoZSBgdGlkeXRleHRgIHBhY2thZ2UuIEl0IHRha2VzIGEgZGF0YSBmcmFtZSB3aXRoIHRpZHkgdGV4dCAob25lIHJvdyBwZXIgdGVybSBwZXIgZG9jdW1lbnQpLiBUaGUgYXJndW1lbnRzIGFyZSBhcyBmb2xsb3dzOiBgYmluZF90Zl9pZGYodGJsLCB0ZXJtLCBkb2N1bWVudCwgbilgIHdoZXJlIGB0YmxgIGlzIGEgdGlkeSB0ZXh0IGRhdGFzZXQsIGB0ZXJtYCBpcyB0aGUgY29sdW1uIGNvbnRhaW5pbmcgdGVybXMgYXMgc3RyaW5nIG9yIHN5bWJvbCwgYGRvY3VtZW50YCBpcyB0aGUgY29sdW1uIGNvbnRhaW5pbmcgdGhlIGRvY3VtZW50IElEcywgYXMgc3RyaW5nIG9yIHN5bWJvbCwgYW5kIGBuYCBpcyB0aGUgY29sdW1uIGNvbnRhaW5pbmcgZG9jdW1lbnQtdGVybSBjb3VudHMgYXMgc3RyaW5nIG9yIHN5bWJvbC4gUnVuIGA/YmluZF90Zl9pZGZgIGFmdGVyIHlvdSd2ZSBsb2FkZWQgdGhlIGB0aWR5dGV4dGAgcGFja2FnZS4KCkxldCdzIHVzZSBpdDoKYGBge3IgYmluZF90Zl9pZGYxfQpib29rX3dvcmRzX2JpbmR0ZiA8LSBib29rX3dvcmRzICU+JSAKICBiaW5kX3RmX2lkZih3b3JkLCBib29rLCBuKQoKIyMgbm90aWNlIGhlcmUgdGhhdCB3ZSBkaWQgbm90IHNwZWNpZnkgdGhlIGB0YmxgIGJlY2F1c2Ugd2UgYWxyZWFkeSBzYWlkIHdlJ3JlIHVzaW5nIHRoZSBgYm9va193b3Jkc2AgZGF0YSBmcmFtZS4KCmJvb2tfd29yZHNfYmluZHRmCmBgYAoKSGVyZSB3ZSBzZWUgdGhhdCB0aGUgbW9zdCBjb21tb24gd29yZHMgKHRoZSwgdHdvLCBhbmQsIG9mLCBldGMuKSBoYXZlIGFuIGlkZiBvZiAwIGFuZCBhIHRmLWlkZiBvZiBlc3NlbnRpYWxseSB6ZXJvLgoKTGV0J3MgbG9vayBhdCB0ZXJtcyB0aGF0IGhhdmUgaGlnaCB0Zi1pZGY6CmBgYHtyIGhpZ2gtdGYtaWRmfQogYm9va193b3Jkc19iaW5kdGYgJT4lIAogIGFycmFuZ2UoZGVzYyh0Zl9pZGYpKQpgYGAKCkhlcmUgd2Ugc2VlIG5hbWVzIG9mIGNoYXJhY3RlcnMgZnJvbSB0aGUgYm9va3MuIFRoZXkgYXJlIGltcG9ydGFudCBhbmQgZGlzdGljdGl2ZSBvZiBlYWNoIGJvb2suCgpOb3cgbGV0J3MgdmlzdWFsaXplIHRoZSBkYXRhOgpgYGB7ciBoaWdoLXRmLWlkZi12aXN9CmJvb2tfd29yZHNfYmluZHRmICU+JSAKICBhcnJhbmdlKGRlc2ModGZfaWRmKSkgJT4lIAogIG11dGF0ZSh3b3JkID0gZmFjdG9yKHdvcmQsIGxldmVscyA9IHJldih1bmlxdWUod29yZCkpKSkgJT4lIAogIGdyb3VwX2J5KGJvb2spICU+JSAKICB0b3BfbigxNSkgJT4lIAogIHVuZ3JvdXAoKSAlPiUgCiAgZ2dwbG90KGFlcyh3b3JkLCB0Zl9pZGYsIGZpbGwgPSBib29rKSkgKwogIGdlb21fY29sKHNob3cubGVnZW5kID0gRkFMU0UpICsKICBsYWJzKHggPSBOVUxMLCB5ID0gInRmLWlkZiIpICsKICBmYWNldF93cmFwKH5ib29rLCBuY29sID0gMiwgc2NhbGVzID0gImZyZWUiKSArCiAgY29vcmRfZmxpcCgpCmBgYAoKSGVyZSBJIHNlZSB0aGUgaGlnaGVzdCB0Zi1pZGYgd29yZHMgaW4gZWFjaCBib29rLiBJIHNlZSBsb3RzIG9mIGNoYXJhY3RlcidzIG5hbWVzLCBtZWFuaW5nIHRoYXQgQXVzdGVuIGhhcyBzaW1pbGFyIGxhbmd1YWdlIGFjcm9zcyBoZXIgYm9va3MgYW5kIHRoYXQgbmFtZXMgYXJlIGRpc3RpbmN0aXZlIHRvIGVhY2ggYm9vay4gSSBhbHNvIG5vdGljZSB0aGF0IHNvbWUgb2YgdGhlIG5hbWVzIGFyZSByZXBlYXRlZCB3aXRoIGFuIGFwb3N0cm9waGUtcywgb3IgdGhlIHBvc3Nlc3NpdmUgb2YgYSBuYW1lLiAKCiMjIyAzLjQgQSBjb3JwdXMgb2YgcGh5c2ljcyB0ZXh0cwoKTm93IHdlJ2xsIGxvb2sgYXQgdGVybXMgaW4gYSBjb2xsZWN0aW9uIG9mIGNsYXNzaWMgcGh5c2ljcyBib29rcyBmcm9tIFByb2plY3QgR3V0ZW5iZXJnOiAqRGlzY291cnNlIG9uIEZsb2F0aW5nIEJvZGllcyogYnkgR2FsaWxlbyBHYWxpbGVpLCAqVHJlYXRpc2Ugb24gTGlnaHQqIGJ5IENocmlzdGlhYW4gSHV5Z2VucywgKkV4cGVyaW1lbnRzIHdpdGggQWx0ZXJuYXRlIEN1cnJlbnRzIG9mIEhpZ2ggUG90ZW50aWFsIGFuZCBIaWdoIEZyZXF1ZW5jeSogYnkgTmlrb2xhIFRlc2xhLCBhbmQgKlJlbGF0aXZpdHk6IFRoZSBTcGVjaWFsIGFuZCBHZW5lcmFsIFRoZW9yeSogYnkgQWxiZXJ0IEVpbnN0ZWluLgoKSSdsbCB1c2UgdGhlIGZ1bmN0aW9uIGBndXRlbmJlcmdfZG93bmxvYWQoKWAgZnJvbSB0aGUgYGd1dGVuYmVyZ3JgIHBhY2thZ2UuIEJlY2F1c2UgdGhlc2UgYXJlIGFsbCBmcm9tIGRpZmZlcmVudCBhdXRob3JzLCB3ZSdsbCBhZGQgdGhlIGFyZ3VtZW50IGBtZXRhX2ZpZWxkcyA9ICJhdXRob3IiYCB0byBtYWtlIHN1cmUgaXQgaXMgaW5jbHVkZWQgaW4gdGhlIGRhdGEgZnJhbWUuCmBgYHtyIHBoeXNpY3MtZG93bmxvYWR9CnBoeXNpY3MgPC0gZ3V0ZW5iZXJnX2Rvd25sb2FkKGMoMzc3MjksIDE0NzI1LCAxMzQ3NiwgMzAxNTUpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWV0YV9maWVsZHMgPSAiYXV0aG9yIikKCiMjIE5leHQgd2UnbGwgdGlkeSB0aGUgZGF0YQoKcGh5c2ljc193b3JkcyA8LSBwaHlzaWNzICU+JSAKICB1bm5lc3RfdG9rZW5zKHdvcmQsIHRleHQpICU+JSAKICBjb3VudChhdXRob3IsIHdvcmQsIHNvcnQgPSBUUlVFKQojIyBpbiBgY291bnQoYXV0aG9yLCB3b3JkLCBzb3J0ID0gVFJVRSlgIHRoZSBgY291bnRgIGZ1bmN0aW9uIGlzIGdyb3VwaW5nIGJ5IGF1dGhvciwgdGhlbiBieSB3b3JkLCBzb3J0aW5nIGluIGRlc2NlbmRpbmcgb3JkZXIuCnBoeXNpY3Nfd29yZHMKYGBgCgpXZSBzZWUgbG90cyBvZiBzdG9wIHdvcmRzIGhlcmUuIFRoaXMgaXMgdmVyeSBjb21tb24uIFdoZW4gd2UgY2FsY3VsYXRlIHRlIHRmLWlkZiwgd2UnbGwgc2VlIHdoaWNoIHdvcmRzIGFyZSBtb3N0IGltcG9ydGFudC4gT25lIHRoaW5nIHdlJ2xsIG5lZWQgdG8gYmUgY2FyZWZ1bCBvZiBpcyB0aGF0IGVhY2ggb2YgdGhlc2UgZG9jdW1lbnRzIGFyZSBkaWZmZXJlbnQgbGVuZ3Rocy4gUmVtZW1iZXIgdGhlIGFyZ3VtZW50cyBmb3IgYGJpbmRfdGZfaWRmKHRibCwgdGVybSwgZG9jdW1lbnQsIG4pYC4gSW4gdGhpcyBjYXNlLCB0aGUgdGVybSBpcyBzdGlsbCBgd29yZGAgYnV0IHRoZSBkb2N1bWVudCBpcyBgYXV0aG9yYC4KCmBgYHtyIHBoeXNpY3MtbGVuZ3Roc30KbGlicmFyeShmb3JjYXRzKQoKcGh5c2ljc190ZmlkZiA8LSBwaHlzaWNzX3dvcmRzICU+JSAKICBiaW5kX3RmX2lkZih3b3JkLCBhdXRob3IsIG4pICU+JSAKICBtdXRhdGUod29yZCA9IGZjdF9yZW9yZGVyKHdvcmQsIHRmX2lkZikpICU+JSAKICBtdXRhdGUoYXV0aG9yID0gZmFjdG9yKGF1dGhvciwgbGV2ZWxzID0gYygiR2FsaWxlaSwgR2FsaWxlbyIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJIdXlnZW5zLCBDaHJpc3RpYWFuIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiVGVzbGEsIE5pa29sYSIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJFaW5zdGVpbiwgQWxiZXJ0IikpKQpwaHlzaWNzX3RmaWRmCmBgYAoKTm93LCBsZXQncyBwbG90IGl0OgpgYGB7ciBwaHlzaWNzLXBsb3R9CnBoeXNpY3NfdGZpZGYgJT4lIAogIGdyb3VwX2J5KGF1dGhvcikgJT4lIAogIHRvcF9uKDE1LCB0Zl9pZGYpICU+JSAKICB1bmdyb3VwKCkgJT4lIAogIG11dGF0ZSh3b3JkID0gcmVvcmRlcih3b3JkLCB0Zl9pZGYpKSAlPiUgCiAgZ2dwbG90KGFlcyh3b3JkLCB0Zl9pZGYsIGZpbGwgPSBhdXRob3IpKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGxhYnMoeCA9IE5VTEwsIHkgPSAidGZfaWRmIikgKwogIGZhY2V0X3dyYXAofmF1dGhvciwgbmNvbCA9IDIsIHNjYWxlcyA9ICJmcmVlIikgKwogIGNvb3JkX2ZsaXAoKQpgYGAKClRoaXMgaXMgaW50ZXJlc3RpbmcgYnV0IHdoYXQncyB0aGUgZGVhbCB3aXRoIHRoZSAiXyIgYW5kIHRoZSAiX2tfIiBhbmQgd2h5IHdhcyBUZXNsYSB0YWxraW5nIGFib3V0IGZpZ3Mgc28gbXVjaD8gTGV0J3MgdGFrZSBhIGxvb2sgYXQgdGhlIGRhdGE6CmBgYHtyIHBoeXNpY3Nfc3RvcHdvcmRzMX0KcGh5c2ljcyAlPiUgCiAgZmlsdGVyKHN0cl9kZXRlY3QodGV4dCwgIl9rXyIpKSAlPiUgCiAgc2VsZWN0KHRleHQpCmBgYAoKVGhpcyBkb2Vzbid0IGxvb2sgdG9vIG1lYW5pbmdmdWwuIEkgd2lsbCBhZGQgaXQgdG8gYSBncm91cCBvZiBzdG9wd29yZHMgdG8gcmVtb3ZlIHRoZW06CmBgYHtyIHBoeXNpY3Nfc3RvcHdvcmRzMn0KcGh5c2ljc19zdG9wd29yZHMgPC0gdGliYmxlKHdvcmQgPSBjKCJhYiIsICJhYyIsICJyYyIsICJjbSIsICJjZyIsICJfa18iLCAiX2siLCAiY28iLCAiX3giLCAiZmlnIiwgImNiIiwgImFrIiwgImQiLCAiYm4iLCAiYWQiLCAiX3ZfIiwgImNkIiwgIl9pLmUiLCAiYmMiKSkKCiMjIFdoZW4gSSByYW4gYWxsIG9mIHRoaXMgY29kZSwgdGhlcmUgd2VyZSBhZGRpdGlvbmFsIHN0b3B3b3JkcyB0aGF0IGFwcGVhcmVkLCBzbyBJIGNhbWUgYmFjayB0byB0aGlzIHNlY3Rpb24gdG8gYWRkIHRoZW0uIFRoZSB3b3JkcyBJIGFkZGVkIHdlcmUgImNiIiwgImFrIiwgImQiLCAiYm4iLCAiYWQiLCAiX3ZfIiwgImNkIiwgIl9pLmUiLCBhbmQgImJjIi4KCnBoeXNpY3Nfd29yZHNfc3RvcHBlZCA8LSBhbnRpX2pvaW4ocGh5c2ljc193b3JkcywgcGh5c2ljc19zdG9wd29yZHMsIGJ5ID0gIndvcmQiKQoKIyMgTm93IGxldCdzIGNhbGN1bGF0ZSB0aGUgdGYtaWRmIGFuZCB0aGVuIHBsb3QgdGhlIGRhdGE6CnBoeXNpY3NfdGZpZGYyIDwtIHBoeXNpY3Nfd29yZHNfc3RvcHBlZCAlPiUgCiAgYmluZF90Zl9pZGYod29yZCwgYXV0aG9yLCBuKSAlPiUgCiAgbXV0YXRlKHdvcmQgPSBzdHJfcmVtb3ZlX2FsbCh3b3JkLCAiXyIpKSAlPiUgCiAgbXV0YXRlKHdvcmQgPSBmY3RfcmVvcmRlcih3b3JkLCB0Zl9pZGYpKSAlPiUgCiAgbXV0YXRlKGF1dGhvciA9IGZhY3RvcihhdXRob3IsIGxldmVscyA9IGMoIkdhbGlsZWksIEdhbGlsZW8iLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiSHV5Z2VucywgQ2hyaXN0aWFhbiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlRlc2xhLCBOaWtvbGEiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiRWluc3RlaW4sIEFsYmVydCIpKSkKCiMjIE5vdGljZSB3ZSBhbHNvIHJlbW92ZWQgdGhlICJfIiB3ZSBmb3VuZC4KCnBoeXNpY3NfdGZpZGYyCgoKIyMgUGxvdHRpbmc6CgpwaHlzaWNzX3RmaWRmMiAlPiUgCiAgZ3JvdXBfYnkoYXV0aG9yKSAlPiUgCiAgdG9wX24oMTUsIHRmX2lkZikgJT4lIAogIHVuZ3JvdXAoKSAlPiUgCiAgbXV0YXRlKHdvcmQgPSByZW9yZGVyKHdvcmQsIHRmX2lkZikpICU+JSAKICBnZ3Bsb3QoYWVzKHdvcmQsIHRmX2lkZiwgZmlsbCA9IGF1dGhvcikpICsKICBnZW9tX2NvbChzaG93LmxlZ2VuZCA9IEZBTFNFKSArCiAgbGFicyh4ID0gTlVMTCwgeSA9ICJ0Zl9pZGYiKSArCiAgZmFjZXRfd3JhcCh+YXV0aG9yLCBuY29sID0gMiwgc2NhbGVzID0gImZyZWUiKSArCiAgY29vcmRfZmxpcCgpCmBgYAoKTm93IHRoZSBwbG90IGhhcyB3b3JkcyB0aGF0IGFyZSBvbiB0aGVpciBmYWNlIG11Y2ggbW9yZSBtZWFuaW5nZnVsIHRoYW4gdGhlIHBsb3Qgd2UgaGFkIGJlZm9yZS4gSWYgeW91IGNvbXBhcmUgbXkgY29kZSB3aXRoIHdoYXQncyBpbiB0aWR5dGV4dG1pbmluZywgeW91J2xsIHNlZSBJIHBsb3R0ZWQgdGhpcyBhIGxpdHRsZSBkaWZmZXJlbnRseS4gSSBub3RpY2VkIHdoZW4gSSB1c2VkIGByZW9yZGVyX3dpdGhpbigpYCBhbmQgdmlld2VkIHRoZSByZXN1bHRpbmcgZGF0YSBmcmFtZSBteSB0ZXh0IHdhcyBubyBsb25nZXIgdGlkeS4gSXQgaGFkIGVhY2ggd29yZCBhcyAidGhlX0VpbnN0ZWluLCBBbGJlcnQiIGFuZCAidGhlX1Rlc2xhLCBOaWtvbGEiLiBJIGRlY2lkZWQgdG8gdXNlIHRoZSBjb2RlIHRoYXQgd2FzIGluIHRoZSBvcmlnaW5hbCBiaW5kJnBsb3QuCgojIyBDaGFwdGVyIDQgTm90ZXM6IFJlbGF0aW9uc2hpcHMgYmV0d2VlbiB3b3Jkczogbi1ncmFtcyBhbmQgY29ycmVsYXRpb25zCgpUaWR5IHRleHQgaGFzIGZvY3VzZWQgb24gb25lIHdvcmQgcGVyIHJvdyBwZXIgZG9jdW1lbnQsIGJ1dCBub3cgSSdsbCBsb29rIGF0IG4tZ3JhbXMgYW5kIGNvcnJlbGF0aW9ucy4gVGhpcyB3aWxsIGFsbG93IG1lIHRvIGxvb2sgYXQgdGhlIHJlbGF0aW9uc2hpcHMgYmV0d2VlbiB3b3Jkcywgd29yZHMgdGhhdCBmb2xsb3cgb3RoZXIgd29yZHMgYW5kIHdvcmRzIHRoYXQgdGVuZCB0byBzaG93IHVwIG5lYXJieSBvbmUgYW5vdGhlciBpbiBkb2N1bWVudHMuIEknbGwgdXNlIGB0b2tlbiA9ICJuZ3JhbXMiYCBhcmd1bWVudCB0byBsb29rIGF0IGFkamFjZW50IHdvcmRzLCBgZ2dyYXBoYCB0byBtYWtlIG5ldHdvcmsgcGxvdHMsIGFuZCBgd2lkeXJgIHRoYXQgY2FuICJjYWxjdWxhdGUgcGFpcndpc2UgY29ycmVsYXRpb25zIGFuZCBkaXN0YW5jZXMgd2l0aGluIGEgdGlkeSBkYXRhIGZyYW1lIi4KCiMjIyA0LjEgVG9rZW5pemluZyBieSBuLWdyYW0KCmB1bm5lc3RfdG9rZW5zKClgIGNhbiBiZSBhZGp1c3RlZCBieSB0aGUgYXJndW1lbnQgYHRva2VuID0gIm5ncmFtcyJgIGFuZCBgbiA9IDJgIHRvIHNldCB0aGUgbnVtYmVyIG9mIHdvcmRzIHRvIDIuIFRoaXMgd2lsbCBwdWxsIHdvcmRzIHRoYXQgYXJlIGRpcmVjdGx5IG5leHQgdG8gb25lIGFub3RoZXIsIHNvIHdlJ2xsIHNlZSBvdmVybGFwIHdoZXJlIHdvcmQgIzIgaXMgcGFpcmVkIHdpdGggd29yZCAjMSBhbmQgd29yZCAjMy4gRWFjaCBwYWlyIHdpbGwgaGF2ZSBpdHMgb3duIHJvdy4gVGh1cyByb3cgMSB3b3VsZCBoYXZlIHdvcmRzIDEmMiwgcm93IDIgd291bGQgaGF2ZSB3b3JkcyAyJjMsIHJvdyAzIHdvdWxkIGhhdmUgd29yZHMgMyY0LCBhbmQgc28gb24uCgpgYGB7ciBiaWdyYW1zMX0KYXVzdGVuX2JpZ3JhbXMgPC0gYXVzdGVuX2Jvb2tzKCkgJT4lIAogIHVubmVzdF90b2tlbnMoYmlncmFtLCB0ZXh0LCB0b2tlbiA9ICJuZ3JhbXMiLCBuID0gMikKYXVzdGVuX2JpZ3JhbXMKYGBgCgojIyMgNC4xLjEgQ291bnRpbmcgYW5kIGZpbHRlcmluZyBuLWdyYW1zCgpgZHBseXJgIGNhbiBiZSB1c2VkIG9uIG4tZ3JhbXM6CgpgYGB7ciBkcGx5cl9iaWdyYW1zfQphdXN0ZW5fYmlncmFtcyAlPiUgCiAgY291bnQoYmlncmFtLCBzb3J0ID0gVFJVRSkKYGBgCgpUaGVyZSBhcmUgbG90cyBvZiBzdG9wIHdvcmRzIGhlcmUuIFVzaW5nIGBzZXBhcmF0ZSgpYCBjYW4gc3BsaXQgYSBjb2x1bW4gaW50byBtdWx0aXBsZSBjb2x1bW5zIGxpa2Ugc286CgpgYGB7ciBzZXBhcmF0ZV9iaWdyYW1zfQpiaWdyYW1zX3NlcGFyYXRlZCA8LSBhdXN0ZW5fYmlncmFtcyAlPiUgCiAgc2VwYXJhdGUoYmlncmFtLCBjKCJ3b3JkMSIsICJ3b3JkMiIpLCBzZXAgPSAiICIpCmJpZ3JhbXNfc2VwYXJhdGVkCgojIyBOb3cgd2UnbGwgZmlsdGVyIG91dCB0aGUgc3RvcCB3b3JkczoKCmJpZ3JhbXNfZmlsdGVyZWQgPC0gYmlncmFtc19zZXBhcmF0ZWQgJT4lIAogIGZpbHRlcighd29yZDEgJWluJSBzdG9wX3dvcmRzJHdvcmQpICU+JSAKICBmaWx0ZXIoIXdvcmQyICVpbiUgc3RvcF93b3JkcyR3b3JkKQpiaWdyYW1zX2ZpbHRlcmVkCgojIyBOb3cgdG8gY291bnQ6CmJpZ3JhbXNfY291bnRzIDwtIGJpZ3JhbXNfZmlsdGVyZWQgJT4lIAogIGNvdW50KHdvcmQxLCB3b3JkMiwgc29ydCA9IFRSVUUpCmJpZ3JhbXNfY291bnRzCmBgYAoKSGVyZSB3ZSBzZWUgdGhhdCBBdXN0ZW4gb2Z0ZW4gYXR0YWNoZXMgdGl0bGVzIHRvIGNoYXJhY3RlcidzIG5hbWVzLiBOZXh0IHdlIGNhbiByZWNvbWJpbmUgdGhlIHdvcmRzIHdpdGggYHVuaXRlKClgIGZyb20gdGhlIGB0aWR5cmAgcGFja2FnZS4KCmBgYHtyIHVuaXRlX2JpZ3JhbXN9CmJpZ3JhbXNfdW5pdGVkIDwtIGJpZ3JhbXNfZmlsdGVyZWQgJT4lIAogIHVuaXRlKGJpZ3JhbSwgd29yZDEsIHdvcmQyLCBzZXAgPSAiICIpCmJpZ3JhbXNfdW5pdGVkCmBgYAoKTGV0J3MgdHJ5IGl0IHdpdGggdHJpZ2FtczoKCmBgYHtyIGF1c3Rlbl90cmlncmFtc30KYXVzdGVuX3RyaWdhbXMgPC0gYXVzdGVuX2Jvb2tzKCkgJT4lIAogIHVubmVzdF90b2tlbnModHJpZ3JhbSwgdGV4dCwgdG9rZW4gPSAibmdyYW1zIiwgbiA9IDMpICU+JSAKICBzZXBhcmF0ZSh0cmlncmFtLCBjKCJ3b3JkMSIsICJ3b3JkMiIsICJ3b3JkMyIpLCBzZXAgPSAiICIpICU+JSAKICBmaWx0ZXIoIXdvcmQxICVpbiUgc3RvcF93b3JkcyR3b3JkLCAKICAgICAgICAgIXdvcmQyICVpbiUgc3RvcF93b3JkcyR3b3JkLAogICAgICAgICAhd29yZDMgJWluJSBzdG9wX3dvcmRzJHdvcmQpICU+JSAKICBjb3VudCh3b3JkMSwgd29yZDIsIHdvcmQzLCBzb3J0ID0gVFJVRSkKCiMjIHRoZSBmaWx0ZXIoKSBpcyB1c2VkIHdpdGggISBhbmQgJWluJSBoZXJlLiBXZSdyZSBhc2tpbmcgUiB0byBzcGl0IG91dCBhbGwgdGhlIHdvcmRzIGluIHdvcmQxIHRoYXQgYXJlIG5vdCBhbHNvIGZvdW5kIGluIHRoZSBzdG9wX3dvcmRzIGRhdGEgZnJhbWUgdW5kZXIgdGhlIHZhcmlhYmxlICJ3b3JkIi4gV2hlbiBJIHRoaW5rIG9mIGZpbHRlcmluZyBzb21ldGhpbmcgSSdtIG9mdGVuIHRoaW5raW5nIG9mICJmaWx0ZXJpbmcgb3V0IiBvciByZW1vdmluZyBzb21ldGhpbmcsIGJ1dCBJIHNob3VsZCB0aGluayBvZiBpdCBhcyBhIGNvbGFuZGVyIHdoZXJlIHRoZSBzdHVmZiB0aGF0IEkgd2FudCAobGlrZSBwYXN0YSkgaXMgd2hhdCBnZXRzIGhlbGQgb24gdG8sIG5vdCB0aGUgcGFzdGEgd2F0ZXIuIAojIyB0aGUgISBvcGVyYXRvciB3YXMgYSBsaXR0bGUgY29uZnVzaW5nIGhlcmUgdG9vIGFuZCBpdCdzIHBvc3NpYmx5IGR1ZSB0byB0aGUgb3JkZXIuIEluaXRpYWxseSBJIHJlYWQgaXQgYXMgInRocm93IGF3YXkgdGhlIHdvcmRzIHRoYXQgYXJlbid0IGluIHdvcmQxIGluIHN0b3Bfd29yZHMiLiBIb3dldmVyLCB0byBwdXQgdGhlIGNvZGUgaW50byBwbGFpbiBlbmdsaXNoLCBJIHNob3VsZCByZWFkIGl0IGFzICJzaG93IG1lIGFsbCB0aGUgd29yZHMgaW4gd29yZDEgdGhhdCBhcmVuJ3QgYWxzbyBpbiBzdG9wX3dvcmRzJyB3b3JkIGNvbHVtbi4gSSBvZnRlbiBmZWVsIGxpa2UgUiB3cml0ZXMgZXZlcnl0aGluZyBiYWNrd2FyZHMuLi4KCmF1c3Rlbl90cmlnYW1zCmBgYAoKIyMjIDQuMS4yIEFuYWx5emluZyBiaWdyYW1zCgpVc2luZyBiaWdyYW1zIHdlIGNhbiBsb29rIHNwZWNpZmljYWxseSBhdCB0aGluZ3MgdGhhdCB0ZW5kIHRvIGdvIHRvZ2V0aGVyIGluIGxhbmd1YWdlLCBzdWNoIGFzIHN0cmVldHMuIFdlIG9mdGVuIHdyaXRlIHN0cmVldHMgYXMgIllhaG1pbGwgc3RyZWV0IiBvciAiTG92ZWpveSBzdHJlZXQiLgoKYGBge3IgYmlncmFtc3RyZWV0fQpiaWdyYW1zX2ZpbHRlcmVkICU+JSAKICBmaWx0ZXIod29yZDIgPT0gInN0cmVldCIpICU+JSAKICBjb3VudChib29rLCB3b3JkMSwgc29ydCA9IFRSVUUpCiMjIE5vdGUgdGhhdCB3ZSB1c2VkIGBjb3VudChib29rLCB3b3JkMSlgIG5vdCBqdXN0IGBjb3VudCh3b3JkMSlgLiBVc2luZyBqdXN0IGB3b3JkMWAgd291bGQgaGF2ZSByZXR1cm5lZCBhIGNvdW50IG9mIGFsbCB0aGUgdGltZXMgYSBzdHJlZXQgbGlrZSBNaWxzb20gYXBwZWFycyBpbiBhbGwgb2YgdGhlIGJvb2tzLiBJdCBhcHBlYXJzIDExIHRpbWVzIGluIE5vcnRoYW5nZXIgQWJiZXkgYW5kIDUgdGltZXMgaW4gUGVyc3VhdGlvbiBmb3IgYSB0b3RhbCBvZiAxNiB0aW1lcy4gQWRkaW5nIGBib29rYCBsZXQncyB1cyBzZWUgYSBjb3VudCBvZiB3b3JkMSBieSBib29rLgpgYGAKCldlIGNhbiBhbHNvIHRyZWF0IGJpZ3JhbXMgYXMgdGVybXMgZm9yIHRmLWlkZi4KYGBge3IgYmlncmFtX3RmX2lkZn0KYmlncmFtc190Zl9pZGYgPC0gYmlncmFtc191bml0ZWQgJT4lIAogIGNvdW50KGJvb2ssIGJpZ3JhbSkgJT4lIAogIGJpbmRfdGZfaWRmKGJpZ3JhbSwgYm9vaywgbikgJT4lIAogIGFycmFuZ2UoZGVzYyh0Zl9pZGYpKQpiaWdyYW1zX3RmX2lkZgpgYGAKCmBgYHtyIGJpZ3JhbV90Zl9pZGZfcGxvdH0KCmJpZ3JhbXNfdGZfaWRmICU+JSAKICBncm91cF9ieShib29rKSAlPiUgCiAgdG9wX24oMTUsIHRmX2lkZikgJT4lIAogIHVuZ3JvdXAoKSAlPiUgCiAgbXV0YXRlKGJpZ3JhbSA9IHJlb3JkZXIoYmlncmFtLCB0Zl9pZGYpKSAlPiUgCiAgZ2dwbG90KGFlcyhiaWdyYW0sIHRmX2lkZiwgZmlsbCA9IGJvb2spKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGxhYnMgKHggPSBOVUxMLCB5ID0gInRmX2lkZiIpICsKICBmYWNldF93cmFwKH5ib29rLCBuY29sID0gMiwgc2NhbGVzID0gImZyZWUiKSArCiAgY29vcmRfZmxpcCgpCgojIyBOb3RlIHRoYXQgcnVubmluZyB0aGlzIGNvZGUgd2l0aG91dCBgbXV0YXRlKGJpZ3JhbSA9IHJlb3JkZXIoYmlncmFtLCB0Zl9pZGYpKWAgcmVzdWx0ZWQgaW4gYSBwbG90IHdoZXJlIHRoZSBiaWdyYW1zIHdlcmUgbm90IGluIGRlc2NlbmRpbmcgb3JkZXIuCmBgYAoKQWdhaW4gd2Ugc2VlIGEgbG90IG9mIHByb3BlciBub3VucyBhbmQgbmFtZXMgd2l0aCB0aXRsZXMuIFdlIGFsc28gc2VlIHRoaW5ncyBsaWtlICJjcmllZCBFbW1hIiBhbmQgInJlcGxpZWQgRWxpemFiZXRoIiB3aGljaCBtYWtlcyBzZW5zZSBzaW5jZSB0aGVzZSBhcmUgbWFpbiBjaGFyYWN0ZXJzIHdobyBvZnRlbiBzcGVhay4KCiMjIyA0LjEuMyBVc2luZyBiaWdyYW1zIHRvIHByb3ZpZGUgY29udGV4dCBpbiBzZW50aW1lbnQgYW5hbHlzaXMKClVzaW5nIGJpZ3JhbXMgZm9yIHNlbnRpbWVudCBhbmFseXNpcyBjYW4gYWRkIGEgbG90IG9mIGNvbnRleHQuIFdlIG1pZ2h0IHNlZSBhIHNlbnRlbmNlIHRoYXQgc2F5cyAiSSBhbSBub3QgaGFwcHkgYWJvdXQgdGhpcyIgYW5kIHdoaWxlIHRoZSB3b3JkICJoYXBweSIgaXMgdGhlcmUsIHdlIGtub3cgdGhlIHNlbnRpbWVudCBpcyBuZWdhdGl2ZSwgbm90IHBvc2l0aXZlLiBCaWdyYW1zIGNhbiBoZWxwIGhlcmUuCgpgYGB7ciBiaWdyYW1fc2VudGltZW50fQpiaWdyYW1zX3NlcGFyYXRlZCAlPiUgCiAgZmlsdGVyKHdvcmQxID09ICJub3QiKSAlPiUgCiAgY291bnQod29yZDEsIHdvcmQyLCBzb3J0ID0gVFJVRSkKYGBgCgpCeSBsb29raW5nIGF0IGJpZ3JhbXMgdGhhdCB3b3VsZCBjaGFuZ2UgdGhlIHNlbnRpbWVudCBvZiBhIHNpbmdsZSB3b3JkLCB3ZSBjYW4gdGhyb3cgb3V0IG9yIGNoYW5nZSB0aGUgc2VudGltZW50IGNvbnRyaWJ1dGlvbiBvZiB0aGF0IHNpbmdsZSB3b3JkLgoKYGBge3IgYmlncmFtX2FmaW5uMX0Kc2VudGltZW50c19hZmlubiA8LSBnZXRfc2VudGltZW50cygiYWZpbm4iKQoKYGBgCgpgYGB7ciBub3Rfd29yZHN9Cm5vdF93b3JkcyA8LSBiaWdyYW1zX3NlcGFyYXRlZCAlPiUgCiAgZmlsdGVyKHdvcmQxID09ICJub3QiKSAlPiUgCiAgaW5uZXJfam9pbihzZW50aW1lbnRzX2FmaW5uLCBieSA9IGMod29yZDIgPSAid29yZCIpKSAlPiUgCiAgY291bnQod29yZDIsIHZhbHVlLCBzb3J0ID0gVFJVRSkKbm90X3dvcmRzCmBgYAoKSGVyZSB3ZSBzZWUgdGhlIG1vc3QgY29tbW9uIHdvcmRzIHRoYXQgYXJlIHByZWNlZGVkIGJ5ICJub3QiIGFyZSB0aGUgd29yZHMgImxpa2UiLCAiaGVscCIsIGFuZCAid2FudC4gV2UgY2FuIGNhbGN1bGF0ZSB3aGljaCB3b3JkcyBoYWQgdGhlIGJpZ2dlc3QgaW1wYWN0IGluIHRoZSB3cm9uZyBzZW50aW1lbnQgZGlyZWN0aW9uLiBXZSBjYW4gbXVsdGlwbHkgdGhlIHNlbnRpbWVudCBzY29yZSAodmFsdWUpIGJ5IHRoZSBudW1iZXIgb2YgdGltZXMgaXQgYXBwZWFycyAobikuIAoKYGBge3IgYmlncmFtX2FmaW5uX3Bsb3R9Cm5vdF93b3JkcyAlPiUgCiAgbXV0YXRlKGNvbnRyaWJ1dGlvbiA9IG4gKiB2YWx1ZSkgJT4lIAogIGFycmFuZ2UoZGVzYyhhYnMoY29udHJpYnV0aW9uKSkpICU+JSAKICBoZWFkKDIwKSAlPiUgCiAgbXV0YXRlKHdvcmQyID0gcmVvcmRlcih3b3JkMiwgY29udHJpYnV0aW9uKSkgJT4lIAogIGdncGxvdChhZXMod29yZDIsIG4gKiB2YWx1ZSwgZmlsbCA9IG4gKiB2YWx1ZSA+IDApKSArCiAgZ2VvbV9jb2woc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGxhYnMoeCA9ICJXb3JkcyBwcmVjZWRlZCBieSBcIm5vdFwiIiwgCiAgICAgICB5ID0gIlNlbnRpbWVudCB2YWx1ZSAqIG51bWJlciBvZiBvY2N1cmVuY2VzIikgKwogIGNvb3JkX2ZsaXAoKQpgYGAKCkhlcmUgd2Ugc2VlIHRoZSB0b3AgMjAgd29yZHMgcHJlY2VkZWQgYnkgIm5vdCIgdGhhdCBjb250cmlidXRlIGluY29ycmVjdCBzZW50aW1lbnQuIFdlIHNlZSB0aGF0ICJub3QgbGlrZSIgYW5kICJub3QgaGVscCIgYXJlIGJpZyBjb250cmlidXRvcnMhCgpMZXQncyBsb29rIGF0IG1vcmUgd29yZHMgdGhhdCBjb250cmlidXRlIHRvIGluY29ycmVjdCBzZW50aW1lbnQ6CgpgYGB7ciBiaWdyYW1fYWZpbm5fbmVnYXRpb25fd29yZHN9CgpuZWdhdGlvbl93b3JkcyA8LSBjKCJub3QiLCAibm8iLCAibmV2ZXIiLCAid2l0aG91dCIsICJkb24ndCIsICJ3b24ndCIpCgpuZWdhdGVkX3dvcmRzIDwtIGJpZ3JhbXNfc2VwYXJhdGVkICU+JSAKICBmaWx0ZXIod29yZDEgJWluJSBuZWdhdGlvbl93b3JkcykgJT4lIAogIGlubmVyX2pvaW4oc2VudGltZW50c19hZmlubiwgYnkgPSBjKHdvcmQyID0gIndvcmQiKSkgJT4lIAogIGNvdW50KHdvcmQxLCB3b3JkMiwgdmFsdWUsIHNvcnQgPSBUUlVFKQpuZWdhdGVkX3dvcmRzCmBgYAoKYGBge3IgYmlncmFtX25lZ2F0ZWRfd29yZHNfcGxvdH0KCm5lZ2F0ZWRfd29yZHMgJT4lIAogIG11dGF0ZShjb250cmlidXRpb24gPSBuICogdmFsdWUpICU+JSAKICBhcnJhbmdlKGRlc2MoYWJzKGNvbnRyaWJ1dGlvbikpKSAlPiUgCiAgaGVhZCgyMCkgJT4lIAogIG11dGF0ZSh3b3JkMiA9IHJlb3JkZXIod29yZDIsIGNvbnRyaWJ1dGlvbikpICU+JSAKICBnZ3Bsb3QoYWVzKHdvcmQyLCBuICogdmFsdWUsIGZpbGwgPSBuICogdmFsdWUgPiAwKSkgKwogIGdlb21fY29sKHNob3cubGVnZW5kID0gRkFMU0UpICsKICBsYWJzKHggPSAiV29yZHMgcHJlY2VkZWQgYnkgbmVnYXRpbmcgdGVybSIsCiAgICAgICB5ID0gIlNlbnRpbWVudCB2YWx1ZSAqIG51bWJlciBvZiBvY2N1cmVuY2VzIikgKwogIGNvb3JkX2ZsaXAoKQpgYGAKCiMjIyA0LjEuNCBWaXN1YWxpemluZyBhIG5ldHdvcmsgb2YgYmlncmFtcyB3aXRoIGdncmFwaAoKQW5vdGhlciB3YXkgdG8gbG9vayBhdCB0aGUgcmVsYXRpb25zaGlwcyBiZXR3ZWVuIHdvcmRzIGlzIHRvIGxvb2sgYXQgYSBuZXR3b3JrIG9mIG11bHRpcGxlIHdvcmRzIGFsbCBhdCBvbmNlIGluc3RlYWQgb2YganVzdCB0aGUgdG9wIHBhaXJzLiBXZSBjYW4gY3JlYXRlIG5vZGVzIHdpdGggdGhlIHRpZHkgZGF0YSBiZWNhdXNlIHRoZSBkYXRhIGhhcyB0aHJlZSB2YXJpYWJsZXM6IHRoZSAiZnJvbSIsIHRoZSAidG8iLCBhbmQgdGhlIHdlaWdodCAobikuIEluIGBpZ3JhcGhgIHdlIGNhbiB1c2UgYGdyYXBoX2Zyb21fZGF0YV9mcmFtZSgpYC4KCmBgYHtyIGJpZ3JhbV9ncmFwaH0KCmJpZ3JhbXNfZ3JhcGggPC0gYmlncmFtc19jb3VudHMgJT4lIAogIGZpbHRlcihuID4gMjApICU+JSAKICBncmFwaF9mcm9tX2RhdGFfZnJhbWUoKQpiaWdyYW1zX2dyYXBoCgpzZXQuc2VlZCgyMDE3KQoKIyMgVXNpbmcgYHNldC5zZWVkKDIwMTcpIHdpbGwgYWxsb3cgdGhlIGdyYXBoIGJlbG93IHRvIHByaW50IG91dCB0aGUgc2FtZSBmb3IgYW55b25lIHdobyB0cmllcyB0byByZXByb2R1Y2UgdGhlIGNvZGUuCgpnZ3JhcGgoYmlncmFtc19ncmFwaCwgbGF5b3V0ID0gImZyIikgKwogIGdlb21fZWRnZV9saW5rKCkgKwogIGdlb21fbm9kZV9wb2ludCgpICsKICBnZW9tX25vZGVfdGV4dChhZXMobGFiZWwgPSBuYW1lKSwgdmp1c3QgPSAxLCBoanVzdCA9IDEpCgpgYGAKCkluIHRoZSBhYm92ZSBncmFwaCwgd2Ugc2VlIHRoYXQgdGhlcmUgYXJlIGNvbW1vbiBub2RlcyBvZiAic2lyIiBvciAibGFkeSIgYW5kIGRpZmZlcmVudCBjaGFyYWN0ZXIncyBuYW1lcyBicmFuY2hpbmcgb2ZmLgoKV2UgY2FuIGFkZCBtb3JlIGFkanVzdG1lbnRzIHRvIHRoZSBncmFwaDoKCmBgYHtyIGdyYXBoX2FkZGl0aW9uYWxfbGF5ZXJzfQpzZXQuc2VlZCgyMDE2KQoKYSA8LSBncmlkOjphcnJvdyh0eXBlID0gImNsb3NlZCIsIGxlbmd0aCA9IHVuaXQoLjEwLCAiaW5jaGVzIikpCgpnZ3JhcGgoYmlncmFtc19ncmFwaCwgbGF5b3V0ID0gImZyIikgKwogIGdlb21fZWRnZV9saW5rKGFlcyhlZGdlX2FscGhhID0gbiksIAogICAgICAgICAgICAgICAgIHNob3cubGVnZW5kID0gRkFMU0UsCiAgICAgICAgICAgICAgICAgYXJyb3cgPSBhLAogICAgICAgICAgICAgICAgIGVuZF9jYXAgPSBjaXJjbGUoLjAxLCAnaW5jaGVzJykpICsKICBnZW9tX25vZGVfcG9pbnQoY29sb3IgPSAibGlnaHRibHVlIiwgc2l6ZSA9IDUpICsKICBnZW9tX25vZGVfdGV4dChhZXMobGFiZWwgPSBuYW1lKSwgdmp1c3QgPSAxLCBoanVzdCA9IDEpICsKICB0aGVtZV92b2lkKCkKCmBgYAoKIyMjIDQuMS41IFZpc3VhbGl6aW5nIGJpZ3JhbXMgaW4gb3RoZXIgdGV4dHMKClRvIG1ha2UgaXQgZWFzeSB0byBjb3VudCBiaWdyYW1zIGFuZCB2aXN1YWxpemUgYmlncmFtcywgd2UgY2FuIG1ha2UgYSBmdW5jdGlvbjoKCmBgYHtyIGNyZWF0X2Z1bmN0aW9uX2NvdW50X3Zpc19iaWdyYW1zfQoKY291bnRfYmlncmFtcyA8LSBmdW5jdGlvbihkYXRhc2V0KSB7CiAgZGF0YXNldCAlPiUgCiAgICB1bm5lc3RfdG9rZW5zKGJpZ3JhbSwgdGV4dCwgdG9rZW4gPSAibmdyYW1zIiwgbiA9IDIpICU+JSAKICAgIHNlcGFyYXRlKGJpZ3JhbSwgYygid29yZDEiLCAid29yZDIiKSwgc2VwID0gIiAiKSAlPiUgCiAgICBmaWx0ZXIoIXdvcmQxICVpbiUgc3RvcF93b3JkcyR3b3JkLAogICAgICAgICAgICF3b3JkMiAlaW4lIHN0b3Bfd29yZHMkd29yZCkgJT4lIAogICAgY291bnQod29yZDEsIHdvcmQyLCBzb3J0ID0gVFJVRSkKfQoKdmlzdWFsaXplX2JpZ3JhbXMgPC0gZnVuY3Rpb24oYmlncmFtcykgewogIHNldC5zZWVkKDIwMTYpCiAgYSA8LSBncmlkOjphcnJvdyh0eXBlID0gImNsb3NlZCIsIAogICAgICAgICAgICAgICAgICAgbGVuZ3RoID0gdW5pdCguMTUsICJpbmNoZXMiKSkKICAKICBiaWdyYW1zICU+JSAKICAgIGdyYXBoX2Zyb21fZGF0YV9mcmFtZSgpICU+JSAKICAgIGdncmFwaChsYXlvdXQgPSAiZnIiKSArCiAgICBnZW9tX2VkZ2VfbGluayhhZXMoZWRnZV9hbHBoYSA9IG4pLAogICAgICAgICAgICAgICAgICAgc2hvdy5sZWdlbmQgPSBGQUxTRSwKICAgICAgICAgICAgICAgICAgIGFycm93ID0gYSkgKwogICAgZ2VvbV9ub2RlX3BvaW50KGNvbG9yID0gImxpZ2h0Ymx1ZSIsIHNpemUgPSA0KSArCiAgICBnZW9tX25vZGVfdGV4dChhZXMobGFiZWwgPSBuYW1lKSwgdmp1c3QgPSAxLCBoanVzdCA9IDEpICsKICAgIHRoZW1lX3ZvaWQoKQp9CgpgYGAKCk5vdyB3ZSBjYW4gdXNlIHRoZSBmdW5jdGlvbnMgYGNvdW50X2JpZ3JhbXMoKWAgYW5kIGB2aXN1YWxpemVfYmlncmFtcygpYCBtb3JlIGVhc2lseS4gTGV0J3MgdHJ5IGl0IG91dDoKCmBgYHtyIEtKVl9kb3dubG9hZCwgbWVzc2FnZT1GQUxTRX0KIyMgZG93bmxvYWQgdGhlIHRleHQ6CgpranYgPC0gZ3V0ZW5iZXJnX2Rvd25sb2FkKDEwKQoKIyMgYmlncmFtIHRoZSB0ZXh0OgoKa2p2X2JpZ3JhbXMgPC0ga2p2ICU+JSAKICBjb3VudF9iaWdyYW1zKCkKCiMjIGZpbHRlciBvdXQgcmFyZSBjb21ib3MgYW5kIG51bWJlcnMKCmtqdl9iaWdyYW1zICU+JSAKICBmaWx0ZXIobiA+IDQwLAogICAgICAgICAhc3RyX2RldGVjdCh3b3JkMSwgIlxcZCIpLAogICAgICAgICAhc3RyX2RldGVjdCh3b3JkMiwgIlxcZCIpKSAlPiUgCiAgdmlzdWFsaXplX2JpZ3JhbXMoKQoKYGBgCgpXZSBzZWUgYSBsb3Qgb2YgInRoeSIgYW5kICJ0aG91IiBhbmQgInRoaW5lIi4gVGhlc2UgY291bGQgYmUgY29uc2lkZXJlZCBzdG9wIHdvcmRzLgoKIyMjIDQuMiBDb3VudGluZyBhbmQgY29ycmVsYXRpbmcgcGFpcnMgb2Ygd29yZHMgd2l0aCB0aGUgd2lkeXIgcGFja2FnZQoKU29tZXRpbWVzIHdlJ3JlIGludGVyZXN0ZWQgaW4gd29yZHMgdGhhdCBhcmVuJ3QgcmlnaHQgbmV4dCB0byBvbmUgYW5vdGhlciBidXQgdGVuZCB0byBjby1vY2N1ciBpbiBhIGRvY3VtZW50KHMpLCBjaGFwdGVyKHMpLCBvciBvdGhlciBncm91cGluZy4gVG8gZG8gdGhpcywgd2UgbmVlZCB0byBiZSBhYmxlIHRvIGNvbXBhcmUgYmV0d2VlbiByb3dzIGFuZCBtYWtlIG91ciB0aWR5LCBuYXJyb3cgZGF0YSwgaW50byBhIHdpZGUgZm9ybWF0LiBUaGV5IHdpZHlyIHBhY2thZ2UgY2FuIGRvIHRoaXMuCgojIyMgNC4yLjEgQ291bnRpbmcgYW5kIGNvcnJlbGF0aW5nIGFtb25nIHNlY3Rpb25zCgpCYWNrIGluIENoYXB0ZXIgMiwgd2UgbG9va2VkIGF0IHNlY3Rpb25zIG9mIHRoZSBib29rICpQcmlkZSBhbmQgUHJlanVkaWNlKiBmb3Igc2VudGltZW50IGFuYWx5c2lzLiBXZSBjYW4gZG8gc29tZXRoaW5nIHNpbWlsYXIgdG8gZmluZCB3aGF0IHdvcmRzIHRlbmQgdG8gYXBwZWFyIHdpdGhpbiB0aGUgc2FtZSBzZWN0aW9uOgoKYGBge3IgYXVzdGVuX3NlY3Rpb25fd29yZHN9CiMjIHdlIGNhbGwgY29ycHVzIGBhdXN0ZW5fYm9va3MoKWAsIGZpbHRlciBmb3IganVzdCBQJlAsIGFkZCBpbiBhIG5ldyB2YXJpYWJsZSBjYWxsZWQgc2VjdGlvbiB0aGF0IGlzIDEgc2VjdGlvbiBwZXIgdGVuIHJvd3MsIHdlIGRvbid0IHdhbnQgdG8gbG9vayBhdCBzZWN0aW9uIDAgc2luY2UgdGhlIGFjdHVhbCB0ZXh0IG9mIHRoZSBib29rIHN0YXJ0cyBvbiByb3cgMTAsIHdlJ3ZlIHVubmVzdGVkIHRva2VucyBhbmQgZmlsdGVyZWQgb3V0IHN0b3Agd29yZHMuCgphdXN0ZW5fc2VjdGlvbl93b3JkcyA8LSBhdXN0ZW5fYm9va3MoKSAlPiUgCiAgZmlsdGVyKGJvb2sgPT0gIlByaWRlICYgUHJlanVkaWNlIikgJT4lIAogIG11dGF0ZShzZWN0aW9uID0gcm93X251bWJlcigpICUvJSAxMCkgJT4lIAogICAgZmlsdGVyKHNlY3Rpb24gPiAwKSAlPiUgCiAgdW5uZXN0X3Rva2Vucyh3b3JkLCB0ZXh0KSAlPiUgCiAgZmlsdGVyKCF3b3JkICVpbiUgc3RvcF93b3JkcyR3b3JkKQoKYXVzdGVuX3NlY3Rpb25fd29yZHMKYGBgCgpOb3cgd2UgY2FuIHVzZSB0aGUgd2lkeXIgcGFja2FnZSdzIGBwYWlyd2lzZV9jb3VudCgpYCB0byBmaW5kIHRoZSB3b3JkcyB0aGF0IGNvLW9jY3VyIHdpdGhpbiBzZWN0aW9ucy4gVXNhZ2U6IGBwYWlyd2lzZV9jb3VudCh0YmwgaXRlbSwgZmVhdHVyZSlgLiBXaGVyZSBgaXRlbWAgaXMgdGhlIHRoaW5nIHdlJ3JlIGNvdW50aW5nIGFuZCBzcGl0cyBvdXQgYGl0ZW0xYCBhbmQgYGl0ZW0yYCwgYW5kIHdoZXJlIGBmZWF0dXJlYCBpcyB0aGUgc2NvcGUgb2YgZWFjaCBjaHVuay9jby1vY2N1cmFuY2UgYXJlYS4KCmBgYHtyIGF1c3Rlbl93b3JkX3BhaXJzfQp3b3JkX3BhaXJzIDwtIGF1c3Rlbl9zZWN0aW9uX3dvcmRzICU+JSAKICBwYWlyd2lzZV9jb3VudCh3b3JkLCBzZWN0aW9uLCBzb3J0ID0gVFJVRSkKd29yZF9wYWlycwpgYGAKCkhlcmUgd2Ugc2VlIHRoZSBwYWlyIERhcmN5ICYgRWxpemFiZXRoIGFuZCBFbGl6YWJldGggJiBEYXJjeS4gTGV0J3MgZmluZCB0aGUgbW9zdCBjb21tb24gd29yZHMgdGhhdCBjby1vY2N1ciB3aXRoIERhcmN5OgoKYGBge3IgZGFyY3lfcGFpcn0Kd29yZF9wYWlycyAlPiUgCiAgZmlsdGVyKGl0ZW0xID09ICJkYXJjeSIpCmBgYAoKIyMjIDQuMi4yIFBhaXJ3aXNlIGNvcnJlbGF0aW9uCgpMb29raW5nIGF0IHRoZSBleGFtcGxlIG9mIEVsaXphYmV0aCAmIERhcmN5LCB3ZSBzZWUgdGhhdCB0aGV5J3JlIHZlcnkgY29tbW9uIHRlcm1zIGluIHRoZSBib29rLCB3aGljaCBtYWtlcyBzZW5zZSwgdGhleSdyZSB0aGUgbWFpbiBjaGFyYWN0ZXJzLiBXZSBjb3VsZCBhbHNvIGxvb2sgYXQgY29ycmVsYXRpb24gYW1vbmcgd29yZHMsIG9yIGhvdyBvZnRlbiB3b3JkcyBjby1vY2N1ciBjb21wYXJlZCB0byBob3cgb2Z0ZW4gdGhleSBvY2N1ciBzZXBhcmF0ZWx5LgoKVGhlIGZ1bmN0aW9uIGBwYWlyd2lzZV9jb3IoKWAgaW4gd2lkeXIgY2FsY3VsYXRlcyB0aGUgcGhpIGNvZWZmaWNpZW50IChlcXVpdmFsZW50IHRvIHRoZSBQZWFyc29uIGNvcnJlbGF0aW9uIHdoZW4gYXBwbGllZCB0byBiaW5hcnkgZGF0YSkgYmV0d2VlbiB3b3JkcyBiYXNlZCBvbiBob3cgb2Z0ZW4gdGhleSBjby1vY2N1ciBpbiB0aGUgc2FtZSBzZWN0aW9uLgoKYGBge3IgYXVzdGVuX3BhaXJ3aXNlX2Nvcn0KIyMgZmlyc3QgbGV0J3MgZmlsdGVyIHJlbGF0aXZlbHkgY29tbW9uIHdvcmRzCgp3b3JkX2NvcnMgPC0gYXVzdGVuX3NlY3Rpb25fd29yZHMgJT4lIAogIGdyb3VwX2J5KHdvcmQpICU+JSAKICBmaWx0ZXIobigpID49IDIwKSAlPiUgCiAgcGFpcndpc2VfY29yKHdvcmQsIHNlY3Rpb24sIHNvcnQgPSBUUlVFKQp3b3JkX2NvcnMKCmBgYAoKQWdhaW4sIHRoaXMgZm9ybWF0IGlzIGhlbHBmdWwgZm9yIGRpZ2dpbmcgaW50by4KYGBge3Igd29yZF9jb3JzX3BvdW5kc30Kd29yZF9jb3JzICU+JSAKICBmaWx0ZXIoaXRlbTEgPT0gInBvdW5kcyIpCmBgYAoKYGBge3Igb3RoZXJfd29yZF9jb3JzLCBtZXNzYWdlID0gRkFMU0V9CndvcmRfY29ycyAlPiUgCiAgZmlsdGVyKGl0ZW0xICVpbiUgYygiZWxpemFiZXRoIiwgInBvdW5kcyIsICJtYXJyaWVkIiwgInByaWRlIiwgImxvb2tlZCIpKSAlPiUgCiAgZ3JvdXBfYnkoaXRlbTEpICU+JSAKICB0b3Bfbig2KSAlPiUgCiAgdW5ncm91cCgpICU+JSAKICBtdXRhdGUoaXRlbTIgPSByZW9yZGVyKGl0ZW0yLCBjb3JyZWxhdGlvbikpICU+JSAKICBnZ3Bsb3QoYWVzKGl0ZW0yLCBjb3JyZWxhdGlvbikpICsKICBnZW9tX2JhcihzdGF0ID0gImlkZW50aXR5IikgKwogIGZhY2V0X3dyYXAofiBpdGVtMSwgc2NhbGVzID0gImZyZWUiKSArCiAgY29vcmRfZmxpcCgpCgojIyBOb3RlIHRoYXQgZ2VvbV9iYXIncyBkZWZhdWx0IGlzIGBzdGF0ID0gImJpbiJgIHdoZXJlIHRoZSBiYXIncyBoZWlnaHQgaXMgZXF1YWwgdGhlIGNvdW50IG9mIHdoYXRldmVyIHggaXMuIFNpbmNlIHdlIHdhbnQgdGhlIGJhcnMgdG8gc2hvdyB0aGUgdmFsdWUgd2UndmUgY2FsY3VsYXRlZCBmb3IgY29ycmVsYXRpb24sIHdlIGhhdmUgdG8gdGVsbCBnZW9tX2JhciB0aGF0IGBzdGF0ID0gImlkZW50aXR5ImAKYGBgCgpOZXh0IHdlIGNhbiB2aXN1YWxpemUgdGhlIGRhdGE6CgpgYGB7ciB3b3JkX2Nvcl92aXp9CnNldC5zZWVkKDIwMTYpCgp3b3JkX2NvcnMgJT4lIAogIGZpbHRlcihjb3JyZWxhdGlvbiA+IC4xNzUpICU+JSAKICBncmFwaF9mcm9tX2RhdGFfZnJhbWUoKSAlPiUgCiAgZ2dyYXBoKGxheW91dCA9ICJmciIpICsKICBnZW9tX2VkZ2VfbGluayhhZXMoZWRnZV9hbHBoYSA9IGNvcnJlbGF0aW9uKSwgc2hvdy5sZWdlbmQgPSBGQUxTRSkgKwogIGdlb21fbm9kZV9wb2ludChjb2xvciA9ICJsaWdodGJsdWUiLCBzaXplID0gNCkgKwogIGdlb21fbm9kZV90ZXh0KGFlcyhsYWJlbCA9IG5hbWUpLCByZXBlbCA9IFRSVUUpICsKICB0aGVtZV92b2lkKCkKYGBgCgpIZXJlIHdlIHNlZSBhIHZpc3VhbGl6YXRpb24gb2Ygd29yZHMgdGhhdCBhcmUgYXQgbGVhc3QgLjE3NSBjb3JyZWxhdGVkIGluIHRlcm1zIG9mIGFwcGVhcmluZyBpbiB0aGUgc2FtZSAxMCBsaW5lIHNlY3Rpb24uIFVubGlrZSB0aGUgbmV0d29ya3Mgb2YgYmlncmFtcywgdGhlc2UgdGVybXMgZG8gbm90IGhhdmUgYSBkaXJlY3Rpb25hbCBhcnJvdyBiZWNhdXNlIHRoZXkgYXJlIGxpbmtlZCBieSBiZWluZyBpbiB0aGUgc2FtZSAxMCBsaW5lIHNlY3Rpb24uIEFnYWluLCB1bmxpa2UgYmlncmFtcywgd2Ugc2VlIHdvcmRzIHdlIHdvdWxkIGV4cGVjdCB0byBzZWUgbmVhciBidXQgcGVyaGFwcyBub3QgbmV4dCB0byBvbmUgYW5vdGhlciBzdWNoIGFzIG1vdGhlciAmIGZhdGhlciwgdGVuICYgdGhvdXNhbmQgJiBwb3VuZHMsIGFuZCBuZXdzICYgYnJpZ2h0b24uCgoK</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("learning_ttm_ch1_2.Rmd");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
